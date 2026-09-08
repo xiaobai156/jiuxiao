@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "aliases": {
+    "妞逼特肖": [
+      "牛逼特肖"
+    ],
+    "天码行空": [
+      "天马行空",
+      "天马九肖"
+    ],
+    "狐年大吉": [
+      "虎年大吉",
+      "无错九肖"
+    ],
+    "小码九肖": [
+      "小马九肖"
+    ],
+    "博码祥聋": [
+      "博码祥龙"
+    ],
+    "丰利骨头": [
+      "丰丽骨头"
+    ],
+    "蝇营枸苟": [
+      "蝇营狗苟"
+    ],
+    "妞头码面": [
+      "牛头马面"
+    ],
+    "嫦娥公式": [
+      "嫦娥彩报╠无错九肖╣公式规律"
+    ],
+    "嫦娥奔月": [
+      "嫦娥彩报╠九肖中特╣公式规律"
+    ],
+    "嫦娥必发": [
+      "长跟必发",
+      "暴富九肖"
+    ],
+    "孤芳自赏A": [
+      "孤芳自赏"
+    ]
+  },
+  "sources": {
+    "玩家小狐": {
+      "parser": "complement_three"
+    },
+    "无可非议": {
+      "parser": "grouped",
+      "group_category": "琴棋书画"
+    },
+    "眩目震耳": {
+      "parser": "grouped",
+      "group_category": "春夏秋冬"
+    },
+    "百兽率舞": {
+      "parser": "grouped",
+      "group_category": "琴棋书画"
+    },
+    "青藤之凉": {
+      "parser": "grouped",
+      "group_category": "春夏秋冬"
+    },
+    "一年四季": {
+      "parser": "grouped",
+      "group_category": "春夏秋冬"
+    },
+    "一方霸彩": {
+      "parser": "grouped",
+      "group_category": "风雨雷电"
+    },
+    "过訜喜歡": {
+      "parser": "grouped",
+      "group_category": "春夏秋冬"
+    },
+    "不苟言笑": {
+      "parser": "grouped",
+      "group_category": "琴棋书画"
+    },
+    "强干弱枝": {
+      "parser": "profile_history",
+      "group_category": "琴棋书画"
+    },
+    "霸王码特": {
+      "parser": "split_line"
+    },
+    "女霸君主": {
+      "parser": "split_line"
+    },
+    "八步毛哥": {
+      "parser": "named_section"
+    },
+    "嫦娥公式": {
+      "parser": "image_ocr"
+    },
+    "嫦娥奔月": {
+      "parser": "image_ocr"
+    },
+    "橘色日落": {
+      "parser": "single_season_complement",
+      "group_category": "春夏秋冬"
+    },
+    "物微志信": {
+      "parser": "single_season_complement",
+      "group_category": "春夏秋冬"
+    },
+    "风神九肖": {
+      "parser": "white_tiger"
+    },
+    "月影舞华": {
+      "parser": "yueying"
+    },
+    "彩资讯网": {
+      "parser": "color_info_grouped",
+      "group_category": "琴棋书画"
+    },
+    "东方饭店": {
+      "section_marker": "神庙网 【浑然九肖】",
+      "data_marker": "九肖"
+    },
+    "停止学生": {
+      "section_marker": "九肖中特",
+      "data_marker": "九肖"
+    }
+  }
+}

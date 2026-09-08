@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-07-30T17:00:00+08:00",
+  "project_root": "C:\\Users\\Administrator\\Desktop\\每天工具\\数据系列\\灵蛇九肖_修复版",
+  "environment": {
+    "python": "3.11.15",
+    "python_implementation": "CPython",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "playwright": "1.61.0"
+  },
+  "v1_files": [
+    {
+      "path": "AGENTS.md",
+      "size": 16972,
+      "mtime_utc": "2026-07-18T05:36:25+00:00",
+      "sha256": "54bf9bc29e20ac3916e46ab6963f633576167bdcc5215dfe578e8bc363973448"
+    },
+    {
+      "path": "crawler.py",
+      "size": 106399,
+      "mtime_utc": "2026-07-29T06:23:57+00:00",
+      "sha256": "b9d3336583b4f6de863e59a3b14145c77a98ee25d7a1d12b67833989bc89be85"
+    },
+    {
+      "path": "detect_duplicates.py",
+      "size": 29279,
+      "mtime_utc": "2026-07-29T06:24:17+00:00",
+      "sha256": "0e512b08392d0f44bd58e480ead4896dbeb91f9231dfd5c8bba2af2c622b74eb"
+    },
+    {
+      "path": "multi_issue_crawler.py",
+      "size": 4648,
+      "mtime_utc": "2026-07-10T05:25:30+00:00",
+      "sha256": "61515f1cdd1fad0690f7f3db998f20bdb8dbac211889e0817f4181eab470595f"
+    },
+    {
+      "path": "verify_failed_sites.py",
+      "size": 28810,
+      "mtime_utc": "2026-07-22T09:57:39+00:00",
+      "sha256": "0ec021f50645f671993d47831053c4501c3d2288f5664706a1e4654134aa0aa2"
+    },
+    {
+      "path": "audit_dynamic_record_ids.py",
+      "size": 25704,
+      "mtime_utc": "2026-07-20T05:18:46+00:00",
+      "sha256": "ccdab65e5dad555da1124244398cf04a8d2ebf82cb24edaa27eceab99b22ff05"
+    },
+    {
+      "path": "audit_static_vs_dom.py",
+      "size": 5135,
+      "mtime_utc": "2026-07-19T14:30:21+00:00",
+      "sha256": "8048363d95acd4be3773ba9046b3ffe22bf3a8c3f6ac72a2e70df5bde5eaecf7"
+    },
+    {
+      "path": "test_crawler.py",
+      "size": 126635,
+      "mtime_utc": "2026-07-29T06:21:28+00:00",
+      "sha256": "e794e46e7e26fb196badf4a17e8a3e8bc2356fdd2327715abf109852f6e0b3f2"
+    },
+    {
+      "path": "test_detect_duplicates.py",
+      "size": 23284,
+      "mtime_utc": "2026-07-19T19:37:46+00:00",
+      "sha256": "9231a2b49086bf4ab8071237e274587f355dbb60089732dc2c7838d5d44c05e3"
+    },
+    {
+      "path": "test_verify_failed_sites.py",
+      "size": 10607,
+      "mtime_utc": "2026-07-22T09:57:20+00:00",
+      "sha256": "c004a407d6208bf8bd5db873c1736f3a1b59d1c96646f9ab7ef2de9f4ee4ffdf"
+    },
+    {
+      "path": "extra_sources.json",
+      "size": 56844,
+      "mtime_utc": "2026-07-30T11:59:29+00:00",
+      "sha256": "3adf9b5faf916df0f6d1763d84ef2f9e841322c23901582609593006e54b1d4a"
+    },
+    {
+      "path": "archived_extra_sources.json",
+      "size": 3722,
+      "mtime_utc": "2026-07-30T09:37:47+00:00",
+      "sha256": "a120f1cbcb574152762e85ae4a8d810aba7240c1d98052715130c3e58bce320b"
+    },
+    {
+      "path": "recent_10_cache.json",
+      "size": 1292306,
+      "mtime_utc": "2026-07-30T12:00:05+00:00",
+      "sha256": "d56821b157813a557a8afd07a6fbda2a3ed2477e17c3718ac02bbf9978fa91b9"
+    },
+    {
+      "path": "recent_10_cache_audit_issues.txt",
+      "size": 2650,
+      "mtime_utc": "2026-07-30T10:36:27+00:00",
+      "sha256": "1e9c502763c18dd07516d3dda7249d8c70fdebbee7cd49c03a0d30c728e65afc"
+    },
+    {
+      "path": "baseline_top_bottom.json",
+      "size": 3785,
+      "mtime_utc": "2026-07-30T10:36:27+00:00",
+      "sha256": "cf2436bf62691bbfd856a575a56ce8f300d96f16e86d4a522302256780374eda"
+    },
+    {
+      "path": "zodiac_spec_groups.json",
+      "size": 443,
+      "mtime_utc": "2026-07-08T16:11:11+00:00",
+      "sha256": "b57d300e0fe2711b51f539c211f93c3cbe7ccf9b94a3ebbd411891184e624bdd"
+    },
+    {
+      "path": "failed_site_targets.json",
+      "size": 5631,
+      "mtime_utc": "2026-07-22T10:11:16+00:00",
+      "sha256": "9ac487808b980aad54dfe123847849820abc8659b7f68ddadca7c2cfe0f9ae3a"
+    },
+    {
+      "path": "duplicate_baseline_10.json",
+      "size": 169334,
+      "mtime_utc": "2026-07-22T10:12:10+00:00",
+      "sha256": "5e8dfa59307211335517a5f4868dc9ae01173fbd542759a0642b935685377b49"
+    },
+    {
+      "path": "爬虫-多期抓取灵蛇生肖.bat",
+      "size": 386,
+      "mtime_utc": "2026-07-09T05:04:37+00:00",
+      "sha256": "bf7679e8a4fdf8ae01d3e4d1270e4ab69a1476d81337d593fe6560e31b0a63df"
+    },
+    {
+      "path": "爬虫-爬取灵蛇生肖.bat",
+      "size": 373,
+      "mtime_utc": "2026-05-11T11:54:40+00:00",
+      "sha256": "91f90c2b0cc5fcb93a13205806bec97ebe57412a976b47da51a2d56c86b7c3c3"
+    }
+  ],
+  "active_sources": {
+    "count": 320,
+    "ordered_identity_sha256": "021288423b1f54d348011b9b0e793f7cb3a1b396131c0841d7129a184a403e68",
+    "file_sha256": "3adf9b5faf916df0f6d1763d84ef2f9e841322c23901582609593006e54b1d4a"
+  },
+  "archived_sources": {
+    "count": 16,
+    "ordered_identity_sha256": "36ca1495494cf59e6beb855f02bbc55c601e54bb0ba33a1e0b1fdf398ec2d912",
+    "file_sha256": "a120f1cbcb574152762e85ae4a8d810aba7240c1d98052715130c3e58bce320b"
+  },
+  "cache": {
+    "latest_issue": 211,
+    "issues": [
+      211,
+      210,
+      209,
+      208,
+      207,
+      206,
+      205,
+      204,
+      203,
+      202
+    ],
+    "declared_source_count": 326,
+    "actual_source_count": 326,
+    "issue_basis": "211期：261 个站点当前期为 211",
+    "ordered_identity_sha256": "4b9d6ee481c98416538fe9472751caf25869f00844f593e1546889da1b147b94",
+    "file_sha256": "d56821b157813a557a8afd07a6fbda2a3ed2477e17c3718ac02bbf9978fa91b9"
+  }
+}

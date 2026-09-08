@@ -1,0 +1,433 @@
+{
+  "schema_version": 2,
+  "sources": [
+    {
+      "source": {
+        "name": "时当三月",
+        "url": "https://szfzml.mfuw8-bnsfa-gdaxhk.xyz/view.php?id=316",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "澳彩经理",
+        "url": "https://nlafoq9v.dh5565656.xyz/bbs/topic.php?id=876",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "临渊羡鱼",
+        "url": "https://nwrkkmv.rx287-rkrai-jsjccc.xyz:29499/article/manager/6a55fafff447e21b02daa8d3?url=ggz",
+        "position": "bottom",
+        "section_marker": "临渊羡鱼",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "/api/proxy/manager-articles/6a55fafff447e21b02daa8d3",
+        "group_map": {
+          "琴": "兔蛇鸡",
+          "棋": "鼠牛狗",
+          "书": "虎龙马",
+          "画": "羊猴猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "豪哥风云",
+        "url": "https://nwrkkmv.rx287-rkrai-jsjccc.xyz:29499/article/manager/6a55d1d4f447e21b02daa617?url=ggz",
+        "position": "bottom",
+        "section_marker": "豪哥风云",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "/api/proxy/manager-articles/6a55d1d4f447e21b02daa617",
+        "group_map": {
+          "琴": "兔蛇鸡",
+          "棋": "鼠牛狗",
+          "书": "虎龙马",
+          "画": "羊猴猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "奇人真经",
+        "url": "https://lxlwskb.nboxw-3t1ws-uyicfb.work:29444/article/admin/6a1e3a3b4499c31924720bbb?url=scyd",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "最拽少女",
+        "url": "https://sheuzjss.tgpcj-9w0vl-mwyhly.work:29422/article/admin/6a045c394ea5c20141013ecb?url=zfw",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "旷世奇才",
+        "url": "https://nwrkkmv.rx287-rkrai-jsjccc.xyz:29499/article/manager/6a33d30cdfa16552b923d0ba?url=ggz",
+        "position": "bottom",
+        "section_marker": "旷世奇才",
+        "fetcher": "dynamic_article",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "刻不容缓",
+        "url": "https://szfzml.mfuw8-bnsfa-gdaxhk.xyz/view.php?id=442",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "霸王举鼎",
+        "url": "https://ofxhqgor.li0cj-4esgz-npswxa.xyz/view.php?id=250",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "心灵乐园",
+        "url": "https://lxlwskb.nboxw-3t1ws-uyicfb.work:29444/article/admin/6a14499cbf0a6cb1dd38fbd8?url=scyd",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "妞逼特肖",
+        "url": "https://qarppl.154bo-trld9-qppors.xyz:16677/topic/622196.html",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [
+          "牛逼特肖"
+        ],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "葡京肖王",
+        "url": "https://sheuzjss.tgpcj-9w0vl-mwyhly.work:29422/article/admin/6a10cc82d5071f9d0b8b3bdc?url=zfw",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "福星攻略",
+        "url": "https://flllxn.8w08j-eua1c-atygor.xyz/view.php?id=196",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "白手起家",
+        "url": "https://rmpsmal.hi84f-zpj90-mvqksp.xyz:29477/article/manager/6a326ff5c50767750c400759?url=jfh",
+        "position": "bottom",
+        "section_marker": "白手起家",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "/api/proxy/manager-articles/6a326ff5c50767750c400759",
+        "group_map": {
+          "琴": "兔蛇鸡",
+          "棋": "鼠牛狗",
+          "书": "虎龙马",
+          "画": "羊猴猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-25",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "大秦帝国",
+        "url": "https://kkjaygke.vr8iw-yqp1z-hdkujs.xyz/view.php?id=64",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-30",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "经书澳彩",
+        "url": "https://hl.www73261a.com/read.php?tid=563",
+        "position": "bottom",
+        "section_marker": "经书澳彩",
+        "fetcher": "browser_page",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "琴": "兔蛇鸡",
+          "棋": "鼠牛狗",
+          "书": "虎龙马",
+          "画": "羊猴猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-07-30",
+      "reason": "用户要求封存，不再主动抓取；保留解析代码、历史缓存和审计记录"
+    },
+    {
+      "source": {
+        "name": "日升月恒",
+        "url": "https://bbs28.880280.xyz/bbs/topic.php?id=17579",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-02",
+      "reason": "用户明确要求封存；213期 ANCHOR_MISSING，后续不再抓取"
+    },
+    {
+      "source": {
+        "name": "博彩出世",
+        "url": "https://hl.www73261a.com/read.php?tid=469",
+        "position": "bottom",
+        "section_marker": "博彩出世",
+        "fetcher": "browser_page",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "琴": "兔蛇鸡",
+          "棋": "鼠牛狗",
+          "书": "虎龙马",
+          "画": "羊猴猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-02",
+      "reason": "用户明确要求封存；213期 ANCHOR_MISSING，后续不再抓取"
+    },
+    {
+      "source": {
+        "name": "大奖到手",
+        "url": "https://bbs28.880280.xyz/bbs/topic.php?id=17494",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-02",
+      "reason": "用户明确要求封存；213期 ANCHOR_MISSING，后续不再抓取"
+    },
+    {
+      "source": {
+        "name": "财星致富",
+        "url": "https://8818.www73261a.com/read.php?tid=552",
+        "position": "bottom",
+        "section_marker": "财星致富",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-02",
+      "reason": "用户明确要求封存；213期 ANCHOR_MISSING，后续不再抓取"
+    },
+    {
+      "source": {
+        "name": "争长论短",
+        "url": "https://cahgjib.5blx9-z8506-ekiwxc.work:29488/article/admin/6a3ab478018539c611cbda99?url=lqz",
+        "position": "bottom",
+        "section_marker": "争长论短",
+        "fetcher": "dynamic_article",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-05T18:40:52+08:00",
+      "reason": "用户要求封存，不再抓取"
+    },
+    {
+      "source": {
+        "name": "清清白白",
+        "url": "https://nwrkkmv.rx287-rkrai-jsjccc.xyz:29499/article/manager/6a55d055f447e21b02daa606?url=ggz",
+        "position": "bottom",
+        "section_marker": "清清白白",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "/api/proxy/manager-articles/6a55d055f447e21b02daa606",
+        "group_map": {
+          "春": "虎兔龙",
+          "夏": "蛇马羊",
+          "秋": "猴鸡狗",
+          "冬": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "春夏秋冬",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-05T18:40:52+08:00",
+      "reason": "用户要求封存，不再抓取"
+    }
+  ]
+}

@@ -1,0 +1,429 @@
+{
+  "schema_version": 1,
+  "expected_engine": "v1",
+  "actual_engine": "v2",
+  "equal": false,
+  "difference_count": 52,
+  "summary": {
+    "ERROR_MISMATCH": 20,
+    "EVIDENCE_MISMATCH": 32
+  },
+  "differences": [
+    {
+      "identity_key": "9b873d39e9d6445ccbf2aad7af7220d297c8b635d761e5ebeba00f69cb116a99",
+      "source_name": "九肖美味",
+      "issue": 210,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '210期:九肖〖狗兔猴虎羊猪牛鼠鸡〗开：马49错'), ('directory_anchor', '九肖美味'))",
+      "actual": "(('source_line', '210期:九肖〖狗兔猴虎羊猪牛鼠鸡〗开：0000准'), ('directory_anchor', '九肖美味'))"
+    },
+    {
+      "identity_key": "8982f04754e2d567c7b86f1e79b65215374fd8449b33808437a6c77dc0aa3969",
+      "source_name": "势不可挡",
+      "issue": 210,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '210期:《东南西北》《北西南肖》开:0000准'), ('directory_anchor', '势不可挡'))",
+      "actual": "(('source_line', '210期:《东南西北》《北西南肖》开:0000准'), ('directory_anchor', '势不可挡'), ('group_type', '东南西北'), ('group_text', '北西南'))"
+    },
+    {
+      "identity_key": "8982f04754e2d567c7b86f1e79b65215374fd8449b33808437a6c77dc0aa3969",
+      "source_name": "势不可挡",
+      "issue": 209,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '209期:《东南西北》《西南北肖》开:猪08准'), ('directory_anchor', '势不可挡'))",
+      "actual": "(('source_line', '209期:《东南西北》《西南北肖》开:猪08准'), ('directory_anchor', '势不可挡'), ('group_type', '东南西北'), ('group_text', '西南北'))"
+    },
+    {
+      "identity_key": "8982f04754e2d567c7b86f1e79b65215374fd8449b33808437a6c77dc0aa3969",
+      "source_name": "势不可挡",
+      "issue": 208,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '208期:《东南西北》《北西南肖》开:鼠19准'), ('directory_anchor', '势不可挡'))",
+      "actual": "(('source_line', '208期:《东南西北》《北西南肖》开:鼠19准'), ('directory_anchor', '势不可挡'), ('group_type', '东南西北'), ('group_text', '北西南'))"
+    },
+    {
+      "identity_key": "8982f04754e2d567c7b86f1e79b65215374fd8449b33808437a6c77dc0aa3969",
+      "source_name": "势不可挡",
+      "issue": 207,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '207期:《东南西北》《西北南肖》开:鼠31准'), ('directory_anchor', '势不可挡'))",
+      "actual": "(('source_line', '207期:《东南西北》《西北南肖》开:鼠31准'), ('directory_anchor', '势不可挡'), ('group_type', '东南西北'), ('group_text', '西北南'))"
+    },
+    {
+      "identity_key": "8982f04754e2d567c7b86f1e79b65215374fd8449b33808437a6c77dc0aa3969",
+      "source_name": "势不可挡",
+      "issue": 206,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '206期:《东南西北》《北西南肖》开:猴47准'), ('directory_anchor', '势不可挡'))",
+      "actual": "(('source_line', '206期:《东南西北》《北西南肖》开:猴47准'), ('directory_anchor', '势不可挡'), ('group_type', '东南西北'), ('group_text', '北西南'))"
+    },
+    {
+      "identity_key": "8982f04754e2d567c7b86f1e79b65215374fd8449b33808437a6c77dc0aa3969",
+      "source_name": "势不可挡",
+      "issue": 205,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '205期:《东南西北》《东北西肖》开:龙03准'), ('directory_anchor', '势不可挡'))",
+      "actual": "(('source_line', '205期:《东南西北》《东北西肖》开:龙03准'), ('directory_anchor', '势不可挡'), ('group_type', '东南西北'), ('group_text', '东北西'))"
+    },
+    {
+      "identity_key": "8982f04754e2d567c7b86f1e79b65215374fd8449b33808437a6c77dc0aa3969",
+      "source_name": "势不可挡",
+      "issue": 204,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '204期:《东南西北》《北西东肖》开:虎05准'), ('directory_anchor', '势不可挡'))",
+      "actual": "(('source_line', '204期:《东南西北》《北西东肖》开:虎05准'), ('directory_anchor', '势不可挡'), ('group_type', '东南西北'), ('group_text', '北西东'))"
+    },
+    {
+      "identity_key": "8982f04754e2d567c7b86f1e79b65215374fd8449b33808437a6c77dc0aa3969",
+      "source_name": "势不可挡",
+      "issue": 203,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '203期:《东南西北》《东北西肖》开:马25错'), ('directory_anchor', '势不可挡'))",
+      "actual": "(('source_line', '203期:《东南西北》《东北西肖》开:马25错'), ('directory_anchor', '势不可挡'), ('group_type', '东南西北'), ('group_text', '东北西'))"
+    },
+    {
+      "identity_key": "8982f04754e2d567c7b86f1e79b65215374fd8449b33808437a6c77dc0aa3969",
+      "source_name": "势不可挡",
+      "issue": 202,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '202期:《东南西北》《北东西肖》开:兔40准'), ('directory_anchor', '势不可挡'))",
+      "actual": "(('source_line', '202期:《东南西北》《北东西肖》开:兔40准'), ('directory_anchor', '势不可挡'), ('group_type', '东南西北'), ('group_text', '北东西'))"
+    },
+    {
+      "identity_key": "8982f04754e2d567c7b86f1e79b65215374fd8449b33808437a6c77dc0aa3969",
+      "source_name": "势不可挡",
+      "issue": 201,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '201期:《东南西北》《东北西肖》开:猪32准'), ('directory_anchor', '势不可挡'))",
+      "actual": "(('source_line', '201期:《东南西北》《东北西肖》开:猪32准'), ('directory_anchor', '势不可挡'), ('group_type', '东南西北'), ('group_text', '东北西'))"
+    },
+    {
+      "identity_key": "366933b9816cf53d91fa53397f0a1ad4a5d53213ed37671aaf77827576f3308c",
+      "source_name": "大摇大摆",
+      "issue": 210,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '210期:完美九肖【鸡牛龙猴羊狗马兔蛇】开：马49对'), ('directory_anchor', '大摇大摆'))",
+      "actual": "(('source_line', '210期:完美九肖【鸡牛龙猴羊狗马兔蛇】开：0000对'), ('directory_anchor', '大摇大摆'))"
+    },
+    {
+      "identity_key": "a3d05ff10bf7ae4a1e60153e6e662aecb538b1c7f2f4e769bc4d3b1d514afcd2",
+      "source_name": "停止武术",
+      "issue": 210,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "SUCCESS"
+    },
+    {
+      "identity_key": "a3d05ff10bf7ae4a1e60153e6e662aecb538b1c7f2f4e769bc4d3b1d514afcd2",
+      "source_name": "停止武术",
+      "issue": 209,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "SUCCESS"
+    },
+    {
+      "identity_key": "a3d05ff10bf7ae4a1e60153e6e662aecb538b1c7f2f4e769bc4d3b1d514afcd2",
+      "source_name": "停止武术",
+      "issue": 208,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "SUCCESS"
+    },
+    {
+      "identity_key": "a3d05ff10bf7ae4a1e60153e6e662aecb538b1c7f2f4e769bc4d3b1d514afcd2",
+      "source_name": "停止武术",
+      "issue": 207,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "SUCCESS"
+    },
+    {
+      "identity_key": "a3d05ff10bf7ae4a1e60153e6e662aecb538b1c7f2f4e769bc4d3b1d514afcd2",
+      "source_name": "停止武术",
+      "issue": 206,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "SUCCESS"
+    },
+    {
+      "identity_key": "a3d05ff10bf7ae4a1e60153e6e662aecb538b1c7f2f4e769bc4d3b1d514afcd2",
+      "source_name": "停止武术",
+      "issue": 205,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "SUCCESS"
+    },
+    {
+      "identity_key": "a3d05ff10bf7ae4a1e60153e6e662aecb538b1c7f2f4e769bc4d3b1d514afcd2",
+      "source_name": "停止武术",
+      "issue": 204,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "SUCCESS"
+    },
+    {
+      "identity_key": "a3d05ff10bf7ae4a1e60153e6e662aecb538b1c7f2f4e769bc4d3b1d514afcd2",
+      "source_name": "停止武术",
+      "issue": 203,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "SUCCESS"
+    },
+    {
+      "identity_key": "a3d05ff10bf7ae4a1e60153e6e662aecb538b1c7f2f4e769bc4d3b1d514afcd2",
+      "source_name": "停止武术",
+      "issue": 202,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "SUCCESS"
+    },
+    {
+      "identity_key": "a3d05ff10bf7ae4a1e60153e6e662aecb538b1c7f2f4e769bc4d3b1d514afcd2",
+      "source_name": "停止武术",
+      "issue": 201,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "SUCCESS"
+    },
+    {
+      "identity_key": "003ee0ce23b5bdad03463e298fe9f6f6b6d26769eb0b280e70bf034883b9e674",
+      "source_name": "飘香岁月",
+      "issue": 210,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '210期春夏秋冬肖【春夏冬】开马49准'), ('directory_anchor', '飘香岁月'), ('group_type', '春夏秋冬'), ('group_text', '春夏冬'))",
+      "actual": "(('source_line', '210期春夏秋冬肖【春夏冬】开000准'), ('directory_anchor', '飘香岁月'), ('group_type', '春夏秋冬'), ('group_text', '春夏冬'))"
+    },
+    {
+      "identity_key": "c8302182e4368a846f4b6ed6cdcd73cb20492ec3df9eba7dd40d099652e56c66",
+      "source_name": "花天酒地",
+      "issue": 210,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '210期【风雨雷电】☁雨电风☁开:0000准'), ('directory_anchor', '花天酒地'), ('group_type', '风雨雷电'), ('group_text', '雨电风'))",
+      "actual": "(('source_line', '210期【风雨雷电】☁雨电风☁开:马49准'), ('directory_anchor', '花天酒地'), ('group_type', '风雨雷电'), ('group_text', '雨电风'))"
+    },
+    {
+      "identity_key": "7329b4107e647a3699d019b120ad06ce4f93de1daf6047b41fe0ff83228c2dc5",
+      "source_name": "橘色日落",
+      "issue": 210,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '210期：绝杀一季【冬】开马49对'), ('directory_anchor', '绝杀一季'))",
+      "actual": "(('source_line', '210期：绝杀一季【冬】开马49对'), ('directory_anchor', '绝杀一季'), ('group_type', '春夏秋冬'), ('group_text', '冬'))"
+    },
+    {
+      "identity_key": "7329b4107e647a3699d019b120ad06ce4f93de1daf6047b41fe0ff83228c2dc5",
+      "source_name": "橘色日落",
+      "issue": 209,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '209期：绝杀一季【秋】开猪08对'), ('directory_anchor', '绝杀一季'))",
+      "actual": "(('source_line', '209期：绝杀一季【秋】开猪08对'), ('directory_anchor', '绝杀一季'), ('group_type', '春夏秋冬'), ('group_text', '秋'))"
+    },
+    {
+      "identity_key": "7329b4107e647a3699d019b120ad06ce4f93de1daf6047b41fe0ff83228c2dc5",
+      "source_name": "橘色日落",
+      "issue": 208,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '208期：绝杀一季【冬】开鼠19错'), ('directory_anchor', '绝杀一季'))",
+      "actual": "(('source_line', '208期：绝杀一季【冬】开鼠19错'), ('directory_anchor', '绝杀一季'), ('group_type', '春夏秋冬'), ('group_text', '冬'))"
+    },
+    {
+      "identity_key": "7329b4107e647a3699d019b120ad06ce4f93de1daf6047b41fe0ff83228c2dc5",
+      "source_name": "橘色日落",
+      "issue": 207,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '207期：绝杀一季【秋】开鼠31对'), ('directory_anchor', '绝杀一季'))",
+      "actual": "(('source_line', '207期：绝杀一季【秋】开鼠31对'), ('directory_anchor', '绝杀一季'), ('group_type', '春夏秋冬'), ('group_text', '秋'))"
+    },
+    {
+      "identity_key": "7329b4107e647a3699d019b120ad06ce4f93de1daf6047b41fe0ff83228c2dc5",
+      "source_name": "橘色日落",
+      "issue": 206,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '206期：绝杀一季【春】开猴47对'), ('directory_anchor', '绝杀一季'))",
+      "actual": "(('source_line', '206期：绝杀一季【春】开猴47对'), ('directory_anchor', '绝杀一季'), ('group_type', '春夏秋冬'), ('group_text', '春'))"
+    },
+    {
+      "identity_key": "7329b4107e647a3699d019b120ad06ce4f93de1daf6047b41fe0ff83228c2dc5",
+      "source_name": "橘色日落",
+      "issue": 205,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '205期：绝杀一季【夏】开龙03对'), ('directory_anchor', '绝杀一季'))",
+      "actual": "(('source_line', '205期：绝杀一季【夏】开龙03对'), ('directory_anchor', '绝杀一季'), ('group_type', '春夏秋冬'), ('group_text', '夏'))"
+    },
+    {
+      "identity_key": "7329b4107e647a3699d019b120ad06ce4f93de1daf6047b41fe0ff83228c2dc5",
+      "source_name": "橘色日落",
+      "issue": 204,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '204期：绝杀一季【冬】开虎05对'), ('directory_anchor', '绝杀一季'))",
+      "actual": "(('source_line', '204期：绝杀一季【冬】开虎05对'), ('directory_anchor', '绝杀一季'), ('group_type', '春夏秋冬'), ('group_text', '冬'))"
+    },
+    {
+      "identity_key": "7329b4107e647a3699d019b120ad06ce4f93de1daf6047b41fe0ff83228c2dc5",
+      "source_name": "橘色日落",
+      "issue": 203,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '203期：绝杀一季【夏】开马25错'), ('directory_anchor', '绝杀一季'))",
+      "actual": "(('source_line', '203期：绝杀一季【夏】开马25错'), ('directory_anchor', '绝杀一季'), ('group_type', '春夏秋冬'), ('group_text', '夏'))"
+    },
+    {
+      "identity_key": "7329b4107e647a3699d019b120ad06ce4f93de1daf6047b41fe0ff83228c2dc5",
+      "source_name": "橘色日落",
+      "issue": 202,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '202期：绝杀一季【秋】开兔40对'), ('directory_anchor', '绝杀一季'))",
+      "actual": "(('source_line', '202期：绝杀一季【秋】开兔40对'), ('directory_anchor', '绝杀一季'), ('group_type', '春夏秋冬'), ('group_text', '秋'))"
+    },
+    {
+      "identity_key": "7329b4107e647a3699d019b120ad06ce4f93de1daf6047b41fe0ff83228c2dc5",
+      "source_name": "橘色日落",
+      "issue": 201,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '201期：绝杀一季【夏】开猪32对'), ('directory_anchor', '绝杀一季'))",
+      "actual": "(('source_line', '201期：绝杀一季【夏】开猪32对'), ('directory_anchor', '绝杀一季'), ('group_type', '春夏秋冬'), ('group_text', '夏'))"
+    },
+    {
+      "identity_key": "d5dd80602577b6e3261b011f5c0bbd1f7cd407e6e336ff092adff5d398c6c951",
+      "source_name": "物微志信",
+      "issue": 210,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '210期：绝杀一季【冬】开：0000准'), ('directory_anchor', '物微志信'))",
+      "actual": "(('source_line', '210期：绝杀一季【冬】开：0000准'), ('directory_anchor', '物微志信'), ('group_type', '春夏秋冬'), ('group_text', '冬'))"
+    },
+    {
+      "identity_key": "d5dd80602577b6e3261b011f5c0bbd1f7cd407e6e336ff092adff5d398c6c951",
+      "source_name": "物微志信",
+      "issue": 209,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '209期：绝杀一季【春】开：猪08准'), ('directory_anchor', '物微志信'))",
+      "actual": "(('source_line', '209期：绝杀一季【春】开：猪08准'), ('directory_anchor', '物微志信'), ('group_type', '春夏秋冬'), ('group_text', '春'))"
+    },
+    {
+      "identity_key": "d5dd80602577b6e3261b011f5c0bbd1f7cd407e6e336ff092adff5d398c6c951",
+      "source_name": "物微志信",
+      "issue": 208,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '208期：绝杀一季【秋】开：鼠19准'), ('directory_anchor', '物微志信'))",
+      "actual": "(('source_line', '208期：绝杀一季【秋】开：鼠19准'), ('directory_anchor', '物微志信'), ('group_type', '春夏秋冬'), ('group_text', '秋'))"
+    },
+    {
+      "identity_key": "d5dd80602577b6e3261b011f5c0bbd1f7cd407e6e336ff092adff5d398c6c951",
+      "source_name": "物微志信",
+      "issue": 207,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '207期：绝杀一季【夏】开：鼠31准'), ('directory_anchor', '物微志信'))",
+      "actual": "(('source_line', '207期：绝杀一季【夏】开：鼠31准'), ('directory_anchor', '物微志信'), ('group_type', '春夏秋冬'), ('group_text', '夏'))"
+    },
+    {
+      "identity_key": "d5dd80602577b6e3261b011f5c0bbd1f7cd407e6e336ff092adff5d398c6c951",
+      "source_name": "物微志信",
+      "issue": 206,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '206期：绝杀一季【冬】开：猴47准'), ('directory_anchor', '物微志信'))",
+      "actual": "(('source_line', '206期：绝杀一季【冬】开：猴47准'), ('directory_anchor', '物微志信'), ('group_type', '春夏秋冬'), ('group_text', '冬'))"
+    },
+    {
+      "identity_key": "d5dd80602577b6e3261b011f5c0bbd1f7cd407e6e336ff092adff5d398c6c951",
+      "source_name": "物微志信",
+      "issue": 205,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '205期：绝杀一季【春】开：龙03错'), ('directory_anchor', '物微志信'))",
+      "actual": "(('source_line', '205期：绝杀一季【春】开：龙03错'), ('directory_anchor', '物微志信'), ('group_type', '春夏秋冬'), ('group_text', '春'))"
+    },
+    {
+      "identity_key": "d5dd80602577b6e3261b011f5c0bbd1f7cd407e6e336ff092adff5d398c6c951",
+      "source_name": "物微志信",
+      "issue": 204,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '204期：绝杀一季【秋】开：虎05准'), ('directory_anchor', '物微志信'))",
+      "actual": "(('source_line', '204期：绝杀一季【秋】开：虎05准'), ('directory_anchor', '物微志信'), ('group_type', '春夏秋冬'), ('group_text', '秋'))"
+    },
+    {
+      "identity_key": "807be77b5d7b2d6173df7fd234876b3fab2aaeeccbd866eb7da170a6040b8c5a",
+      "source_name": "经书澳彩",
+      "issue": 210,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "ANCHOR_MISSING"
+    },
+    {
+      "identity_key": "807be77b5d7b2d6173df7fd234876b3fab2aaeeccbd866eb7da170a6040b8c5a",
+      "source_name": "经书澳彩",
+      "issue": 209,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "ANCHOR_MISSING"
+    },
+    {
+      "identity_key": "807be77b5d7b2d6173df7fd234876b3fab2aaeeccbd866eb7da170a6040b8c5a",
+      "source_name": "经书澳彩",
+      "issue": 208,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "ANCHOR_MISSING"
+    },
+    {
+      "identity_key": "807be77b5d7b2d6173df7fd234876b3fab2aaeeccbd866eb7da170a6040b8c5a",
+      "source_name": "经书澳彩",
+      "issue": 207,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "ANCHOR_MISSING"
+    },
+    {
+      "identity_key": "807be77b5d7b2d6173df7fd234876b3fab2aaeeccbd866eb7da170a6040b8c5a",
+      "source_name": "经书澳彩",
+      "issue": 206,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "ANCHOR_MISSING"
+    },
+    {
+      "identity_key": "807be77b5d7b2d6173df7fd234876b3fab2aaeeccbd866eb7da170a6040b8c5a",
+      "source_name": "经书澳彩",
+      "issue": 205,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "ANCHOR_MISSING"
+    },
+    {
+      "identity_key": "807be77b5d7b2d6173df7fd234876b3fab2aaeeccbd866eb7da170a6040b8c5a",
+      "source_name": "经书澳彩",
+      "issue": 204,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "ANCHOR_MISSING"
+    },
+    {
+      "identity_key": "807be77b5d7b2d6173df7fd234876b3fab2aaeeccbd866eb7da170a6040b8c5a",
+      "source_name": "经书澳彩",
+      "issue": 203,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "ANCHOR_MISSING"
+    },
+    {
+      "identity_key": "807be77b5d7b2d6173df7fd234876b3fab2aaeeccbd866eb7da170a6040b8c5a",
+      "source_name": "经书澳彩",
+      "issue": 202,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "ANCHOR_MISSING"
+    },
+    {
+      "identity_key": "807be77b5d7b2d6173df7fd234876b3fab2aaeeccbd866eb7da170a6040b8c5a",
+      "source_name": "经书澳彩",
+      "issue": 201,
+      "kind": "ERROR_MISMATCH",
+      "expected": "ISSUE_MISSING",
+      "actual": "ANCHOR_MISSING"
+    },
+    {
+      "identity_key": "0499c0efee5f3e7a5053ca2b1217f6229c4a042be83e3965838a6b4f4f002e0f",
+      "source_name": "入骨思念",
+      "issue": 210,
+      "kind": "EVIDENCE_MISMATCH",
+      "expected": "(('source_line', '210期[九肖中特]【鸡兔羊猪龙猴蛇马狗】开0000准'), ('directory_anchor', '入骨思念'))",
+      "actual": "(('source_line', '210期[九肖中特]【鸡兔羊猪龙猴蛇马狗】开马49准'), ('directory_anchor', '入骨思念'))"
+    }
+  ]
+}

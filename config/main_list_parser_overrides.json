@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "overrides": [
+    {
+      "name": "一路平安",
+      "title": "番茄九肖",
+      "url": "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622189.html",
+      "parser": "topic_cyclic_nine"
+    },
+    {
+      "name": "三星高照",
+      "title": "九肖中特",
+      "url": "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622183.html",
+      "parser": "topic_cyclic_nine"
+    },
+    {
+      "name": "举不胜举",
+      "title": "傲天九肖",
+      "url": "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622177.html",
+      "parser": "topic_cyclic_nine"
+    },
+    {
+      "name": "孤狼九肖",
+      "title": "一表人才",
+      "url": "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622188.html",
+      "parser": "topic_cyclic_nine"
+    },
+    {
+      "name": "斩草除根",
+      "title": "除根九肖",
+      "url": "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622276.html",
+      "parser": "topic_cyclic_nine"
+    },
+    {
+      "name": "无动于衷",
+      "title": "无动九肖",
+      "url": "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622422.html",
+      "parser": "topic_cyclic_nine"
+    },
+    {
+      "name": "暴殄天物",
+      "title": "暴殄九肖",
+      "url": "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622423.html",
+      "parser": "topic_cyclic_nine"
+    },
+    {
+      "name": "柳暗花明",
+      "title": "花明九肖",
+      "url": "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622300.html",
+      "parser": "topic_cyclic_nine"
+    },
+    {
+      "name": "胡说八道",
+      "title": "胡说九肖",
+      "url": "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622214.html",
+      "parser": "topic_cyclic_nine"
+    },
+    {
+      "name": "财运滚滚",
+      "title": "财气九肖",
+      "url": "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622270.html",
+      "parser": "topic_cyclic_nine"
+    }
+  ]
+}
