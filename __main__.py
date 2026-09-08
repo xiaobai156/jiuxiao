@@ -9,6 +9,7 @@ from v2.runtime import (
     project_root,
     run_crawl,
     run_crawl_range,
+    run_retry_failed,
     run_preflight,
     run_rollback,
     run_shadow,
@@ -36,6 +37,10 @@ def build_parser() -> argparse.ArgumentParser:
     crawl_range.add_argument("start_issue", type=positive_int)
     crawl_range.add_argument("end_issue", type=positive_int)
     crawl_range.add_argument("--concurrency", type=positive_int, default=8)
+
+    retry_failed = subparsers.add_parser("retry-failed")
+    retry_failed.add_argument("issue", type=positive_int)
+    retry_failed.add_argument("--concurrency", type=positive_int, default=1)
 
     shadow = subparsers.add_parser("shadow")
     shadow.add_argument("issue", type=positive_int)
@@ -89,7 +94,7 @@ async def async_main(argv: Sequence[str]) -> int:
         if run.cache_updated:
             print("缓存已更新")
         else:
-            print("成功率不超过85%，缓存未更新")
+            print(f"缓存更新未完成：{run.cache_error}")
     elif args.command == "crawl-range":
         run = await run_crawl_range(
             root,
@@ -98,6 +103,12 @@ async def async_main(argv: Sequence[str]) -> int:
             concurrency=args.concurrency,
         )
         print(run.failure_summary_path)
+    elif args.command == "retry-failed":
+        run = await run_retry_failed(root, args.issue, concurrency=args.concurrency)
+        item = run.issues[0]
+        print(item.output_path)
+        print(item.failure_path)
+        print(f"失败TXT定向重抓完成：{item.success_count}/{item.total_count}")
     elif args.command == "shadow":
         run = await run_shadow(root, args.issue, concurrency=args.concurrency)
         print(f"differences={run.difference_count}")

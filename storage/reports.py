@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 
 from v2.domain.errors import ErrorCode, Failure
+from v2.domain.identity import source_identity
 from v2.domain.models import Result
 from v2.storage.atomic import atomic_write_many, atomic_write_text
 
@@ -84,12 +85,14 @@ class ReportRepository:
         failure_dir: Path | None = None,
         success_filename: str = "{issue}.txt",
         failure_filename: str = "{issue}-failures.txt",
+        range_failure_dir: Path | None = None,
         range_failure_filename: str = "range-failures.txt",
     ) -> None:
         self.output_dir = Path(output_dir)
         self.failure_dir = Path(failure_dir or output_dir)
         self.success_filename = success_filename
         self.failure_filename = failure_filename
+        self.range_failure_dir = Path(range_failure_dir or self.failure_dir)
         self.range_failure_filename = range_failure_filename
 
     def _issue_paths(self, issue: int) -> tuple[Path, Path]:
@@ -206,6 +209,17 @@ class ReportRepository:
             return []
         return [entry for entry in text.split("\n\n") if entry]
 
+    def failed_sources(self, issue: int, sources: tuple) -> tuple:
+        """Return only configured sources named in this issue's failure file."""
+        _success, failure_path = self._issue_paths(issue)
+        entries = self._read_failure_entries(failure_path)
+        failed_urls = {
+            match.group(1)
+            for entry in entries
+            if (match := re.search(r"\s(https?://\S+)", entry.splitlines()[0]))
+        }
+        return tuple(source for source in sources if source.url in failed_urls)
+
     @staticmethod
     def _success_name(line: str) -> str:
         return line.rsplit(" ", 1)[-1] if " " in line else ""
@@ -224,10 +238,38 @@ class ReportRepository:
         self,
         issue_results: tuple[tuple[int, tuple[Result, ...]], ...],
     ) -> Path:
-        path = self.failure_dir / self.range_failure_filename
+        if not issue_results:
+            raise ValueError("issue_results cannot be empty")
+        try:
+            filename = self.range_failure_filename.format(
+                start_issue=issue_results[0][0],
+                end_issue=issue_results[-1][0],
+            )
+        except (KeyError, ValueError) as exc:
+            raise ValueError("多期失败文件名模板无效") from exc
+        if not filename:
+            raise ValueError("多期失败文件名不能为空")
+        path = self.range_failure_dir / filename
+        failed_in_every_issue: set[str] | None = None
+        for _issue, results in issue_results:
+            failed = {
+                source_identity(result.source).key
+                for result in results
+                if not result.successful
+            }
+            failed_in_every_issue = (
+                failed
+                if failed_in_every_issue is None
+                else failed_in_every_issue & failed
+            )
+        failed_in_every_issue = failed_in_every_issue or set()
         sections: list[str] = []
         for issue, results in issue_results:
-            failures = tuple(result for result in results if not result.successful)
+            failures = tuple(
+                result
+                for result in results
+                if source_identity(result.source).key in failed_in_every_issue
+            )
             if not failures:
                 continue
             lines = [f"{issue}期"]

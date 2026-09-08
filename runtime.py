@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from playwright.async_api import async_playwright
@@ -16,10 +18,14 @@ from v2.fetchers.browser_page import (
 )
 from v2.fetchers.dynamic_article import DynamicArticleFetcher
 from v2.fetchers.list_detail import (
+    ListDetailCurrentFetcher,
     ListDetailFetcher,
     ListDetailTopThreeFetcher,
 )
 from v2.fetchers.liuiuqu import LiuiuquFetcher
+from v2.fetchers.narrow_image_browser import (
+    NarrowImagePlaywrightBrowserClient,
+)
 from v2.fetchers.registry import FetcherRegistry
 from v2.fetchers.static_page import StaticPageFetcher
 from v2.parsers.factory import build_parser_registry
@@ -84,10 +90,23 @@ def _fetchers(context, browser: PlaywrightBrowserClient) -> FetcherRegistry:
         DynamicArticleFetcher(http, browser),
     )
     registry.register("browser_page", BrowserPageFetcher(browser))
+    registry.register(
+        "browser_page_narrow_image",
+        BrowserPageFetcher(
+            NarrowImagePlaywrightBrowserClient(
+                browser.context,
+                ocr_reader=browser.ocr_reader,
+            )
+        ),
+    )
     registry.register("list_detail", ListDetailFetcher(browser))
     registry.register(
         "list_detail_top3",
         ListDetailTopThreeFetcher(browser),
+    )
+    registry.register(
+        "list_detail_current",
+        ListDetailCurrentFetcher(browser),
     )
     registry.register("liuiuqu", LiuiuquFetcher(http))
     return registry
@@ -101,7 +120,27 @@ def _reports(root: Path) -> ReportRepository:
         failure_dir=parent / "七类数据统一归纳失败",
         success_filename="{issue}期-生肖.txt",
         failure_filename="{issue}期-生肖-失败.txt",
+        range_failure_dir=v2_root / "outputs",
+        range_failure_filename=(
+            "{start_issue}-{end_issue}-all-failures.txt"
+        ),
     )
+
+
+@asynccontextmanager
+async def _browser_clients() -> AsyncIterator[
+    tuple[object, PlaywrightBrowserClient]
+]:
+    async with async_playwright() as playwright:
+        browser = await playwright.chromium.launch(headless=True)
+        try:
+            context = await browser.new_context(ignore_https_errors=False)
+            try:
+                yield context, PlaywrightBrowserClient(context)
+            finally:
+                await context.close()
+        finally:
+            await browser.close()
 
 
 def liuiuqu_source() -> Source:
@@ -123,7 +162,7 @@ async def daily_sources(
     browser: PlaywrightBrowserClient,
     repository: SourceRepository | None = None,
 ) -> tuple[Source, ...]:
-    """Build the same 353-source daily catalog as V1 without importing V1."""
+    """Build the configured daily catalog without importing another project."""
     root = Path(root).resolve()
     v2_root = _v2_root(root)
     fixed = (repository or _source_repository(root)).load_active()
@@ -152,40 +191,33 @@ async def run_crawl(
 ) -> IssueRun:
     root = Path(root).resolve()
     v2_root = _v2_root(root)
-    async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(headless=True)
-        context = await browser.new_context(ignore_https_errors=False)
-        try:
-            browser_client = PlaywrightBrowserClient(context)
-            sources = await daily_sources(root, browser_client)
-            service = CrawlRunService(
-                CrawlService(
-                    _fetchers(context, browser_client),
-                    build_parser_registry(),
-                    Validator(),
-                ),
-                _reports(v2_root),
-                CacheSyncService(
-                    CacheRepository(
-                        v2_root / "cache" / "recent_10_cache.json"
-                    )
-                ),
-            )
-            if on_progress is None:
-                return await service.crawl(
-                    sources,
-                    issue,
-                    concurrency=concurrency,
+    async with _browser_clients() as (context, browser_client):
+        sources = await daily_sources(root, browser_client)
+        service = CrawlRunService(
+            CrawlService(
+                _fetchers(context, browser_client),
+                build_parser_registry(),
+                Validator(),
+            ),
+            _reports(v2_root),
+            CacheSyncService(
+                CacheRepository(
+                    v2_root / "cache" / "recent_10_cache.json"
                 )
+            ),
+        )
+        if on_progress is None:
             return await service.crawl(
                 sources,
                 issue,
                 concurrency=concurrency,
-                on_progress=on_progress,
             )
-        finally:
-            await context.close()
-            await browser.close()
+        return await service.crawl(
+            sources,
+            issue,
+            concurrency=concurrency,
+            on_progress=on_progress,
+        )
 
 
 async def run_crawl_range(
@@ -198,33 +230,49 @@ async def run_crawl_range(
     root = Path(root).resolve()
     v2_root = _v2_root(root)
     issues = tuple(range(start_issue, end_issue - 1, -1))
-    async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(headless=True)
-        context = await browser.new_context(ignore_https_errors=False)
-        try:
-            browser_client = PlaywrightBrowserClient(context)
-            sources = await daily_sources(root, browser_client)
-            service = CrawlRunService(
-                CrawlService(
-                    _fetchers(context, browser_client),
-                    build_parser_registry(),
-                    Validator(),
-                ),
-                _reports(v2_root),
-                CacheSyncService(
-                    CacheRepository(
-                        v2_root / "cache" / "recent_10_cache.json"
-                    )
-                ),
-            )
-            return await service.crawl_range(
-                sources,
-                issues,
-                concurrency=concurrency,
-            )
-        finally:
-            await context.close()
-            await browser.close()
+    async with _browser_clients() as (context, browser_client):
+        sources = await daily_sources(root, browser_client)
+        service = CrawlRunService(
+            CrawlService(
+                _fetchers(context, browser_client),
+                build_parser_registry(),
+                Validator(),
+            ),
+            _reports(v2_root),
+            CacheSyncService(
+                CacheRepository(
+                    v2_root / "cache" / "recent_10_cache.json"
+                )
+            ),
+        )
+        return await service.crawl_range(
+            sources,
+            issues,
+            concurrency=concurrency,
+        )
+
+
+async def run_retry_failed(
+    root: Path,
+    issue: int,
+    *,
+    concurrency: int,
+) -> RangeRun:
+    root = Path(root).resolve()
+    v2_root = _v2_root(root)
+    async with _browser_clients() as (context, browser_client):
+        all_sources = await daily_sources(root, browser_client)
+        reports = _reports(v2_root)
+        sources = reports.failed_sources(issue, all_sources)
+        if not sources:
+            raise ValueError(f"{issue}期失败TXT没有可重抓站点")
+        service = CrawlRunService(
+            CrawlService(_fetchers(context, browser_client), build_parser_registry(), Validator()),
+            reports,
+            CacheSyncService(CacheRepository(v2_root / "cache" / "recent_10_cache.json")),
+        )
+        run = await service.repair(sources, issue, concurrency=concurrency)
+        return RangeRun((run,), reports.range_failure_dir / "retry-failed-complete.txt")
 
 
 def _v1_manifest_paths(root: Path) -> tuple[Path, ...]:
