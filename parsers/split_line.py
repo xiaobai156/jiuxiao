@@ -76,6 +76,9 @@ class SplitLineParser:
                     if local_index + 1 + line_offset >= block.end:
                         continue
                     next_line = lines[local_index + 1]
+                    next_issue = line_issue(next_line)
+                    if next_issue is not None and next_issue != issue:
+                        continue
                     for values in zodiac_candidates(next_line):
                         records.append(
                             Record(

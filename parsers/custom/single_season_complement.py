@@ -84,6 +84,12 @@ def _article_section_blocks(
 
 
 class SingleSeasonComplementParser:
+    def __init__(self, parser_id: str = "single_season_complement") -> None:
+        normalized = str(parser_id).strip()
+        if not normalized:
+            raise ValueError("parser_id 不能为空")
+        self.parser_id = normalized
+
     def parse(
         self,
         source: Source,
@@ -119,7 +125,7 @@ class SingleSeasonComplementParser:
                         source,
                         document,
                         block,
-                        parser_id="single_season_complement",
+                        parser_id=self.parser_id,
                         data_marker=data_marker,
                     )
                 )
@@ -152,7 +158,7 @@ class SingleSeasonComplementParser:
                                 document,
                                     document_index,
                                 block,
-                                parser_id="single_season_complement",
+                                parser_id=self.parser_id,
                                 method="single_season_complement",
                                 source_line=line,
                                 raw_issue_line=line,

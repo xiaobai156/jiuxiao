@@ -79,6 +79,12 @@ class OnboardingService:
             baselines,
             issues,
         )
+        if duplicate.state is DuplicateState.INCOMPLETE:
+            return OnboardingDecision(
+                OnboardingState.FAILED,
+                result,
+                duplicate,
+            )
         if duplicate.state is DuplicateState.DUPLICATE:
             return OnboardingDecision(
                 OnboardingState.REJECTED,

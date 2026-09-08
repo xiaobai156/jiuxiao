@@ -161,9 +161,13 @@ class LiuiuquParser:
 
     @staticmethod
     def _issue(value: Any) -> int | None:
-        try:
+        if isinstance(value, bool):
+            return None
+        if isinstance(value, int):
+            issue = value
+        elif isinstance(value, str) and value.isdigit():
             issue = int(value)
-        except (TypeError, ValueError):
+        else:
             return None
         return issue if issue > 0 else None
 

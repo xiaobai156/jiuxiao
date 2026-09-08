@@ -1,7 +1,7 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass, replace
-from typing import Sequence
 
 from v2.domain.errors import ErrorCode, Failure
 from v2.domain.models import (
@@ -14,9 +14,12 @@ from v2.domain.models import (
     SourceRole,
 )
 from v2.parsers.registry import (
+    CANONICAL_ZODIACS,
+    LOCKED_MARKERS,
     ZODIACS,
     anchor_terms,
     candidate_has_data_semantic,
+    group_mapping_text,
 )
 
 
@@ -43,7 +46,7 @@ class Validator:
     def validate(
         self,
         source: Source,
-        records: Sequence[Record] | RecordSet,
+        records: RecordSet,
         requested_issues: tuple[int, ...],
         *,
         history_mode: bool = False,
@@ -60,12 +63,7 @@ class Validator:
             else 3
         )
         if not isinstance(records, RecordSet):
-            return self._validate_legacy(
-                source,
-                tuple(records),
-                requested,
-                search_limit,
-            )
+            raise TypeError("records must be RecordSet")
         return self._validate_record_set(
             source,
             records,
@@ -100,6 +98,7 @@ class Validator:
 
         requested_set = set(requested)
         valid_records: list[Record] = []
+        invalid_requested: set[tuple[int, tuple[str, str, str, str]]] = set()
         for record in record_set:
             try:
                 self._validate_evidence(source, record, blocks_by_key)
@@ -109,11 +108,8 @@ class Validator:
                 continue
             if not self._valid_zodiacs(record):
                 if record.issue in requested_set:
-                    raise ValidationError(
-                        Failure(
-                            ErrorCode.INVALID_ZODIAC_COUNT,
-                            context=(("issue", str(record.issue)),),
-                        )
+                    invalid_requested.add(
+                        (record.issue, self._record_block_key(record))
                     )
                 continue
             valid_records.append(record)
@@ -149,11 +145,6 @@ class Validator:
         selected: list[Record] = []
         selected_windows: list[_BlockWindow] = []
         for issue in requested:
-            eligible_windows = tuple(
-                windows[self._block_key(block)]
-                for block in selected_blocks
-                if windows[self._block_key(block)].records
-            )
             matches = tuple(
                 window
                 for block in selected_blocks
@@ -163,6 +154,13 @@ class Validator:
                 and any(record.issue == issue for record in window.records)
             )
             if not matches:
+                selected_keys = {
+                    self._block_key(block) for block in selected_blocks
+                }
+                invalid_target = any(
+                    invalid_issue == issue and block_key in selected_keys
+                    for invalid_issue, block_key in invalid_requested
+                )
                 window_values = tuple(
                     dict.fromkeys(
                         issue_number
@@ -174,7 +172,11 @@ class Validator:
                 )
                 raise ValidationError(
                     Failure(
-                        ErrorCode.ISSUE_MISSING,
+                        (
+                            ErrorCode.INVALID_ZODIAC_COUNT
+                            if invalid_target
+                            else ErrorCode.ISSUE_MISSING
+                        ),
                         context=(
                             ("issue", str(issue)),
                             (
@@ -185,10 +187,14 @@ class Validator:
                     )
                 )
 
-            self._reject_block_ambiguity(issue, eligible_windows)
             selected_candidates = tuple(
                 self._select_issue_candidate(source, window, issue)
                 for window in matches
+            )
+            self._reject_block_ambiguity(
+                issue,
+                matches,
+                selected_candidates,
             )
             values = tuple(
                 dict.fromkeys(
@@ -357,6 +363,21 @@ class Validator:
             )
         accepted_anchors = set(anchor_terms(source))
         metadata = dict(evidence.metadata)
+        if any(
+            marker in line
+            for marker in LOCKED_MARKERS
+            for line in (
+                evidence.source_line,
+                evidence.raw_issue_line,
+                evidence.raw_zodiac_line,
+            )
+        ):
+            raise ValidationError(
+                Failure(
+                    ErrorCode.LOCKED_CONTENT,
+                    context=(("issue", str(record.issue)),),
+                )
+            )
         try:
             line_index = int(metadata["line_index"])
         except (KeyError, ValueError) as exc:
@@ -394,7 +415,55 @@ class Validator:
                 )
             )
         marker = evidence.data_marker
-        group_text = dict(evidence.metadata).get("group_text", "")
+        group_text = metadata.get("group_text", "")
+        if source.group_map:
+            mapping = dict(source.group_map)
+            single_season = (
+                evidence.parser_id
+                in {
+                    "single_season_complement",
+                    "single_season_complement_canonical",
+                }
+            )
+            canonical_single_season = (
+                evidence.parser_id
+                == "single_season_complement_canonical"
+            )
+            expected_group_type = (
+                "春夏秋冬" if single_season else "".join(mapping)
+            )
+            expected_conversion = (
+                "".join(
+                    zodiac
+                    for zodiac in CANONICAL_ZODIACS
+                    if zodiac not in set(mapping.get(group_text, ""))
+                )
+                if canonical_single_season
+                else "".join(
+                    mapping[key]
+                    for key in "春夏秋冬"
+                    if key in mapping and key != group_text
+                )
+                if single_season
+                else "".join(mapping.get(character, "") for character in group_text)
+            )
+            grouped_evidence_matches = (
+                metadata.get("group_type") == expected_group_type
+                and metadata.get("group_mapping")
+                == group_mapping_text(mapping)
+                and bool(group_text)
+                and all(character in mapping for character in group_text)
+                and metadata.get("conversion") == expected_conversion
+                and expected_conversion == record.zodiac_text
+            )
+            if not grouped_evidence_matches:
+                raise ValidationError(
+                    Failure(
+                        ErrorCode.SOURCE_UNTRUSTED,
+                        detail="group evidence is inconsistent",
+                        context=(("issue", str(record.issue)),),
+                    )
+                )
         grouped_marker = (
             marker == group_text
             and len(group_text) == 3
@@ -478,6 +547,7 @@ class Validator:
         self,
         issue: int,
         matches: tuple[_BlockWindow, ...],
+        candidates: tuple[Record, ...],
     ) -> None:
         documents: dict[
             tuple[str, str, str],
@@ -493,7 +563,7 @@ class Validator:
             for block_ids in documents.values()
             if len(block_ids) > 1
         )
-        if ambiguous:
+        if ambiguous and len({record.zodiac_text for record in candidates}) > 1:
             raise ValidationError(
                 Failure(
                     ErrorCode.BLOCK_AMBIGUOUS,
@@ -527,6 +597,7 @@ class Validator:
             record
             for record in all_records
             if self._record_block_key(record) not in selected_keys
+            and record.evidence.source_role is not SourceRole.UNAPPROVED
             and record.issue == issue
             and record.zodiac_text != selected_value
         ]
@@ -603,82 +674,6 @@ class Validator:
                     )
                 )
 
-    def _validate_legacy(
-        self,
-        source: Source,
-        records: tuple[Record, ...],
-        requested: tuple[int, ...],
-        search_limit: int,
-    ) -> VerifiedHistory:
-        accepted_anchors = set(anchor_terms(source))
-        valid: list[Record] = []
-        for record in sorted(records, key=self._legacy_position):
-            if record.evidence.directory_anchor not in accepted_anchors:
-                if record.issue in requested:
-                    raise ValidationError(
-                        Failure(ErrorCode.SOURCE_UNTRUSTED)
-                    )
-                continue
-            if not self._valid_zodiacs(record):
-                if record.issue in requested:
-                    raise ValidationError(
-                        Failure(
-                            ErrorCode.INVALID_ZODIAC_COUNT,
-                            context=(("issue", str(record.issue)),),
-                        )
-                    )
-                continue
-            valid.append(record)
-        directional = (
-            valid if source.position is Position.TOP else list(reversed(valid))
-        )
-        window: list[Record] = []
-        issue_order: list[int] = []
-        boundary_issue: int | None = None
-        for record in directional:
-            if boundary_issue is not None and record.issue != boundary_issue:
-                break
-            window.append(record)
-            if record.issue not in issue_order:
-                issue_order.append(record.issue)
-                if len(issue_order) == search_limit:
-                    boundary_issue = record.issue
-        if not window:
-            raise ValidationError(Failure(ErrorCode.ISSUE_MISSING))
-
-        selected: list[Record] = []
-        for issue in requested:
-            candidates = {
-                record.zodiac_text: record
-                for record in window
-                if record.issue == issue
-            }
-            if not candidates:
-                raise ValidationError(
-                    Failure(
-                        ErrorCode.ISSUE_MISSING,
-                        context=(("issue", str(issue)),),
-                    )
-                )
-            if len(candidates) != 1:
-                raise ValidationError(
-                    Failure(
-                        ErrorCode.CANDIDATE_CONFLICT,
-                        context=(
-                            ("issue", str(issue)),
-                            ("values", " | ".join(candidates)),
-                        ),
-                    )
-                )
-            selected.append(next(iter(candidates.values())))
-        return VerifiedHistory(
-            history=History(
-                records=tuple(selected),
-                current_issue=issue_order[0],
-            ),
-            requested_issues=requested,
-        )
-
     @staticmethod
     def _block_key(
         block: BlockEvidence,
@@ -725,21 +720,5 @@ class Validator:
                 Failure(
                     ErrorCode.SOURCE_UNTRUSTED,
                     detail="invalid candidate position",
-                )
-            ) from exc
-
-    @staticmethod
-    def _legacy_position(record: Record) -> tuple[int, int]:
-        metadata = dict(record.evidence.metadata)
-        try:
-            return (
-                int(metadata.get("document_index", "0")),
-                int(metadata.get("line_index", "0")),
-            )
-        except ValueError as exc:
-            raise ValidationError(
-                Failure(
-                    ErrorCode.SOURCE_UNTRUSTED,
-                    detail="invalid record position",
                 )
             ) from exc

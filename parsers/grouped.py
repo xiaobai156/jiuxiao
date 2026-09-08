@@ -11,7 +11,6 @@ from v2.domain.models import (
 from v2.parsers.registry import (
     LOCKED_MARKERS,
     AnchoredBlock,
-    LOCKED_MARKERS,
     ParseError,
     anchored_history_blocks,
     block_evidence_for,

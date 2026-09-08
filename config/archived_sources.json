@@ -428,6 +428,615 @@
       },
       "archived_at": "2026-08-05T18:40:52+08:00",
       "reason": "用户要求封存，不再抓取"
+    },
+    {
+      "source": {
+        "name": "地冻天寒",
+        "url": "https://qgyhdauu.avht7-lah7b-oavfmr.work:29444/article/admin/6a018f009dbe5d9cedc4eb33?url=wzw",
+        "position": "bottom",
+        "section_marker": "地冻天寒",
+        "fetcher": "dynamic_article",
+        "parser": "complement_three",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "绝杀三肖",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-11",
+      "reason": "用户要求封存，不再抓取；223期栏目锚点校验失败：未找到目录关键字"
+    },
+    {
+      "source": {
+        "name": "漫步云端",
+        "url": "https://hlhl.69281.com/read.php?tid=916",
+        "position": "bottom",
+        "section_marker": "漫步云端",
+        "fetcher": "browser_page",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "风": "虎兔龙",
+          "雨": "蛇羊马",
+          "雷": "猴狗鸡",
+          "电": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "风雨雷电",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-11",
+      "reason": "用户要求封存，不再抓取；223期指定期数校验失败：没有找到目标期记录"
+    },
+    {
+      "source": {
+        "name": "风微浪稳",
+        "url": "https://hlhl.69281.com/read.php?tid=909",
+        "position": "bottom",
+        "section_marker": "风微浪稳",
+        "fetcher": "browser_page",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "春": "虎兔龙",
+          "夏": "蛇马羊",
+          "秋": "猴鸡狗",
+          "冬": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "春夏秋冬",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-11",
+      "reason": "用户要求封存，不再抓取；223期指定期数校验失败：没有找到目标期记录"
+    },
+    {
+      "source": {
+        "name": "远见卓识",
+        "url": "https://hlhl.69281.com/read.php?tid=904",
+        "position": "bottom",
+        "section_marker": "远见卓识",
+        "fetcher": "browser_page",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "琴": "兔蛇鸡",
+          "棋": "鼠牛狗",
+          "书": "虎龙马",
+          "画": "羊猴猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "琴棋书画",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-11",
+      "reason": "用户要求封存，不再抓取；223期指定期数校验失败：没有找到目标期记录"
+    },
+    {
+      "source": {
+        "name": "博码祥聋",
+        "url": "https://szfzml.mfuw8-bnsfa-gdaxhk.xyz/view.php?id=385",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [
+          "博码祥龙"
+        ],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-16T18:24:46+08:00",
+      "reason": "用户明确要求封存：227期 bottom 指定期数校验失败，无目标期记录"
+    },
+    {
+      "source": {
+        "name": "心的过客",
+        "url": "https://czcvzk.4n5g7-o871g-hqmkwz.work:29422/article/admin/6a1cdaef0b8d229707caaad9?url=tsp",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "琴": "兔蛇鸡",
+          "棋": "鼠牛狗",
+          "书": "虎龙马",
+          "画": "羊猴猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "琴棋书画",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-16T21:22:25+08:00",
+      "reason": "用户明确封存：228期抓取失败，不再抓取"
+    },
+    {
+      "source": {
+        "name": "摘取桂冠",
+        "url": "https://nwrkkmv.rx287-rkrai-jsjccc.xyz:29499/article/manager/6a55fc61f447e21b02daa8db?url=ggz",
+        "position": "bottom",
+        "section_marker": "摘取桂冠",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "/api/proxy/manager-articles/6a55fc61f447e21b02daa8db",
+        "group_map": {
+          "春": "虎兔龙",
+          "夏": "蛇马羊",
+          "秋": "猴鸡狗",
+          "冬": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "春夏秋冬",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-16T21:22:25+08:00",
+      "reason": "用户明确封存：228期抓取失败，不再抓取"
+    },
+    {
+      "source": {
+        "name": "左顾右盼",
+        "url": "https://sheuzjss.tgpcj-9w0vl-mwyhly.work:29422/article/admin/6a0461f44ea5c20141013ee3?url=zfw",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "风": "虎兔龙",
+          "雨": "蛇羊马",
+          "雷": "猴狗鸡",
+          "电": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "风雨雷电",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-17T21:21:34+08:00",
+      "reason": "用户明确要求封存，不再抓取；229期栏目锚点校验失败：未找到目录关键字"
+    },
+    {
+      "source": {
+        "name": "全民见证",
+        "url": "https://nwrkkmv.rx287-rkrai-jsjccc.xyz:29499/article/manager/6a33d3dcdfa16552b923d0dc?url=ggz",
+        "position": "bottom",
+        "section_marker": "全民见证",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "风": "虎兔龙",
+          "雨": "蛇羊马",
+          "雷": "猴狗鸡",
+          "电": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "风雨雷电",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-18T18:55:18+08:00",
+      "reason": "用户明确要求封存，不再抓取；230期栏目锚点校验失败：未找到目录关键字"
+    },
+    {
+      "source": {
+        "name": "追风六合",
+        "url": "https://rmpsmal.hi84f-zpj90-mvqksp.xyz:29477/article/manager/6a326f3681c27af22e60bf3e?url=jfh",
+        "position": "bottom",
+        "section_marker": "追风六合",
+        "fetcher": "dynamic_article",
+        "parser": "complement_three",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "绝杀三肖",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-19T23:56:52+08:00",
+      "reason": "用户明确要求封存，不再抓取；231期栏目锚点校验失败：未找到目录关键字"
+    },
+    {
+      "source": {
+        "name": "斩庄除庄",
+        "url": "https://gqdbokpx.ji2oa-rdhxt-girktl.work:29411/article/admin/6a031d8f07227acc0fe474cf?url=hj",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-19T23:56:52+08:00",
+      "reason": "用户明确要求封存，不再抓取；231期栏目锚点校验失败：未找到目录关键字"
+    },
+    {
+      "source": {
+        "name": "兴旺彩民",
+        "url": "https://qgyhdauu.avht7-lah7b-oavfmr.work:29444/article/manager/6a3eb55f018539c611cd1cea?url=wzw",
+        "position": "bottom",
+        "section_marker": "兴旺彩民",
+        "fetcher": "dynamic_article",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-21T01:31:29+08:00",
+      "reason": "用户明确要求封存，不再抓取；232期栏目锚点缺失"
+    },
+    {
+      "source": {
+        "name": "财梦传说",
+        "url": "https://hcsuuoy.nimo7-9bgj4-fmspxt.xyz:29466/article/manager/6a314195291ef468c1538ba1?url=cww",
+        "position": "bottom",
+        "section_marker": "财梦传说",
+        "fetcher": "dynamic_article",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-21T01:31:29+08:00",
+      "reason": "用户明确要求封存，不再抓取；232期栏目锚点缺失"
+    },
+    {
+      "source": {
+        "name": "寻根问底",
+        "url": "https://gqdbokpx.ji2oa-rdhxt-girktl.work:29411/article/admin/6a034460cd2fbc900f6db84d?url=hj",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "琴": "兔蛇鸡",
+          "棋": "鼠牛狗",
+          "书": "虎龙马",
+          "画": "羊猴猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "琴棋书画",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-22T00:12:19+08:00",
+      "reason": "用户明确要求封存，不再抓取；233期未找到目标期记录"
+    },
+    {
+      "source": {
+        "name": "五福大将",
+        "url": "https://yzpbdkow.6m1ba-7p7u4-ppolcy.work:29433/article/manager/6a56f762f447e21b02db033a?url=tdg",
+        "position": "bottom",
+        "section_marker": "五福大将",
+        "fetcher": "dynamic_article",
+        "parser": "split_line",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-22T00:12:19+08:00",
+      "reason": "用户明确要求封存，不再抓取；233期栏目锚点缺失"
+    },
+    {
+      "source": {
+        "name": "运筹决策",
+        "url": "https://nwrkkmv.rx287-rkrai-jsjccc.xyz:29499/article/manager/6a55d35cf447e21b02daa622?url=ggz",
+        "position": "bottom",
+        "section_marker": "运筹决策",
+        "fetcher": "dynamic_article",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-22T21:54:59+08:00",
+      "reason": "用户明确要求封存，不再抓取；234期栏目锚点缺失"
+    },
+    {
+      "source": {
+        "name": "六合料王",
+        "url": "https://nwrkkmv.rx287-rkrai-jsjccc.xyz:29499/article/manager/6a55d8e7f447e21b02daa643?url=ggz",
+        "position": "bottom",
+        "section_marker": "六合料王",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "/api/proxy/manager-articles/6a55d8e7f447e21b02daa643",
+        "group_map": {
+          "春": "虎兔龙",
+          "夏": "蛇马羊",
+          "秋": "猴鸡狗",
+          "冬": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "春夏秋冬",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-22T21:54:59+08:00",
+      "reason": "用户明确要求封存，不再抓取；234期栏目锚点缺失"
+    },
+    {
+      "source": {
+        "name": "渐入佳境",
+        "url": "https://ifnkblf.e4kce-krr7o-vuvqhd.work:29411/article/manager/6a145d8cb0a70afe8ea6663b?url=scyd",
+        "position": "bottom",
+        "section_marker": "渐入佳境",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "风": "虎兔龙",
+          "雨": "蛇羊马",
+          "雷": "猴狗鸡",
+          "电": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "风雨雷电",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-25T21:46:22+08:00",
+      "reason": "用户明确要求封存，不再抓取；237期栏目锚点缺失"
+    },
+    {
+      "source": {
+        "name": "澳彩公益",
+        "url": "https://hcsuuoy.nimo7-9bgj4-fmspxt.xyz:29466/article/manager/6a4f2bdb4cd760c3a021ea2a?url=cww",
+        "position": "bottom",
+        "section_marker": "澳彩公益",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "/api/proxy/manager-articles/6a4f2bdb4cd760c3a021ea2a",
+        "group_map": {
+          "风": "虎兔龙",
+          "雨": "蛇羊马",
+          "雷": "猴狗鸡",
+          "电": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "风雨雷电",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-25T21:46:22+08:00",
+      "reason": "用户明确要求封存，不再抓取；237期栏目锚点缺失"
+    },
+    {
+      "source": {
+        "name": "取长补短",
+        "url": "https://18118.73829.com/read.php?tid=504",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "梅": "鼠龙猴",
+          "兰": "兔羊猪",
+          "菊": "牛蛇鸡",
+          "竹": "虎马狗"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "梅兰菊竹",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-27T20:04:43+08:00",
+      "reason": "用户要求封存，不再抓取"
+    },
+    {
+      "source": {
+        "name": "异军突起",
+        "url": "https://hcsuuoy.nimo7-9bgj4-fmspxt.xyz:29466/article/manager/6a3b3ddf018539c611cbfecb?url=cww",
+        "position": "bottom",
+        "section_marker": "异军突起",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "/api/proxy/manager-articles/6a3b3ddf018539c611cbfecb",
+        "group_map": {
+          "琴": "兔蛇鸡",
+          "棋": "鼠牛狗",
+          "书": "虎龙马",
+          "画": "羊猴猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "琴棋书画",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-27T20:04:43+08:00",
+      "reason": "用户要求封存，不再抓取"
+    },
+    {
+      "source": {
+        "name": "码赢铁面",
+        "url": "https://czcvzk.4n5g7-o871g-hqmkwz.work:29422/article/admin/6a1cd89dc8b23672c8140715?url=tsp",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "风": "虎兔龙",
+          "雨": "蛇羊马",
+          "雷": "猴狗鸡",
+          "电": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "风雨雷电",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-28T20:43:32+08:00",
+      "reason": "用户要求封存，不再抓取"
+    },
+    {
+      "source": {
+        "name": "伸张正义",
+        "url": "https://uqdccnri.oy2bh-swrfr-gvzxkk.work:29499/article/admin/6a032f2ee09a39d316b223af?url=lcz",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-08-29T18:10:00+08:00",
+      "reason": "用户要求封存，不再抓取"
+    },
+    {
+      "source": {
+        "name": "赌王之战",
+        "url": "https://18118.73829.com/read.php?tid=846",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-01T21:01:51+08:00",
+      "reason": "用户要求封存，不再抓取"
+    },
+    {
+      "source": {
+        "name": "森林少女",
+        "url": "https://szfzml.mfuw8-bnsfa-gdaxhk.xyz/view.php?id=272",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "complement_three",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "绝杀三肖",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-04T18:30:09+08:00",
+      "reason": "用户要求封存，不再抓取"
+    },
+    {
+      "source": {
+        "name": "阳春彩虹",
+        "url": "https://cahgjib.5blx9-z8506-ekiwxc.work:29488/article/admin/6a144d4dbf0a6cb1dd38fbef?url=lqz",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "梅": "鼠龙猴",
+          "兰": "兔羊猪",
+          "菊": "牛蛇鸡",
+          "竹": "虎马狗"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "梅兰菊竹",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-04T18:30:09+08:00",
+      "reason": "用户要求封存，不再抓取"
+    },
+    {
+      "source": {
+        "name": "成仁取义",
+        "url": "https://flllxn.8w08j-eua1c-atygor.xyz/view.php?id=220",
+        "position": "bottom",
+        "section_marker": "成仁取义",
+        "fetcher": "browser_page",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "春": "虎兔龙",
+          "夏": "蛇马羊",
+          "秋": "猴鸡狗",
+          "冬": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "春夏秋冬",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-04T18:30:09+08:00",
+      "reason": "用户要求封存，不再抓取"
+    },
+    {
+      "source": {
+        "name": "反败为胜",
+        "url": "https://ofxhqgor.li0cj-4esgz-npswxa.xyz/view.php?id=576",
+        "position": "bottom",
+        "section_marker": "反败为胜",
+        "fetcher": "browser_page",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "琴": "兔蛇鸡",
+          "棋": "鼠牛狗",
+          "书": "虎龙马",
+          "画": "羊猴猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "琴棋书画",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-04T18:30:09+08:00",
+      "reason": "用户要求封存，不再抓取"
+    },
+    {
+      "source": {
+        "name": "霸王码特",
+        "url": "https://buzsxio.821n4-hgj04-edkrft.xyz:29455/article/manager/6a3dc982018539c611ccc7b7?url=bxj",
+        "position": "bottom",
+        "section_marker": "霸王码特",
+        "fetcher": "dynamic_article",
+        "parser": "split_line",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-04T18:30:09+08:00",
+      "reason": "用户要求封存，不再抓取"
     }
   ]
 }

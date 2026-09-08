@@ -11,7 +11,7 @@ from urllib.parse import urljoin
 
 from v2.domain.errors import ErrorCode, Failure
 from v2.domain.models import Document, DocumentMethod, Source
-from v2.fetchers.browser_page import BrowserPageFetcher
+from v2.fetchers.browser_page import BrowserPageFetcher, same_origin
 from v2.fetchers.registry import (
     BrowserClient,
     FetchError,
@@ -169,6 +169,16 @@ class DynamicArticleFetcher:
                 timeout_ms=request.timeout_ms,
                 headers=(("Accept", "application/json,text/plain,*/*"),),
             )
+            if response.url and not same_origin(api_url, response.url):
+                raise FetchError(
+                    Failure(
+                        ErrorCode.CROSS_DOMAIN,
+                        context=(
+                            ("api_url", api_url),
+                            ("document_url", response.url),
+                        ),
+                    )
+                )
             if response.status is None:
                 if attempt < request.attempts:
                     if request.retry_delay_ms:
@@ -283,7 +293,7 @@ class DynamicArticleFetcher:
         )
         if not any(
             document.method is DocumentMethod.BROWSER_DOM
-            and expected_record_id in document.url
+            and article_record_identity(document.url)[1] == expected_record_id
             for document in documents
         ):
             raise FetchError(

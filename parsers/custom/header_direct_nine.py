@@ -27,10 +27,11 @@ class HeaderDirectNineParser:
         issues: tuple[int, ...],
     ) -> RecordSet:
         data_marker = source.data_marker or "九肖"
+        header_marker = source.data_marker or HEADER_MARKER
         internal_source = replace(
             source,
             parser=self.parser_id,
-            section_marker=HEADER_MARKER,
+            section_marker=header_marker,
             data_marker=data_marker,
         )
         parsed = DirectNineParser(self.parser_id).parse(
@@ -142,7 +143,7 @@ class HeaderDirectNineParser:
             (
                 line
                 for _index, line in section
-                if HEADER_MARKER in line
+                if data_marker in line
             ),
             "",
         )

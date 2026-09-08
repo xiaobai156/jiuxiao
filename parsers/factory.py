@@ -5,7 +5,19 @@ from v2.parsers.custom.complement_three import ComplementThreeParser
 from v2.parsers.custom.dynamic_article_grouped import (
     DynamicArticleGroupedParser,
 )
+from v2.parsers.custom.dynamic_article_grouped_separator import (
+    DynamicArticleGroupedSeparatorParser,
+)
+from v2.parsers.custom.formula_article_adaptive import (
+    FormulaArticleAdaptiveParser,
+)
+from v2.parsers.custom.formula_article_ocr_alias import (
+    FormulaArticleOcrAliasParser,
+)
 from v2.parsers.custom.formula_dom import FormulaDomParser
+from v2.parsers.custom.formula_next_issue_ocr import (
+    FormulaNextIssueOcrParser,
+)
 from v2.parsers.custom.header_direct_nine import HeaderDirectNineParser
 from v2.parsers.custom.liuiuqu import LiuiuquParser
 from v2.parsers.custom.named_section import NamedSectionParser
@@ -32,11 +44,27 @@ def build_parser_registry() -> ParserRegistry:
         "dynamic_article_grouped",
         DynamicArticleGroupedParser(),
     )
+    registry.register(
+        "dynamic_article_grouped_separator",
+        DynamicArticleGroupedSeparatorParser(),
+    )
     registry.register("header_direct_nine", HeaderDirectNineParser())
     registry.register("grouped", GroupedParser())
     registry.register("split_line", SplitLineParser())
     registry.register("image_ocr", ImageOcrParser())
+    registry.register(
+        "formula_article_adaptive",
+        FormulaArticleAdaptiveParser(),
+    )
+    registry.register(
+        "formula_article_ocr_alias",
+        FormulaArticleOcrAliasParser(),
+    )
     registry.register("formula_dom", FormulaDomParser())
+    registry.register(
+        "formula_next_issue_ocr",
+        FormulaNextIssueOcrParser(),
+    )
     registry.register("white_tiger", WhiteTigerParser())
     registry.register("yueying", YueyingParser())
     registry.register("color_info_grouped", ColorInfoGroupedParser())
@@ -45,6 +73,12 @@ def build_parser_registry() -> ParserRegistry:
     registry.register(
         "single_season_complement",
         SingleSeasonComplementParser(),
+    )
+    registry.register(
+        "single_season_complement_canonical",
+        SingleSeasonComplementParser(
+            "single_season_complement_canonical"
+        ),
     )
     registry.register("topic_cyclic_nine", TopicCyclicParser())
     return registry

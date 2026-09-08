@@ -4,6 +4,7 @@ import asyncio
 
 from v2.domain.errors import ErrorCode, Failure
 from v2.domain.models import Document, DocumentMethod, Source
+from v2.fetchers.browser_page import same_origin
 from v2.fetchers.registry import FetchError, FetchRequest, HttpClient
 
 
@@ -29,6 +30,16 @@ class StaticPageFetcher:
             )
             last_status = response.status
             last_error = response.error
+            if response.url and not same_origin(source.url, response.url):
+                raise FetchError(
+                    Failure(
+                        ErrorCode.CROSS_DOMAIN,
+                        context=(
+                            ("source_url", source.url),
+                            ("document_url", response.url),
+                        ),
+                    )
+                )
             if response.status == 200 and response.text:
                 return (
                     Document(

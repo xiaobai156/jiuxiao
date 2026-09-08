@@ -30,6 +30,13 @@ class SyncSingle(Protocol):
         issue: int,
     ) -> object: ...
 
+    def sync_selected_single(
+        self,
+        sources: tuple[Source, ...],
+        results: tuple[Result, ...],
+        issue: int,
+    ) -> object: ...
+
 
 @dataclass(frozen=True, slots=True)
 class IssueRun:
@@ -40,6 +47,7 @@ class IssueRun:
     success_count: int = 0
     total_count: int = 0
     cache_updated: bool = False
+    cache_error: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -49,8 +57,6 @@ class RangeRun:
 
 
 class CrawlRunService:
-    CACHE_UPDATE_SUCCESS_PERCENT = 85
-
     def __init__(
         self,
         crawl: CrawlMany,
@@ -78,12 +84,14 @@ class CrawlRunService:
         self._validate_batch(sources, results, issue)
         output_path, failure_path = self._reports.write_issue(issue, results)
         success_count = self._success_count(results)
-        cache_updated = self._cache_update_allowed(
-            success_count,
-            len(results),
-        )
-        if cache_updated:
+        cache_updated = False
+        cache_error = ""
+        try:
             self._cache_sync.sync_single(sources, results, issue)
+        except (OSError, RuntimeError, ValueError) as exc:
+            cache_error = f"{type(exc).__name__}: {exc}"
+        else:
+            cache_updated = True
         return IssueRun(
             issue,
             results,
@@ -92,6 +100,44 @@ class CrawlRunService:
             success_count=success_count,
             total_count=len(results),
             cache_updated=cache_updated,
+            cache_error=cache_error,
+        )
+
+    async def repair(
+        self,
+        sources: tuple[Source, ...],
+        issue: int,
+        *,
+        concurrency: int,
+        on_progress: ProgressCallback | None = None,
+    ) -> IssueRun:
+        """Merge repaired sources without replacing the full issue reports."""
+        results = await self._crawl.crawl_many(
+            sources,
+            (issue,),
+            concurrency=concurrency,
+            on_progress=on_progress,
+        )
+        self._validate_batch(sources, results, issue)
+        output_path, failure_path = self._reports.merge_issue(issue, results)
+        success_count = self._success_count(results)
+        cache_updated = False
+        cache_error = ""
+        try:
+            self._cache_sync.sync_selected_single(sources, results, issue)
+        except (OSError, RuntimeError, ValueError) as exc:
+            cache_error = f"{type(exc).__name__}: {exc}"
+        else:
+            cache_updated = True
+        return IssueRun(
+            issue,
+            results,
+            output_path,
+            failure_path,
+            success_count=success_count,
+            total_count=len(results),
+            cache_updated=cache_updated,
+            cache_error=cache_error,
         )
 
     async def crawl_range(
@@ -132,17 +178,6 @@ class CrawlRunService:
     @staticmethod
     def _success_count(results: tuple[Result, ...]) -> int:
         return sum(result.successful for result in results)
-
-    @classmethod
-    def _cache_update_allowed(
-        cls,
-        success_count: int,
-        total_count: int,
-    ) -> bool:
-        return (
-            total_count > 0
-            and success_count * 100 > total_count * cls.CACHE_UPDATE_SUCCESS_PERCENT
-        )
 
     @staticmethod
     def _validate_batch(

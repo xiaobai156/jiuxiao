@@ -4,6 +4,7 @@ import re
 
 from v2.domain.errors import ErrorCode, Failure
 from v2.domain.models import Document, DocumentMethod, Record, RecordSet, Source
+from v2.parsers.custom.common import select_current_content_mode
 from v2.parsers.registry import (
     LOCKED_MARKERS,
     AnchoredBlock,
@@ -21,7 +22,6 @@ from v2.parsers.registry import (
     zodiac_candidates,
 )
 
-
 ZODIAC_TEXT = "鼠牛虎兔龙蛇马羊猴鸡狗猪"
 DIRECT_NINE_PATTERN = re.compile(
     rf"(?<![{ZODIAC_TEXT}])([{ZODIAC_TEXT}]{{1,12}})(?![{ZODIAC_TEXT}])"
@@ -35,33 +35,38 @@ class ImageOcrParser:
         documents: tuple[Document, ...],
         issues: tuple[int, ...],
     ) -> RecordSet:
-        ocr_documents = tuple(
+        source_documents = tuple(
             document
             for document in documents
-            if document.method is DocumentMethod.IMAGE_OCR
+            if document.method
+            in (DocumentMethod.BROWSER_DOM, DocumentMethod.IMAGE_OCR)
         )
-        if not ocr_documents:
+        if not source_documents:
             raise ParseError(
                 Failure(
                     ErrorCode.SOURCE_UNTRUSTED,
-                    detail="image ocr document is required",
+                    detail=(
+                        "image ocr parser requires browser DOM or image OCR "
+                        "document"
+                    ),
                 )
             )
         requested = set(issues)
         data_marker = source.data_marker or "九肖"
         records: list[Record] = []
         block_evidence = []
-        for document_index, document in enumerate(ocr_documents):
+        for document_index, document in enumerate(source_documents):
             text = normalize_document_text(document.text)
-            blocks = anchored_history_blocks(
-                text,
-                source,
-                document_label=document.label,
-                line_offset=document_line_offset(document),
-            )
-            if not blocks:
+            if document.method is DocumentMethod.IMAGE_OCR:
                 linked = self._linked_image_block(document, source, text)
                 blocks = (linked,) if linked is not None else ()
+            else:
+                blocks = anchored_history_blocks(
+                    text,
+                    source,
+                    document_label=document.label,
+                    line_offset=document_line_offset(document),
+                )
             if not blocks:
                 observed = {
                     issue
@@ -139,7 +144,10 @@ class ImageOcrParser:
                         candidate_index += 1
         if not block_evidence:
             raise ParseError(Failure(ErrorCode.ANCHOR_MISSING))
-        return RecordSet(tuple(records), tuple(block_evidence))
+        return select_current_content_mode(
+            RecordSet(tuple(records), tuple(block_evidence)),
+            issues,
+        )
 
     @staticmethod
     def _linked_image_block(

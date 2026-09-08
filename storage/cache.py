@@ -1,14 +1,21 @@
 from __future__ import annotations
 
 import json
+import msvcrt
+from collections.abc import Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 from v2.config.schema import source_from_dict, source_to_dict
 from v2.domain.errors import ErrorCode
+from v2.domain.identity import source_identity
 from v2.domain.models import Source
 from v2.storage.atomic import atomic_write_bytes
+
+
+ZODIACS = frozenset("鼠牛虎兔龙蛇马羊猴鸡狗猪")
 
 
 @dataclass(frozen=True, slots=True)
@@ -39,6 +46,24 @@ class CacheRepository:
         except (OSError, ValueError, TypeError, json.JSONDecodeError) as exc:
             raise ValueError(f"invalid cache: {self.path.name}") from exc
 
+    @contextmanager
+    def locked(self) -> Iterator[None]:
+        """Hold one process lock across the cache read-modify-write cycle."""
+        lock_path = self.path.with_suffix(f"{self.path.suffix}.lock")
+        lock_path.parent.mkdir(parents=True, exist_ok=True)
+        with lock_path.open("a+b") as handle:
+            handle.seek(0, 2)
+            if handle.tell() == 0:
+                handle.write(b"\0")
+                handle.flush()
+            handle.seek(0)
+            msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)
+            try:
+                yield
+            finally:
+                handle.seek(0)
+                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+
     def sync(self, snapshot: CacheSnapshot) -> CacheSnapshot:
         atomic_write_bytes(self.path, self._encode(snapshot))
         return snapshot
@@ -63,7 +88,14 @@ class CacheRepository:
         latest = document["latest_issue"]
         if latest is not None:
             latest = cls._issue(latest)
+        if (
+            len(issues) != len(set(issues))
+            or issues != tuple(sorted(issues, reverse=True))
+            or latest != (issues[0] if issues else None)
+        ):
+            raise ValueError("invalid cache issue window")
         sources: list[CacheSource] = []
+        identities: set[str] = set()
         for item in raw_sources:
             required = {"source", "current_issue", "records", "errors"}
             if not isinstance(item, dict) or set(item) != required:
@@ -71,13 +103,23 @@ class CacheRepository:
             current = item["current_issue"]
             if current is not None:
                 current = cls._issue(current)
+            source = source_from_dict(item["source"])
+            identity = source_identity(source).key
+            if identity in identities:
+                raise ValueError("duplicate cache source identity")
+            identities.add(identity)
+            records = cls._record_pairs(item["records"])
+            errors = cls._error_pairs(item["errors"])
+            record_issues = {issue for issue, _value in records}
+            error_issues = {issue for issue, _value in errors}
+            if record_issues & error_issues:
+                raise ValueError("cache record and error overlap")
+            if (record_issues | error_issues) - set(issues):
+                raise ValueError("cache source issue is outside window")
+            if current is not None and current not in issues:
+                raise ValueError("cache current issue is outside window")
             sources.append(
-                CacheSource(
-                    source=source_from_dict(item["source"]),
-                    current_issue=current,
-                    records=cls._record_pairs(item["records"]),
-                    errors=cls._error_pairs(item["errors"]),
-                )
+                CacheSource(source, current, records, errors)
             )
         return CacheSnapshot(latest, issues, tuple(sources))
 
@@ -91,10 +133,17 @@ class CacheRepository:
     def _record_pairs(cls, value: Any) -> tuple[tuple[int, str], ...]:
         if not isinstance(value, dict):
             raise ValueError("invalid records")
-        return tuple(
-            (cls._issue_key(issue), str(zodiac))
-            for issue, zodiac in value.items()
-        )
+        records: list[tuple[int, str]] = []
+        for issue, zodiac in value.items():
+            if (
+                not isinstance(zodiac, str)
+                or len(zodiac) != 9
+                or len(set(zodiac)) != 9
+                or any(item not in ZODIACS for item in zodiac)
+            ):
+                raise ValueError("invalid zodiac record")
+            records.append((cls._issue_key(issue), zodiac))
+        return tuple(records)
 
     @classmethod
     def _error_pairs(cls, value: Any) -> tuple[tuple[int, ErrorCode], ...]:

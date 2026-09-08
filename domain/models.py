@@ -379,8 +379,12 @@ class History:
     def __post_init__(self) -> None:
         object.__setattr__(self, "records", tuple(self.records))
         object.__setattr__(self, "failures", tuple(self.failures))
-        if self.current_issue is not None and self.current_issue <= 0:
-            raise ValueError("current_issue 必须大于 0")
+        if self.current_issue is not None and (
+            not isinstance(self.current_issue, int)
+            or isinstance(self.current_issue, bool)
+            or self.current_issue <= 0
+        ):
+            raise ValueError("current_issue 必须是正整数")
         if any(not isinstance(record, Record) for record in self.records):
             raise TypeError("records 必须只包含 Record")
         if any(not isinstance(failure, Failure) for failure in self.failures):
@@ -420,7 +424,9 @@ class Result:
         if any(not isinstance(failure, Failure) for failure in failures):
             raise TypeError("failures 必须只包含 Failure")
         object.__setattr__(self, "failures", failures)
-        if self.state is ResultState.SUCCESS and failures:
+        if self.state is ResultState.SUCCESS and (
+            failures or self.history.failures
+        ):
             raise ValueError("成功结果不能包含 failure")
         if self.state is ResultState.FAILURE and not failures:
             raise ValueError("失败结果必须包含 failure")

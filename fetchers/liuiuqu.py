@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import asyncio
+import json
 
 from v2.domain.errors import ErrorCode, Failure
 from v2.domain.models import Document, DocumentMethod, Source
+from v2.fetchers.browser_page import same_origin
 from v2.fetchers.registry import FetchError, FetchRequest, HttpClient
 from v2.fetchers.static_page import RECOVERABLE_HTTP_STATUSES
 
@@ -33,10 +35,35 @@ class LiuiuquFetcher:
                 headers=(
                     ("Accept", "application/json,text/plain,*/*"),
                     ("X-Requested-With", "XMLHttpRequest"),
+                    ("Connection", "close"),
                 ),
                 form=(("type", "3"),),
             )
+            if response.url and not same_origin(source.api_url, response.url):
+                raise FetchError(
+                    Failure(
+                        ErrorCode.CROSS_DOMAIN,
+                        context=(
+                            ("api_url", source.api_url),
+                            ("document_url", response.url),
+                        ),
+                    )
+                )
             if response.status == 200 and response.text.strip():
+                try:
+                    json.loads(response.text)
+                except json.JSONDecodeError as exc:
+                    if attempt < request.attempts:
+                        if request.retry_delay_ms:
+                            await asyncio.sleep(request.retry_delay_ms / 1000)
+                        continue
+                    raise FetchError(
+                        Failure(
+                            ErrorCode.SOURCE_UNTRUSTED,
+                            detail="api response is not json",
+                            context=(("api_url", source.api_url),),
+                        )
+                    ) from exc
                 return (
                     Document(
                         label="liuiuqu-api",

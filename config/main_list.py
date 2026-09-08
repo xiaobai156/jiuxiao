@@ -64,8 +64,6 @@ class MainListCatalog:
 
     def _load_parser_overrides(self) -> dict[tuple[str, str, str], str]:
         path = self._parser_overrides_path
-        if not path.is_file():
-            return {}
         try:
             document: Any = json.loads(path.read_text(encoding="utf-8"))
             if (

@@ -49,6 +49,8 @@ def is_list_page_url(candidate_url: str, source_url: str) -> bool:
 
 
 class ListDetailFetcher:
+    fallback_to_latest = False
+
     def __init__(
         self,
         browser: BrowserClient,
@@ -84,44 +86,6 @@ class ListDetailFetcher:
                 )
             ) from exc
 
-        if request.history_mode:
-            candidates = tuple(
-                (issue, link)
-                for link in links
-                if keyword in link.text
-                if (issue := self._link_issue(link.text)) is not None
-            )
-            if not candidates:
-                raise FetchError(
-                    Failure(
-                        ErrorCode.ISSUE_MISSING,
-                        context=(("keyword", keyword),),
-                    )
-                )
-            latest = max(issue for issue, _link in candidates)
-            unique_urls = tuple(
-                dict.fromkeys(
-                    link.url
-                    for issue, link in candidates
-                    if issue == latest
-                )
-            )
-            if len(unique_urls) != 1:
-                raise FetchError(
-                    Failure(
-                        ErrorCode.CANDIDATE_CONFLICT,
-                        context=(
-                            ("issue", str(latest)),
-                            ("urls", " | ".join(unique_urls)),
-                        ),
-                    )
-                )
-            return await self._detail_documents(
-                source,
-                request,
-                unique_urls[0],
-            )
-
         documents: list[Document] = []
         missing_issues: list[int] = []
         for issue in request.issues:
@@ -154,6 +118,35 @@ class ListDetailFetcher:
             )
         if documents:
             return tuple(documents)
+        if self.fallback_to_latest:
+            named = tuple(
+                (issue, link.url)
+                for link in links
+                if keyword in link.text
+                and (issue := self._link_issue(link.text)) is not None
+            )
+            if named:
+                latest_issue = max(issue for issue, _url in named)
+                unique_urls = tuple(
+                    dict.fromkeys(
+                        url for issue, url in named if issue == latest_issue
+                    )
+                )
+                if len(unique_urls) != 1:
+                    raise FetchError(
+                        Failure(
+                            ErrorCode.CANDIDATE_CONFLICT,
+                            context=(
+                                ("issue", str(latest_issue)),
+                                ("urls", " | ".join(unique_urls)),
+                            ),
+                        )
+                    )
+                return await self._detail_documents(
+                    source,
+                    request,
+                    unique_urls[0],
+                )
         missing_issue = missing_issues[0] if missing_issues else request.issues[0]
         raise FetchError(
             Failure(
@@ -279,3 +272,7 @@ class ListDetailFetcher:
 class ListDetailTopThreeFetcher(ListDetailFetcher):
     def __init__(self, browser: BrowserClient) -> None:
         super().__init__(browser, max_pages=TOP_THREE_LIST_PAGES)
+
+
+class ListDetailCurrentFetcher(ListDetailFetcher):
+    fallback_to_latest = True

@@ -14,6 +14,7 @@ class SourceIdentity:
     normalized_url: str
     position: Position
     section_marker: str
+    config_fingerprint: str
 
     @property
     def key(self) -> str:
@@ -23,6 +24,7 @@ class SourceIdentity:
                 "url": self.normalized_url,
                 "position": self.position.value,
                 "section_marker": self.section_marker,
+                "config_fingerprint": self.config_fingerprint,
             },
             ensure_ascii=False,
             separators=(",", ":"),
@@ -69,9 +71,25 @@ def normalize_url(value: str) -> str:
 
 
 def source_identity(source: Source) -> SourceIdentity:
+    configuration = json.dumps(
+        {
+            "fetcher": source.fetcher,
+            "parser": source.parser,
+            "api_url": source.api_url,
+            "group_map": source.group_map,
+            "detail_link_keyword": source.detail_link_keyword,
+            "aliases": source.aliases,
+            "data_marker": source.data_marker,
+            "source_policy": source.source_policy,
+        },
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("utf-8")
     return SourceIdentity(
         name=source.name.strip(),
         normalized_url=normalize_url(source.url),
         position=source.position,
         section_marker=source.section_marker.strip(),
+        config_fingerprint=hashlib.sha256(configuration).hexdigest(),
     )

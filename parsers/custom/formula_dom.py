@@ -5,19 +5,20 @@ from dataclasses import replace
 
 from v2.domain.errors import ErrorCode, Failure
 from v2.domain.models import Document, DocumentMethod, Record, RecordSet, Source
+from v2.parsers.custom.common import select_current_content_mode
 from v2.parsers.direct_nine import DirectNineParser
+from v2.parsers.image_ocr import ImageOcrParser
 from v2.parsers.registry import ParseError, normalize_document_text
-
 
 SEMANTIC_IDENTITY = "__formula_dom_identity__"
 
 
 class FormulaDomParser:
-    """Parse the visible formula history from the primary browser DOM.
+    """Parse formula history from the block's actual DOM/OCR presentation.
 
     These pages also contain advertising images, scripts and frames.  The
-    formula table is ordinary text immediately under a stable section marker;
-    only the primary browser DOM is authoritative for this parser.
+    target block is selected from its current DOM or linked-image evidence;
+    unrelated page images never become candidates.
     """
 
     parser_id = "formula_dom"
@@ -35,27 +36,47 @@ class FormulaDomParser:
                     detail="formula_dom requires section_marker",
                 )
             )
-        dom_documents = tuple(
+        source_documents = tuple(
             document
             for document in documents
-            if document.method is DocumentMethod.BROWSER_DOM
+            if document.method
+            in (DocumentMethod.BROWSER_DOM, DocumentMethod.IMAGE_OCR)
         )
-        if not dom_documents:
+        if not source_documents:
             raise ParseError(
                 Failure(
                     ErrorCode.SOURCE_UNTRUSTED,
-                    detail="formula_dom requires primary browser DOM",
+                    detail=(
+                        "formula_dom requires browser DOM or image OCR "
+                        "document"
+                    ),
                 )
             )
 
         data_marker = source.data_marker or "九肖"
         records: list[Record] = []
         blocks = []
-        for document in dom_documents:
-            header_lines = self._header_lines(
-                normalize_document_text(document.text),
-                source.section_marker,
-            )
+        for document in source_documents:
+            document_text = normalize_document_text(document.text)
+            parse_document = document
+            if document.method is DocumentMethod.IMAGE_OCR:
+                linked = ImageOcrParser._linked_image_block(
+                    document,
+                    source,
+                    document_text,
+                )
+                if linked is None:
+                    continue
+                header_lines = (linked.anchor_line,)
+                parse_document = replace(
+                    document,
+                    text=f"{linked.anchor_line}\n{document_text}",
+                )
+            else:
+                header_lines = self._header_lines(
+                    document_text,
+                    source.section_marker,
+                )
             for header_line in header_lines:
                 # The section title for 风神九肖 contains the source name
                 # itself. Keep the semantic marker in the full heading
@@ -70,7 +91,7 @@ class FormulaDomParser:
                 )
                 parsed = DirectNineParser(self.parser_id).parse(
                     internal_source,
-                    (document,),
+                    (parse_document,),
                     issues,
                 )
                 blocks.extend(parsed.blocks)
@@ -84,6 +105,12 @@ class FormulaDomParser:
                 )
             )
 
+        selected = select_current_content_mode(
+            RecordSet(tuple(records), tuple(blocks)),
+            issues,
+        )
+        records = list(selected.records)
+        blocks = list(selected.blocks)
         updated_blocks = tuple(
             replace(
                 block,

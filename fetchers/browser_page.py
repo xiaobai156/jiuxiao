@@ -3,18 +3,19 @@ from __future__ import annotations
 import asyncio
 import json
 import re
-import threading
 from collections.abc import Callable
-from functools import lru_cache
+from contextlib import suppress
 from urllib.parse import urljoin, urlsplit
 
 from playwright.async_api import (
     BrowserContext,
+)
+from playwright.async_api import (
     TimeoutError as PlaywrightTimeoutError,
 )
-
 from v2.domain.errors import ErrorCode, Failure
 from v2.domain.models import Document, DocumentMethod, Source
+from v2.fetchers.paddle_ocr import PaddleOcrReader
 from v2.fetchers.registry import (
     BrowserClient,
     FetchError,
@@ -23,43 +24,32 @@ from v2.fetchers.registry import (
     Link,
 )
 
-
 OcrReader = Callable[[bytes], str]
-_OCR_LOCK = threading.Lock()
 
 
-@lru_cache(maxsize=1)
-def _ocr_engine():
-    from rapidocr_onnxruntime import RapidOCR
-
-    return RapidOCR()
+_PADDLE_OCR_READER = PaddleOcrReader()
 
 
 def _read_image_text(content: bytes) -> str:
-    try:
-        with _OCR_LOCK:
-            result, _elapsed = _ocr_engine()(content)
-    except Exception:
-        return ""
-    return "\n".join(
-        str(item[1]).strip()
-        for item in result or []
-        if len(item) > 1 and str(item[1]).strip()
-    )
+    return _PADDLE_OCR_READER(content)
+
+
+def _error_detail(exc: Exception) -> str:
+    message = str(exc).strip()
+    return f"{type(exc).__name__}: {message}" if message else type(exc).__name__
 
 
 def same_origin(left: str, right: str) -> bool:
-    left_url = urlsplit(left)
-    right_url = urlsplit(right)
-    return (
-        left_url.scheme.lower(),
-        left_url.hostname,
-        left_url.port,
-    ) == (
-        right_url.scheme.lower(),
-        right_url.hostname,
-        right_url.port,
-    )
+    def origin(value: str) -> tuple[str, str, int | None]:
+        parsed = urlsplit(value)
+        scheme = parsed.scheme.lower()
+        default_port = 443 if scheme == "https" else 80 if scheme == "http" else None
+        return scheme, (parsed.hostname or "").casefold(), parsed.port or default_port
+
+    try:
+        return origin(left) == origin(right)
+    except ValueError:
+        return False
 
 
 class PlaywrightHttpClient:
@@ -73,6 +63,7 @@ class PlaywrightHttpClient:
         timeout_ms: int,
         headers: tuple[tuple[str, str], ...],
     ) -> HttpResponse:
+        response = None
         try:
             response = await self.context.request.get(
                 url,
@@ -89,8 +80,12 @@ class PlaywrightHttpClient:
                 status=None,
                 text="",
                 url=url,
-                error=type(exc).__name__,
+                error=_error_detail(exc),
             )
+        finally:
+            if response is not None:
+                with suppress(Exception):
+                    await response.dispose()
 
     async def post(
         self,
@@ -100,6 +95,7 @@ class PlaywrightHttpClient:
         headers: tuple[tuple[str, str], ...],
         form: tuple[tuple[str, str], ...],
     ) -> HttpResponse:
+        response = None
         try:
             response = await self.context.request.post(
                 url,
@@ -117,11 +113,18 @@ class PlaywrightHttpClient:
                 status=None,
                 text="",
                 url=url,
-                error=type(exc).__name__,
+                error=_error_detail(exc),
             )
+        finally:
+            if response is not None:
+                with suppress(Exception):
+                    await response.dispose()
 
 
 class PlaywrightBrowserClient:
+    IMAGE_MIN_WIDTH = 600
+    IMAGE_MIN_HEIGHT = 200
+
     def __init__(
         self,
         context: BrowserContext,
@@ -187,10 +190,15 @@ class PlaywrightBrowserClient:
             if include_image_ocr:
                 try:
                     await page.wait_for_function(
-                        """() => [...document.images].some(image =>
-                            image.naturalWidth >= 600 &&
-                            image.naturalHeight >= 300
-                        )""",
+                        """([minWidth, minHeight]) =>
+                            [...document.images].some(image =>
+                                image.naturalWidth >= minWidth &&
+                                image.naturalHeight >= minHeight
+                            )""",
+                        arg=(
+                            self.IMAGE_MIN_WIDTH,
+                            self.IMAGE_MIN_HEIGHT,
+                        ),
                         timeout=min(timeout_ms, 10_000),
                     )
                 except Exception:
@@ -288,11 +296,15 @@ class PlaywrightBrowserClient:
             tuple(dict.fromkeys(data_marker_terms)),
             ensure_ascii=False,
         )
+        min_width = self.IMAGE_MIN_WIDTH
+        min_height = self.IMAGE_MIN_HEIGHT
         try:
             candidates = await images.evaluate_all(
                 f"""elements => {{
                     const anchors = {encoded_anchors};
                     const dataMarkers = {encoded_data_markers};
+                    const minWidth = {min_width};
+                    const minHeight = {min_height};
                     const bodyLines = (document.body?.innerText || "")
                         .split(/\\r?\\n/)
                         .map(line => line.trim())
@@ -347,17 +359,22 @@ class PlaywrightBrowserClient:
                         height: image.naturalHeight,
                         ...relation(image)
                     }})).filter(
-                        item => item.width >= 600 && item.height >= 200
+                        item => item.width >= minWidth &&
+                            item.height >= minHeight
                     );
                 }}"""
             )
         except Exception:
             return ()
         documents: list[Document] = []
-        ranked = sorted(
-            candidates,
-            key=lambda item: int(item["width"]) * int(item["height"]),
-            reverse=True,
+        ranked = tuple(
+            candidate
+            for candidate in self._rank_image_candidates(candidates)
+            if self._linked_image_candidate(
+                candidate,
+                anchor_terms,
+                data_marker_terms,
+            )
         )
         for candidate in ranked[:2]:
             try:
@@ -421,6 +438,42 @@ class PlaywrightBrowserClient:
                 )
         return tuple(documents)
 
+    @staticmethod
+    def _rank_image_candidates(candidates):
+        return tuple(
+            sorted(
+                candidates,
+                key=lambda item: int(item["width"]) * int(item["height"]),
+                reverse=True,
+            )
+        )
+
+    @staticmethod
+    def _linked_image_candidate(
+        candidate,
+        anchor_terms: tuple[str, ...],
+        data_marker_terms: tuple[str, ...],
+    ) -> bool:
+        anchor_line = str(candidate.get("anchorLine", "")).strip()
+        anchor_term = str(candidate.get("anchorTerm", "")).strip()
+        data_marker_line = str(candidate.get("dataMarkerLine", "")).strip()
+        try:
+            anchor_index = int(candidate["anchorIndex"])
+            block_start = int(candidate["blockStart"])
+            block_end = int(candidate["blockEnd"])
+        except (KeyError, TypeError, ValueError):
+            return False
+        return (
+            bool(anchor_line)
+            and anchor_term in anchor_terms
+            and anchor_term in anchor_line
+            and bool(data_marker_line)
+            and any(marker in data_marker_line for marker in data_marker_terms)
+            and block_start >= 0
+            and block_end > block_start
+            and block_start <= anchor_index < block_end
+        )
+
 
 class BrowserPageFetcher:
     def __init__(self, browser: BrowserClient) -> None:
@@ -431,6 +484,7 @@ class BrowserPageFetcher:
         source: Source,
         request: FetchRequest,
     ) -> tuple[Document, ...]:
+        include_image_ocr = self._uses_image_ocr(source)
         last_error = "browser returned no documents"
         last_documents: tuple[Document, ...] = ()
         for attempt in range(1, request.attempts + 1):
@@ -439,7 +493,7 @@ class BrowserPageFetcher:
                     source.url,
                     timeout_ms=request.timeout_ms,
                     settle_ms=request.settle_ms,
-                    include_image_ocr=source.parser == "image_ocr",
+                    include_image_ocr=include_image_ocr,
                     anchor_terms=(
                         (source.section_marker,)
                         if source.section_marker
@@ -449,12 +503,12 @@ class BrowserPageFetcher:
                     ),
                     data_marker_terms=(
                         (source.data_marker or "九肖",)
-                        if source.parser == "image_ocr"
+                        if include_image_ocr
                         else ()
                     ),
                 )
             except Exception as exc:
-                last_error = type(exc).__name__
+                last_error = _error_detail(exc)
                 documents = ()
             trusted_documents: list[Document] = []
             for document in documents:
@@ -486,6 +540,13 @@ class BrowserPageFetcher:
                 detail=last_error,
                 context=(("url", source.url),),
             )
+        )
+
+    @staticmethod
+    def _uses_image_ocr(source: Source) -> bool:
+        return (
+            source.parser == "image_ocr"
+            or DocumentMethod.IMAGE_OCR.value in source.source_policy
         )
 
     @staticmethod

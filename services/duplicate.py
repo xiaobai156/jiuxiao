@@ -7,6 +7,7 @@ from v2.domain.models import History
 
 
 class DuplicateState(str, Enum):
+    INCOMPLETE = "incomplete"
     CLEAR = "clear"
     MANUAL_REVIEW = "manual_review"
     DUPLICATE = "duplicate"
@@ -42,8 +43,13 @@ class DuplicateChecker:
     ) -> DuplicateDecision:
         candidate_values = self._values(candidate)
         matches: list[DuplicateMatch] = []
+        comparable = False
         for baseline in baselines:
             baseline_values = self._values(baseline.history)
+            comparable = comparable or any(
+                issue in candidate_values and issue in baseline_values
+                for issue in issues
+            )
             matched = tuple(
                 issue
                 for issue in issues
@@ -62,7 +68,9 @@ class DuplicateChecker:
             )
 
         highest = max((len(match.issues) for match in matches), default=0)
-        if highest >= 6:
+        if not comparable:
+            state = DuplicateState.INCOMPLETE
+        elif highest >= 6:
             state = DuplicateState.DUPLICATE
         elif highest >= 3:
             state = DuplicateState.MANUAL_REVIEW
