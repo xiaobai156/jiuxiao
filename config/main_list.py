@@ -34,6 +34,7 @@ class MainListCatalog:
         )
         sources: list[Source] = []
         seen: set[tuple[str, str]] = set()
+        seen_entries: set[tuple[str, str, str]] = set()
         for link in links:
             entry = self._parse_entry(link.text, link.url)
             if entry is None:
@@ -43,12 +44,13 @@ class MainListCatalog:
             key = (entry[0], entry[2])
             if key in seen:
                 continue
-            seen.add(key)
             position = directions.get(entry)
             if position is None:
                 raise ValueError(
                     f"main list source has no fixed direction: {entry[0]}"
                 )
+            seen.add(key)
+            seen_entries.add(entry)
             sources.append(
                 Source(
                     name=entry[0],
@@ -60,6 +62,16 @@ class MainListCatalog:
                     aliases=(entry[0],),
                 )
             )
+
+        expected_entries = {
+            entry for entry in directions if entry[1] not in excluded_titles
+        }
+        missing = expected_entries - seen_entries
+        if missing:
+            names = ", ".join(
+                f"{name}[{title}]" for name, title, _url in sorted(missing)
+            )
+            raise ValueError(f"main list incomplete; missing configured sources: {names}")
         return tuple(sources)
 
     def _load_parser_overrides(self) -> dict[tuple[str, str, str], str]:
@@ -82,11 +94,10 @@ class MainListCatalog:
                     "parser",
                 }:
                     raise ValueError
-                key = tuple(str(item[field]).strip() for field in (
-                    "name",
-                    "title",
-                    "url",
-                ))
+                key = tuple(
+                    str(item[field]).strip()
+                    for field in ("name", "title", "url")
+                )
                 parser = str(item["parser"]).strip()
                 if not all(key) or not parser or key in overrides:
                     raise ValueError
@@ -121,11 +132,8 @@ class MainListCatalog:
                 or document.get("schema_version") != 2
                 or not isinstance(document.get("sources"), list)
                 or not isinstance(document.get("excluded_titles"), list)
-                or set(document) != {
-                    "schema_version",
-                    "excluded_titles",
-                    "sources",
-                }
+                or set(document)
+                != {"schema_version", "excluded_titles", "sources"}
             ):
                 raise ValueError
             excluded_titles = frozenset(
