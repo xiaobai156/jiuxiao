@@ -49,7 +49,10 @@ def build_parser() -> argparse.ArgumentParser:
         "--cycle",
         type=cycle_label,
         default=None,
-        help="期号周期标签；默认使用当前年份，例如 2026",
+        help=(
+            "期号周期标签；不指定时沿用现有缓存周期。"
+            "只有明确开始新周期时才传入新标签"
+        ),
     )
 
     crawl_range = subparsers.add_parser("crawl-range")
@@ -64,7 +67,10 @@ def build_parser() -> argparse.ArgumentParser:
         "--cycle",
         type=cycle_label,
         default=None,
-        help="必须与正式缓存周期一致；默认使用当前年份",
+        help=(
+            "可选周期标签；不指定时沿用缓存。"
+            "定向重抓不允许切换到不同周期"
+        ),
     )
 
     shadow = subparsers.add_parser("shadow")
