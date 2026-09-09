@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from datetime import date
 from pathlib import Path
 
 from playwright.async_api import async_playwright
@@ -170,7 +169,9 @@ def _reports(root: Path) -> ReportRepository:
 
 
 def _cycle_label(cycle: str | None) -> str:
-    normalized = str(cycle).strip() if cycle is not None else str(date.today().year)
+    if cycle is None:
+        return ""
+    normalized = str(cycle).strip()
     if not normalized or len(normalized) > 64 or any(
         character.isspace() for character in normalized
     ):
