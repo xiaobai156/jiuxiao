@@ -31,6 +31,7 @@ class CacheSnapshot:
     latest_issue: int | None = None
     issues: tuple[int, ...] = ()
     sources: tuple[CacheSource, ...] = ()
+    cycle: str = ""
 
 
 class CacheRepository:
@@ -70,16 +71,26 @@ class CacheRepository:
 
     @classmethod
     def _from_document(cls, document: Any) -> CacheSnapshot:
-        expected = {
-            "schema_version",
-            "latest_issue",
-            "issues",
-            "sources",
-        }
-        if not isinstance(document, dict) or set(document) != expected:
+        if not isinstance(document, dict):
             raise ValueError("invalid cache fields")
-        if document["schema_version"] != 2:
+        schema_version = document.get("schema_version")
+        if schema_version == 2:
+            expected = {"schema_version", "latest_issue", "issues", "sources"}
+            cycle = ""
+        elif schema_version == 3:
+            expected = {
+                "schema_version",
+                "latest_issue",
+                "issues",
+                "sources",
+                "cycle",
+            }
+            cycle = cls._cycle(document.get("cycle", ""))
+        else:
             raise ValueError("invalid cache schema")
+        if set(document) != expected:
+            raise ValueError("invalid cache fields")
+
         raw_issues = document["issues"]
         raw_sources = document["sources"]
         if not isinstance(raw_issues, list) or not isinstance(raw_sources, list):
@@ -118,10 +129,19 @@ class CacheRepository:
                 raise ValueError("cache source issue is outside window")
             if current is not None and current not in issues:
                 raise ValueError("cache current issue is outside window")
-            sources.append(
-                CacheSource(source, current, records, errors)
-            )
-        return CacheSnapshot(latest, issues, tuple(sources))
+            sources.append(CacheSource(source, current, records, errors))
+        return CacheSnapshot(latest, issues, tuple(sources), cycle)
+
+    @staticmethod
+    def _cycle(value: Any) -> str:
+        if value is None:
+            return ""
+        if not isinstance(value, str):
+            raise ValueError("invalid cache cycle")
+        normalized = value.strip()
+        if len(normalized) > 64 or any(character.isspace() for character in normalized):
+            raise ValueError("invalid cache cycle")
+        return normalized
 
     @staticmethod
     def _issue(value: Any) -> int:
@@ -163,7 +183,8 @@ class CacheRepository:
     @classmethod
     def _encode(cls, snapshot: CacheSnapshot) -> bytes:
         document = {
-            "schema_version": 2,
+            "schema_version": 3,
+            "cycle": cls._cycle(snapshot.cycle),
             "latest_issue": snapshot.latest_issue,
             "issues": list(snapshot.issues),
             "sources": [
