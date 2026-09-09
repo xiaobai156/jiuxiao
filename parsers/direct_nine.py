@@ -11,11 +11,14 @@ from v2.parsers.registry import (
     complement_candidate,
     document_line_offset,
     evidence_for,
-    group_candidate,
     joined_history_line,
-    line_issue,
     normalize_document_text,
-    zodiac_candidates,
+)
+from v2.parsers.safety import (
+    group_candidates,
+    issue_scoped_segments,
+    safe_zodiac_candidates,
+    with_complete_observed_issues,
 )
 
 
@@ -48,7 +51,8 @@ class DirectNineParser:
                 document_label=document.label,
                 line_offset=document_line_offset(document),
             )
-            for block in document_blocks:
+            for original_block in document_blocks:
+                block = with_complete_observed_issues(original_block)
                 blocks.append(
                     block_evidence_for(
                         source,
@@ -60,59 +64,52 @@ class DirectNineParser:
                 )
                 candidate_index = 0
                 for anchored_index, anchored_line in enumerate(block.lines):
-                    line_index = anchored_line.index
-                    line = anchored_line.text
-                    issue = line_issue(line)
-                    if issue is None:
-                        continue
-                    source_line = joined_history_line(
-                        block.lines,
-                        anchored_index,
-                    )
-                    if issue in requested and any(
-                        marker in source_line for marker in LOCKED_MARKERS
-                    ):
-                        raise ParseError(
-                            Failure(
-                                ErrorCode.LOCKED_CONTENT,
-                                context=(("issue", str(issue)),),
+                    source_line = joined_history_line(block.lines, anchored_index)
+                    for issue, scoped_line in issue_scoped_segments(source_line):
+                        if issue in requested and any(
+                            marker in scoped_line for marker in LOCKED_MARKERS
+                        ):
+                            raise ParseError(
+                                Failure(
+                                    ErrorCode.LOCKED_CONTENT,
+                                    context=(("issue", str(issue)),),
+                                )
                             )
-                        )
-                    if not candidate_has_data_semantic(
-                        source,
-                        data_marker,
-                        directory_anchor=block.anchor_term,
-                        actual_anchor_line=block.anchor_line,
-                        candidate_lines=(source_line,),
-                    ):
-                        continue
-                    if (
-                        group_candidate(source_line) is not None
-                        or complement_candidate(source_line)
-                    ):
-                        continue
-                    for values in zodiac_candidates(source_line):
-                        records.append(
-                            Record(
-                                issue=issue,
-                                zodiacs=values,
-                                evidence=evidence_for(
-                                    source,
-                                    document,
-                                    document_index,
-                                    block,
-                                    parser_id=self.parser_id,
-                                    method="direct",
-                                    source_line=source_line,
-                                    raw_issue_line=line,
-                                    raw_zodiac_line=source_line,
-                                    line_index=line_index,
-                                    candidate_index_in_block=candidate_index,
-                                    data_marker=data_marker,
-                                ),
+                        if not candidate_has_data_semantic(
+                            source,
+                            data_marker,
+                            directory_anchor=block.anchor_term,
+                            actual_anchor_line=block.anchor_line,
+                            candidate_lines=(scoped_line,),
+                        ):
+                            continue
+                        if (
+                            group_candidates(scoped_line)
+                            or complement_candidate(scoped_line)
+                        ):
+                            continue
+                        for values in safe_zodiac_candidates(scoped_line):
+                            records.append(
+                                Record(
+                                    issue=issue,
+                                    zodiacs=values,
+                                    evidence=evidence_for(
+                                        source,
+                                        document,
+                                        document_index,
+                                        block,
+                                        parser_id=self.parser_id,
+                                        method="direct",
+                                        source_line=scoped_line,
+                                        raw_issue_line=scoped_line,
+                                        raw_zodiac_line=scoped_line,
+                                        line_index=anchored_line.index,
+                                        candidate_index_in_block=candidate_index,
+                                        data_marker=data_marker,
+                                    ),
+                                )
                             )
-                        )
-                        candidate_index += 1
+                            candidate_index += 1
         if not blocks:
             raise ParseError(
                 Failure(
@@ -123,7 +120,4 @@ class DirectNineParser:
                     ),),
                 )
             )
-        return RecordSet(
-            records=tuple(records),
-            blocks=tuple(blocks),
-        )
+        return RecordSet(records=tuple(records), blocks=tuple(blocks))

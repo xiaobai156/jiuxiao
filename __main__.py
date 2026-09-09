@@ -25,6 +25,19 @@ def positive_int(value: str) -> int:
     return number
 
 
+def cycle_label(value: str) -> str:
+    normalized = str(value).strip()
+    if (
+        not normalized
+        or len(normalized) > 64
+        or any(character.isspace() for character in normalized)
+    ):
+        raise argparse.ArgumentTypeError(
+            "cycle must be a non-empty label without whitespace"
+        )
+    return normalized
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="ling-she-v2")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -32,6 +45,12 @@ def build_parser() -> argparse.ArgumentParser:
     crawl = subparsers.add_parser("crawl")
     crawl.add_argument("issue", type=positive_int)
     crawl.add_argument("--concurrency", type=positive_int, default=8)
+    crawl.add_argument(
+        "--cycle",
+        type=cycle_label,
+        default=None,
+        help="期号周期标签；默认使用当前年份，例如 2026",
+    )
 
     crawl_range = subparsers.add_parser("crawl-range")
     crawl_range.add_argument("start_issue", type=positive_int)
@@ -41,6 +60,12 @@ def build_parser() -> argparse.ArgumentParser:
     retry_failed = subparsers.add_parser("retry-failed")
     retry_failed.add_argument("issue", type=positive_int)
     retry_failed.add_argument("--concurrency", type=positive_int, default=1)
+    retry_failed.add_argument(
+        "--cycle",
+        type=cycle_label,
+        default=None,
+        help="必须与正式缓存周期一致；默认使用当前年份",
+    )
 
     shadow = subparsers.add_parser("shadow")
     shadow.add_argument("issue", type=positive_int)
@@ -55,10 +80,7 @@ def build_parser() -> argparse.ArgumentParser:
 def parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser = build_parser()
     args = parser.parse_args(argv)
-    if (
-        args.command == "crawl-range"
-        and args.start_issue < args.end_issue
-    ):
+    if args.command == "crawl-range" and args.start_issue < args.end_issue:
         parser.error("start_issue must be greater than or equal to end_issue")
     return args
 
@@ -87,6 +109,7 @@ async def async_main(argv: Sequence[str]) -> int:
             args.issue,
             concurrency=args.concurrency,
             on_progress=print_progress,
+            cycle=args.cycle,
         )
         print(run.output_path)
         print(run.failure_path)
@@ -104,7 +127,12 @@ async def async_main(argv: Sequence[str]) -> int:
         )
         print(run.failure_summary_path)
     elif args.command == "retry-failed":
-        run = await run_retry_failed(root, args.issue, concurrency=args.concurrency)
+        run = await run_retry_failed(
+            root,
+            args.issue,
+            concurrency=args.concurrency,
+            cycle=args.cycle,
+        )
         item = run.issues[0]
         print(item.output_path)
         print(item.failure_path)

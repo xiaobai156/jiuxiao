@@ -27,6 +27,7 @@ ERROR_MESSAGES = {
     ErrorCode.SOURCE_UNTRUSTED: "来源证据不可信",
     ErrorCode.CROSS_DOMAIN: "页面发生跨域跳转",
     ErrorCode.WRITE_FAILED: "正式文件写入失败",
+    ErrorCode.INTERNAL_ERROR: "站点任务发生未预期异常",
 }
 
 
@@ -48,6 +49,7 @@ FAILURE_STAGES = {
     ErrorCode.SOURCE_UNTRUSTED: "来源可信度校验",
     ErrorCode.CROSS_DOMAIN: "跨域校验",
     ErrorCode.WRITE_FAILED: "文件写入",
+    ErrorCode.INTERNAL_ERROR: "站点任务隔离",
 }
 
 
@@ -103,10 +105,7 @@ class ReportRepository:
             raise ValueError("报告文件名模板无效") from exc
         if not success_name or not failure_name:
             raise ValueError("报告文件名不能为空")
-        return (
-            self.output_dir / success_name,
-            self.failure_dir / failure_name,
-        )
+        return self.output_dir / success_name, self.failure_dir / failure_name
 
     def write_issue(
         self,
@@ -119,9 +118,7 @@ class ReportRepository:
         for result in results:
             records = result.history.records_for(issue)
             if result.successful and len(records) == 1:
-                success_lines.append(
-                    f"{records[0].zodiac_text} {result.source.name}"
-                )
+                success_lines.append(f"{records[0].zodiac_text} {result.source.name}")
                 continue
             failure_lines.append(_failure_entry(issue, result))
         atomic_write_text(
@@ -139,12 +136,7 @@ class ReportRepository:
         issue: int,
         results: tuple[Result, ...],
     ) -> tuple[Path, Path]:
-        """Merge one selected source scope into an existing issue report.
-
-        The regular ``write_issue`` method owns a complete crawl result.  A
-        repair run is intentionally narrower: it may replace only the named
-        sources and must leave every other source's report untouched.
-        """
+        """Merge one selected source scope into an existing issue report."""
         output_path, failure_path = self._issue_paths(issue)
         names = [result.source.name for result in results]
         if len(names) != len(set(names)):
@@ -155,9 +147,7 @@ class ReportRepository:
         for result in results:
             name = result.source.name
             success_lines = [
-                line
-                for line in success_lines
-                if self._success_name(line) != name
+                line for line in success_lines if self._success_name(line) != name
             ]
             failure_entries = [
                 entry
@@ -167,17 +157,12 @@ class ReportRepository:
             if result.successful:
                 records = result.history.records_for(issue)
                 if len(records) != 1:
-                    raise ValueError(
-                        "successful result must contain one issue record"
-                    )
-                line = f"{records[0].zodiac_text} {name}"
-                success_lines.append(line)
+                    raise ValueError("successful result must contain one issue record")
+                success_lines.append(f"{records[0].zodiac_text} {name}")
             else:
                 failure_entries.append(_failure_entry(issue, result))
 
-        success_text = "\n".join(success_lines) + (
-            "\n" if success_lines else ""
-        )
+        success_text = "\n".join(success_lines) + ("\n" if success_lines else "")
         failure_text = "\n\n".join(failure_entries) + (
             "\n" if failure_entries else ""
         )
@@ -198,7 +183,7 @@ class ReportRepository:
     def _read_lines(path: Path) -> list[str]:
         if not path.exists():
             return []
-        return [line for line in path.read_text(encoding="utf-8").splitlines()]
+        return list(path.read_text(encoding="utf-8").splitlines())
 
     @staticmethod
     def _read_failure_entries(path: Path) -> list[str]:
@@ -210,15 +195,37 @@ class ReportRepository:
         return [entry for entry in text.split("\n\n") if entry]
 
     def failed_sources(self, issue: int, sources: tuple) -> tuple:
-        """Return only configured sources named in this issue's failure file."""
+        """Resolve failed URLs only when the active source match is unique."""
         _success, failure_path = self._issue_paths(issue)
         entries = self._read_failure_entries(failure_path)
-        failed_urls = {
-            match.group(1)
-            for entry in entries
-            if (match := re.search(r"\s(https?://\S+)", entry.splitlines()[0]))
-        }
-        return tuple(source for source in sources if source.url in failed_urls)
+        failed_urls = tuple(
+            dict.fromkeys(
+                match.group(1)
+                for entry in entries
+                if (
+                    match := re.search(
+                        r"\s(https?://\S+)",
+                        entry.splitlines()[0],
+                    )
+                )
+            )
+        )
+        selected = []
+        for url in failed_urls:
+            matches = tuple(source for source in sources if source.url == url)
+            if len(matches) > 1:
+                names = ", ".join(source.name for source in matches)
+                raise ValueError(
+                    f"失败TXT URL无法唯一匹配活跃站点: {url} ({names})"
+                )
+            if len(matches) == 1:
+                selected.append(matches[0])
+        selected_ids = {source_identity(source).key for source in selected}
+        return tuple(
+            source
+            for source in sources
+            if source_identity(source).key in selected_ids
+        )
 
     @staticmethod
     def _success_name(line: str) -> str:

@@ -43,12 +43,12 @@ class MainListCatalog:
             key = (entry[0], entry[2])
             if key in seen:
                 continue
-            seen.add(key)
             position = directions.get(entry)
             if position is None:
                 raise ValueError(
                     f"main list source has no fixed direction: {entry[0]}"
                 )
+            seen.add(key)
             sources.append(
                 Source(
                     name=entry[0],
@@ -60,6 +60,12 @@ class MainListCatalog:
                     aliases=(entry[0],),
                 )
             )
+
+        # A fully empty parse is never a valid daily catalog.  Partial-load
+        # protection against previously active sources is enforced in runtime,
+        # where the last successful cache is available for comparison.
+        if directions and not sources:
+            raise ValueError("main list incomplete; no configured sources found")
         return tuple(sources)
 
     def _load_parser_overrides(self) -> dict[tuple[str, str, str], str]:
@@ -82,11 +88,10 @@ class MainListCatalog:
                     "parser",
                 }:
                     raise ValueError
-                key = tuple(str(item[field]).strip() for field in (
-                    "name",
-                    "title",
-                    "url",
-                ))
+                key = tuple(
+                    str(item[field]).strip()
+                    for field in ("name", "title", "url")
+                )
                 parser = str(item["parser"]).strip()
                 if not all(key) or not parser or key in overrides:
                     raise ValueError
@@ -121,11 +126,8 @@ class MainListCatalog:
                 or document.get("schema_version") != 2
                 or not isinstance(document.get("sources"), list)
                 or not isinstance(document.get("excluded_titles"), list)
-                or set(document) != {
-                    "schema_version",
-                    "excluded_titles",
-                    "sources",
-                }
+                or set(document)
+                != {"schema_version", "excluded_titles", "sources"}
             ):
                 raise ValueError
             excluded_titles = frozenset(

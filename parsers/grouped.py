@@ -1,13 +1,7 @@
 from __future__ import annotations
 
 from v2.domain.errors import ErrorCode, Failure
-from v2.domain.models import (
-    Document,
-    DocumentMethod,
-    Record,
-    RecordSet,
-    Source,
-)
+from v2.domain.models import Document, DocumentMethod, Record, RecordSet, Source
 from v2.parsers.registry import (
     LOCKED_MARKERS,
     AnchoredBlock,
@@ -16,12 +10,15 @@ from v2.parsers.registry import (
     block_evidence_for,
     document_line_offset,
     evidence_for,
-    group_candidate,
     group_mapping_text,
     has_data_marker,
     joined_history_line,
-    line_issue,
     normalize_document_text,
+)
+from v2.parsers.safety import (
+    group_candidates,
+    issue_scoped_segments,
+    with_complete_observed_issues,
 )
 
 
@@ -39,9 +36,7 @@ class GroupedParser:
         issues: tuple[int, ...],
     ) -> RecordSet:
         if not source.group_map:
-            raise ParseError(
-                Failure(ErrorCode.GROUP_EVIDENCE_MISSING)
-            )
+            raise ParseError(Failure(ErrorCode.GROUP_EVIDENCE_MISSING))
         mapping = dict(source.group_map)
         group_type = "".join(mapping)
         data_marker = source.data_marker or group_type
@@ -54,13 +49,14 @@ class GroupedParser:
         for document_index, (document, text) in enumerate(
             zip(documents, normalized_documents, strict=True)
         ):
-            for block in self._history_blocks(
+            for original_block in self._history_blocks(
                 text,
                 source,
                 document_label=document.label,
                 line_offset=document_line_offset(document),
                 document_method=document.method,
             ):
+                block = with_complete_observed_issues(original_block)
                 blocks.append(
                     block_evidence_for(
                         source,
@@ -72,60 +68,60 @@ class GroupedParser:
                 )
                 candidate_index = 0
                 for anchored_index, anchored_line in enumerate(block.lines):
-                    line_index = anchored_line.index
-                    line = anchored_line.text
-                    issue = line_issue(line)
-                    if issue is None:
-                        continue
-                    source_line = joined_history_line(
-                        block.lines,
-                        anchored_index,
-                    )
-                    if issue in requested and any(
-                        marker in source_line for marker in LOCKED_MARKERS
-                    ):
-                        raise ParseError(
-                            Failure(
-                                ErrorCode.LOCKED_CONTENT,
-                                context=(("issue", str(issue)),),
+                    source_line = joined_history_line(block.lines, anchored_index)
+                    for issue, scoped_line in issue_scoped_segments(source_line):
+                        if issue in requested and any(
+                            marker in scoped_line for marker in LOCKED_MARKERS
+                        ):
+                            raise ParseError(
+                                Failure(
+                                    ErrorCode.LOCKED_CONTENT,
+                                    context=(("issue", str(issue)),),
+                                )
                             )
-                        )
-                    grouped = group_candidate(source_line, mapping)
-                    if grouped is None:
-                        continue
-                    method, _category, groups, zodiac = grouped
-                    candidate_marker = data_marker if has_data_marker(
-                        data_marker,
-                        source_line,
-                        block.anchor_line,
-                    ) else groups
-                    records.append(
-                        Record(
-                            issue=issue,
-                            zodiacs=tuple(zodiac),
-                            evidence=evidence_for(
-                                source,
-                                document,
-                                document_index,
-                                block,
-                                parser_id=self.parser_id,
-                                method=method,
-                                source_line=source_line,
-                                raw_issue_line=line,
-                                raw_zodiac_line=source_line,
-                                line_index=line_index,
-                                candidate_index_in_block=candidate_index,
-                                data_marker=candidate_marker,
-                                metadata=(
-                                    ("group_type", group_type),
-                                    ("group_text", groups),
-                                    ("group_mapping", group_mapping_text(mapping)),
-                                    ("conversion", zodiac),
-                                ),
-                            ),
-                        )
-                    )
-                    candidate_index += 1
+                        for method, _category, groups, zodiac in group_candidates(
+                            scoped_line,
+                            mapping,
+                        ):
+                            candidate_marker = (
+                                data_marker
+                                if has_data_marker(
+                                    data_marker,
+                                    scoped_line,
+                                    block.anchor_line,
+                                )
+                                else groups
+                            )
+                            records.append(
+                                Record(
+                                    issue=issue,
+                                    zodiacs=tuple(zodiac),
+                                    evidence=evidence_for(
+                                        source,
+                                        document,
+                                        document_index,
+                                        block,
+                                        parser_id=self.parser_id,
+                                        method=method,
+                                        source_line=scoped_line,
+                                        raw_issue_line=scoped_line,
+                                        raw_zodiac_line=scoped_line,
+                                        line_index=anchored_line.index,
+                                        candidate_index_in_block=candidate_index,
+                                        data_marker=candidate_marker,
+                                        metadata=(
+                                            ("group_type", group_type),
+                                            ("group_text", groups),
+                                            (
+                                                "group_mapping",
+                                                group_mapping_text(mapping),
+                                            ),
+                                            ("conversion", zodiac),
+                                        ),
+                                    ),
+                                )
+                            )
+                            candidate_index += 1
         if not blocks:
             raise ParseError(
                 Failure(
@@ -134,9 +130,7 @@ class GroupedParser:
                 )
             )
         if not records:
-            raise ParseError(
-                Failure(ErrorCode.GROUP_EVIDENCE_MISSING)
-            )
+            raise ParseError(Failure(ErrorCode.GROUP_EVIDENCE_MISSING))
         return RecordSet(tuple(records), tuple(blocks))
 
     def _history_blocks(

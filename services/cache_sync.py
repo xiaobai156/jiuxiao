@@ -26,20 +26,29 @@ class CacheSyncService:
         sources: tuple[Source, ...],
         results: tuple[Result, ...],
         issue: int,
+        *,
+        cycle: str = "",
     ) -> CacheSnapshot:
         self._validate_batch(sources, results, issue)
         with self._repository.locked():
-            return self._sync_single_locked(sources, results, issue)
+            return self._sync_single_locked(sources, results, issue, cycle=cycle)
 
     def _sync_single_locked(
         self,
         sources: tuple[Source, ...],
         results: tuple[Result, ...],
         issue: int,
+        *,
+        cycle: str,
     ) -> CacheSnapshot:
         previous = self._repository.load()
+        cycle = self._effective_cycle(previous.cycle, cycle)
+        cycle_changed = bool(
+            previous.cycle and cycle and previous.cycle != cycle
+        )
         old_by_identity = {
-            source_identity(item.source).key: item for item in previous.sources
+            source_identity(item.source).key: item
+            for item in (() if cycle_changed else previous.sources)
         }
         result_by_identity: dict[str, Result] = {}
         for result in results:
@@ -48,9 +57,13 @@ class CacheSyncService:
                 raise ValueError("duplicate result identity")
             result_by_identity[key] = result
 
-        retained_issues = sorted({issue, *previous.issues}, reverse=True)[
-            : self._history_limit
-        ]
+        retained_issues = (
+            [issue]
+            if cycle_changed
+            else sorted({issue, *previous.issues}, reverse=True)[
+                : self._history_limit
+            ]
+        )
         snapshots: list[CacheSource] = []
         for source in sources:
             key = source_identity(source).key
@@ -71,6 +84,7 @@ class CacheSyncService:
             latest_issue=max(retained_issues),
             issues=tuple(retained_issues),
             sources=tuple(snapshots),
+            cycle=cycle,
         )
         return self._repository.sync(snapshot)
 
@@ -79,28 +93,34 @@ class CacheSyncService:
         sources: tuple[Source, ...],
         results: tuple[Result, ...],
         issue: int,
+        *,
+        cycle: str = "",
     ) -> CacheSnapshot:
         """Synchronize only the selected sources for one single-period run."""
         self._validate_batch(sources, results, issue)
-        if len({source_identity(source).key for source in sources}) != len(
-            sources
-        ):
+        if len({source_identity(source).key for source in sources}) != len(sources):
             raise ValueError("duplicate source identity")
         if len({source.name for source in sources}) != len(sources):
             raise ValueError("duplicate source name")
         with self._repository.locked():
-            return self._sync_selected_locked(sources, results, issue)
+            return self._sync_selected_locked(sources, results, issue, cycle=cycle)
 
     def _sync_selected_locked(
         self,
         sources: tuple[Source, ...],
         results: tuple[Result, ...],
         issue: int,
+        *,
+        cycle: str,
     ) -> CacheSnapshot:
         previous = self._repository.load()
+        cycle = self._effective_cycle(previous.cycle, cycle)
+        if previous.cycle and cycle and previous.cycle != cycle:
+            raise ValueError(
+                f"cache cycle mismatch: cache={previous.cycle} request={cycle}"
+            )
         result_by_identity = {
-            source_identity(result.source).key: result
-            for result in results
+            source_identity(result.source).key: result for result in results
         }
         retained_issues = sorted({issue, *previous.issues}, reverse=True)[
             : self._history_limit
@@ -165,16 +185,22 @@ class CacheSyncService:
             )
             seen_keys.add(key)
 
-        if selected_keys != {
-            source_identity(source).key for source in sources
-        }:
+        if selected_keys != {source_identity(source).key for source in sources}:
             raise AssertionError("selected result identities are incomplete")
         snapshot = CacheSnapshot(
             latest_issue=max(retained_issues),
             issues=tuple(retained_issues),
             sources=tuple(snapshots),
+            cycle=cycle,
         )
         return self._repository.sync(snapshot)
+
+    @staticmethod
+    def _effective_cycle(previous: str, requested: str) -> str:
+        normalized = str(requested).strip()
+        if len(normalized) > 64 or any(character.isspace() for character in normalized):
+            raise ValueError("invalid cache cycle")
+        return normalized or previous
 
     @staticmethod
     def _retain_cache_source(
@@ -186,9 +212,7 @@ class CacheSyncService:
         return CacheSource(
             source=cached.source,
             current_issue=(
-                cached.current_issue
-                if cached.current_issue in retained_issues
-                else None
+                cached.current_issue if cached.current_issue in retained_issues else None
             ),
             records=tuple(
                 (item_issue, records[item_issue])
@@ -216,9 +240,7 @@ class CacheSyncService:
         if result.successful:
             candidates = result.history.records_for(issue)
             if len(candidates) != 1:
-                raise ValueError(
-                    "successful result must contain one issue record"
-                )
+                raise ValueError("successful result must contain one issue record")
             records[issue] = candidates[0].zodiac_text
             errors.pop(issue, None)
             current_issue = result.history.current_issue

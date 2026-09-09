@@ -3,13 +3,14 @@ from __future__ import annotations
 import json
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from datetime import date
 from pathlib import Path
 
 from playwright.async_api import async_playwright
 
 from v2.config.main_list import MainListCatalog
 from v2.config.repository import SourceRepository
-from v2.domain.identity import source_identity
+from v2.domain.identity import normalize_url, source_identity
 from v2.domain.models import Position, Source
 from v2.fetchers.browser_page import (
     BrowserPageFetcher,
@@ -23,9 +24,7 @@ from v2.fetchers.list_detail import (
     ListDetailTopThreeFetcher,
 )
 from v2.fetchers.liuiuqu import LiuiuquFetcher
-from v2.fetchers.narrow_image_browser import (
-    NarrowImagePlaywrightBrowserClient,
-)
+from v2.fetchers.narrow_image_browser import NarrowImagePlaywrightBrowserClient
 from v2.fetchers.registry import FetcherRegistry
 from v2.fetchers.static_page import StaticPageFetcher
 from v2.parsers.factory import build_parser_registry
@@ -51,9 +50,7 @@ from v2.validator import Validator
 def project_root() -> Path:
     package = Path(__file__).resolve().parent
     legacy_root = package.parent
-    if package.name.casefold() == "v2" and (
-        legacy_root / "crawler.py"
-    ).is_file():
+    if package.name.casefold() == "v2" and (legacy_root / "crawler.py").is_file():
         return legacy_root
     return package
 
@@ -73,6 +70,62 @@ def _v2_root(root: Path) -> Path:
     return root
 
 
+def _main_list_key(source: Source) -> tuple[str, str, str]:
+    return (
+        source.name.strip(),
+        source.section_marker.strip(),
+        normalize_url(source.url),
+    )
+
+
+def _configured_main_list_keys(directions_path: Path) -> set[tuple[str, str, str]]:
+    document = json.loads(Path(directions_path).read_text(encoding="utf-8"))
+    excluded = {
+        str(value).strip() for value in document.get("excluded_titles", ())
+    }
+    return {
+        (
+            str(item["name"]).strip(),
+            str(item["title"]).strip(),
+            normalize_url(str(item["url"])),
+        )
+        for item in document.get("sources", ())
+        if isinstance(item, dict)
+        and str(item.get("title", "")).strip() not in excluded
+    }
+
+
+def _validate_main_list_completeness(
+    v2_root: Path,
+    listed: tuple[Source, ...],
+) -> None:
+    configured = _configured_main_list_keys(
+        v2_root / "config" / "main_list_directions.json"
+    )
+    if not configured:
+        return
+    previous = CacheRepository(
+        v2_root / "cache" / "recent_10_cache.json"
+    ).load()
+    if not previous.sources:
+        return
+    expected = {
+        key
+        for cached in previous.sources
+        if (key := _main_list_key(cached.source)) in configured
+    }
+    actual = {_main_list_key(source) for source in listed}
+    missing = expected - actual
+    if missing:
+        names = ", ".join(
+            f"{name}[{section}]"
+            for name, section, _url in sorted(missing)
+        )
+        raise ValueError(
+            f"main list incomplete; missing previously active sources: {names}"
+        )
+
+
 def _source_repository(root: Path) -> SourceRepository:
     v2_root = _v2_root(root)
     return SourceRepository(
@@ -85,10 +138,7 @@ def _fetchers(context, browser: PlaywrightBrowserClient) -> FetcherRegistry:
     http = PlaywrightHttpClient(context)
     registry = FetcherRegistry()
     registry.register("static_page", StaticPageFetcher(http))
-    registry.register(
-        "dynamic_article",
-        DynamicArticleFetcher(http, browser),
-    )
+    registry.register("dynamic_article", DynamicArticleFetcher(http, browser))
     registry.register("browser_page", BrowserPageFetcher(browser))
     registry.register(
         "browser_page_narrow_image",
@@ -100,14 +150,8 @@ def _fetchers(context, browser: PlaywrightBrowserClient) -> FetcherRegistry:
         ),
     )
     registry.register("list_detail", ListDetailFetcher(browser))
-    registry.register(
-        "list_detail_top3",
-        ListDetailTopThreeFetcher(browser),
-    )
-    registry.register(
-        "list_detail_current",
-        ListDetailCurrentFetcher(browser),
-    )
+    registry.register("list_detail_top3", ListDetailTopThreeFetcher(browser))
+    registry.register("list_detail_current", ListDetailCurrentFetcher(browser))
     registry.register("liuiuqu", LiuiuquFetcher(http))
     return registry
 
@@ -121,10 +165,17 @@ def _reports(root: Path) -> ReportRepository:
         success_filename="{issue}期-生肖.txt",
         failure_filename="{issue}期-生肖-失败.txt",
         range_failure_dir=v2_root / "outputs",
-        range_failure_filename=(
-            "{start_issue}-{end_issue}-all-failures.txt"
-        ),
+        range_failure_filename="{start_issue}-{end_issue}-all-failures.txt",
     )
+
+
+def _cycle_label(cycle: str | None) -> str:
+    normalized = str(cycle).strip() if cycle is not None else str(date.today().year)
+    if not normalized or len(normalized) > 64 or any(
+        character.isspace() for character in normalized
+    ):
+        raise ValueError("cycle must be a non-empty label without whitespace")
+    return normalized
 
 
 @asynccontextmanager
@@ -147,9 +198,7 @@ def liuiuqu_source() -> Source:
     return Source(
         name="六爱趣",
         url="https://kef5b.6hgsiyutapp1.com/index/index/videoExplain.html",
-        api_url=(
-            "https://kef5b.6hgsiyutapp1.com/index/index/getziliaoExplain"
-        ),
+        api_url="https://kef5b.6hgsiyutapp1.com/index/index/getziliaoExplain",
         position=Position.TOP,
         section_marker="六爱趣",
         fetcher="liuiuqu",
@@ -170,6 +219,7 @@ async def daily_sources(
         browser,
         v2_root / "config" / "main_list_directions.json",
     ).load()
+    _validate_main_list_completeness(v2_root, listed)
     sources = (*listed, liuiuqu_source(), *fixed)
     names: set[str] = set()
     identities: set[str] = set()
@@ -188,9 +238,11 @@ async def run_crawl(
     *,
     concurrency: int,
     on_progress: ProgressCallback | None = None,
+    cycle: str | None = None,
 ) -> IssueRun:
     root = Path(root).resolve()
     v2_root = _v2_root(root)
+    cycle_label = _cycle_label(cycle)
     async with _browser_clients() as (context, browser_client):
         sources = await daily_sources(root, browser_client)
         service = CrawlRunService(
@@ -201,9 +253,7 @@ async def run_crawl(
             ),
             _reports(v2_root),
             CacheSyncService(
-                CacheRepository(
-                    v2_root / "cache" / "recent_10_cache.json"
-                )
+                CacheRepository(v2_root / "cache" / "recent_10_cache.json")
             ),
         )
         if on_progress is None:
@@ -211,12 +261,14 @@ async def run_crawl(
                 sources,
                 issue,
                 concurrency=concurrency,
+                cycle=cycle_label,
             )
         return await service.crawl(
             sources,
             issue,
             concurrency=concurrency,
             on_progress=on_progress,
+            cycle=cycle_label,
         )
 
 
@@ -240,9 +292,7 @@ async def run_crawl_range(
             ),
             _reports(v2_root),
             CacheSyncService(
-                CacheRepository(
-                    v2_root / "cache" / "recent_10_cache.json"
-                )
+                CacheRepository(v2_root / "cache" / "recent_10_cache.json")
             ),
         )
         return await service.crawl_range(
@@ -257,9 +307,11 @@ async def run_retry_failed(
     issue: int,
     *,
     concurrency: int,
+    cycle: str | None = None,
 ) -> RangeRun:
     root = Path(root).resolve()
     v2_root = _v2_root(root)
+    cycle_label = _cycle_label(cycle)
     async with _browser_clients() as (context, browser_client):
         all_sources = await daily_sources(root, browser_client)
         reports = _reports(v2_root)
@@ -267,21 +319,33 @@ async def run_retry_failed(
         if not sources:
             raise ValueError(f"{issue}期失败TXT没有可重抓站点")
         service = CrawlRunService(
-            CrawlService(_fetchers(context, browser_client), build_parser_registry(), Validator()),
+            CrawlService(
+                _fetchers(context, browser_client),
+                build_parser_registry(),
+                Validator(),
+            ),
             reports,
-            CacheSyncService(CacheRepository(v2_root / "cache" / "recent_10_cache.json")),
+            CacheSyncService(
+                CacheRepository(v2_root / "cache" / "recent_10_cache.json")
+            ),
         )
-        run = await service.repair(sources, issue, concurrency=concurrency)
-        return RangeRun((run,), reports.range_failure_dir / "retry-failed-complete.txt")
+        run = await service.repair(
+            sources,
+            issue,
+            concurrency=concurrency,
+            cycle=cycle_label,
+        )
+        return RangeRun(
+            (run,),
+            reports.range_failure_dir / "retry-failed-complete.txt",
+        )
 
 
 def _v1_manifest_paths(root: Path) -> tuple[Path, ...]:
     root = Path(root).resolve()
     v2_root = _v2_root(root)
     manifest = json.loads(
-        (v2_root / "baseline" / "manifest.json").read_text(
-            encoding="utf-8"
-        )
+        (v2_root / "baseline" / "manifest.json").read_text(encoding="utf-8")
     )
     paths: list[Path] = []
     for item in manifest["v1_files"]:

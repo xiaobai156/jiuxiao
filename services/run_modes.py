@@ -28,6 +28,8 @@ class SyncSingle(Protocol):
         sources: tuple[Source, ...],
         results: tuple[Result, ...],
         issue: int,
+        *,
+        cycle: str = "",
     ) -> object: ...
 
     def sync_selected_single(
@@ -35,6 +37,8 @@ class SyncSingle(Protocol):
         sources: tuple[Source, ...],
         results: tuple[Result, ...],
         issue: int,
+        *,
+        cycle: str = "",
     ) -> object: ...
 
 
@@ -74,6 +78,7 @@ class CrawlRunService:
         *,
         concurrency: int,
         on_progress: ProgressCallback | None = None,
+        cycle: str = "",
     ) -> IssueRun:
         results = await self._crawl.crawl_many(
             sources,
@@ -87,7 +92,15 @@ class CrawlRunService:
         cache_updated = False
         cache_error = ""
         try:
-            self._cache_sync.sync_single(sources, results, issue)
+            if cycle:
+                self._cache_sync.sync_single(
+                    sources,
+                    results,
+                    issue,
+                    cycle=cycle,
+                )
+            else:
+                self._cache_sync.sync_single(sources, results, issue)
         except (OSError, RuntimeError, ValueError) as exc:
             cache_error = f"{type(exc).__name__}: {exc}"
         else:
@@ -110,6 +123,7 @@ class CrawlRunService:
         *,
         concurrency: int,
         on_progress: ProgressCallback | None = None,
+        cycle: str = "",
     ) -> IssueRun:
         """Merge repaired sources without replacing the full issue reports."""
         results = await self._crawl.crawl_many(
@@ -124,7 +138,15 @@ class CrawlRunService:
         cache_updated = False
         cache_error = ""
         try:
-            self._cache_sync.sync_selected_single(sources, results, issue)
+            if cycle:
+                self._cache_sync.sync_selected_single(
+                    sources,
+                    results,
+                    issue,
+                    cycle=cycle,
+                )
+            else:
+                self._cache_sync.sync_selected_single(sources, results, issue)
         except (OSError, RuntimeError, ValueError) as exc:
             cache_error = f"{type(exc).__name__}: {exc}"
         else:
