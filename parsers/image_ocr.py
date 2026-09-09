@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import re
-
 from v2.domain.errors import ErrorCode, Failure
 from v2.domain.models import Document, DocumentMethod, Record, RecordSet, Source
 from v2.parsers.custom.common import select_current_content_mode
@@ -17,14 +15,13 @@ from v2.parsers.registry import (
     evidence_for,
     has_data_marker,
     joined_history_line,
-    line_issue,
     normalize_document_text,
-    zodiac_candidates,
 )
-
-ZODIAC_TEXT = "鼠牛虎兔龙蛇马羊猴鸡狗猪"
-DIRECT_NINE_PATTERN = re.compile(
-    rf"(?<![{ZODIAC_TEXT}])([{ZODIAC_TEXT}]{{1,12}})(?![{ZODIAC_TEXT}])"
+from v2.parsers.safety import (
+    issue_scoped_segments,
+    observed_issues,
+    safe_zodiac_candidates,
+    with_complete_observed_issues,
 )
 
 
@@ -68,11 +65,7 @@ class ImageOcrParser:
                     line_offset=document_line_offset(document),
                 )
             if not blocks:
-                observed = {
-                    issue
-                    for line in text.splitlines()
-                    if (issue := line_issue(line)) is not None
-                }
+                observed = set(observed_issues(text.splitlines()))
                 if requested & observed:
                     raise ParseError(
                         Failure(
@@ -81,7 +74,8 @@ class ImageOcrParser:
                         )
                     )
                 continue
-            for block in blocks:
+            for original_block in blocks:
+                block = with_complete_observed_issues(original_block)
                 block_evidence.append(
                     block_evidence_for(
                         source,
@@ -93,55 +87,48 @@ class ImageOcrParser:
                 )
                 candidate_index = 0
                 for anchored_index, anchored_line in enumerate(block.lines):
-                    issue = line_issue(anchored_line.text)
-                    if issue is None:
+                    source_line = joined_history_line(block.lines, anchored_index)
+                    segments = issue_scoped_segments(source_line)
+                    if not segments:
                         continue
-                    source_line = joined_history_line(
-                        block.lines,
-                        anchored_index,
-                    )
-                    if issue in requested and any(
-                        marker in source_line for marker in LOCKED_MARKERS
-                    ):
-                        raise ParseError(
-                            Failure(
-                                ErrorCode.LOCKED_CONTENT,
-                                context=(("issue", str(issue)),),
+                    for issue, scoped_line in segments:
+                        if issue in requested and any(
+                            marker in scoped_line for marker in LOCKED_MARKERS
+                        ):
+                            raise ParseError(
+                                Failure(
+                                    ErrorCode.LOCKED_CONTENT,
+                                    context=(("issue", str(issue)),),
+                                )
                             )
-                        )
-                    if not has_data_marker(
-                        data_marker,
-                        source_line,
-                        block.anchor_line,
-                    ):
-                        continue
-                    candidates = [*zodiac_candidates(source_line)]
-                    candidates.extend(
-                        tuple(match.group(1))
-                        for match in DIRECT_NINE_PATTERN.finditer(source_line)
-                    )
-                    for values in dict.fromkeys(candidates):
-                        records.append(
-                            Record(
-                                issue=issue,
-                                zodiacs=values,
-                                evidence=evidence_for(
-                                    source,
-                                    document,
-                                    document_index,
-                                    block,
-                                    parser_id="image_ocr",
-                                    method="image_ocr",
-                                    source_line=source_line,
-                                    raw_issue_line=anchored_line.text,
-                                    raw_zodiac_line=source_line,
-                                    line_index=anchored_line.index,
-                                    candidate_index_in_block=candidate_index,
-                                    data_marker=data_marker,
-                                ),
+                        if not has_data_marker(
+                            data_marker,
+                            scoped_line,
+                            block.anchor_line,
+                        ):
+                            continue
+                        for values in safe_zodiac_candidates(scoped_line):
+                            records.append(
+                                Record(
+                                    issue=issue,
+                                    zodiacs=values,
+                                    evidence=evidence_for(
+                                        source,
+                                        document,
+                                        document_index,
+                                        block,
+                                        parser_id="image_ocr",
+                                        method="image_ocr",
+                                        source_line=scoped_line,
+                                        raw_issue_line=scoped_line,
+                                        raw_zodiac_line=scoped_line,
+                                        line_index=anchored_line.index,
+                                        candidate_index_in_block=candidate_index,
+                                        data_marker=data_marker,
+                                    ),
+                                )
                             )
-                        )
-                        candidate_index += 1
+                            candidate_index += 1
         if not block_evidence:
             raise ParseError(Failure(ErrorCode.ANCHOR_MISSING))
         return select_current_content_mode(
@@ -183,22 +170,16 @@ class ImageOcrParser:
             or not block_start <= anchor_index < block_end
         ):
             return None
-        lines = text.splitlines()
+
+        lines = tuple(line for line in text.splitlines() if line.strip())
+        if not lines:
+            return None
+        virtual_end = max(block_end, block_start + len(lines), anchor_index + 1)
         anchored_lines = tuple(
-            AnchoredLine(
-                min(block_start + local_index, block_end - 1),
-                line,
-            )
+            AnchoredLine(block_start + local_index, line)
             for local_index, line in enumerate(lines)
-            if line_issue(line) is not None
         )
-        observed = tuple(
-            dict.fromkeys(
-                issue
-                for line in lines
-                if (issue := line_issue(line)) is not None
-            )
-        )
+        observed = observed_issues(lines)
         image_index = metadata.get("image_index", "unknown")
         proven_anchor_line = (
             anchor_line
@@ -211,10 +192,10 @@ class ImageOcrParser:
             anchor_index=anchor_index,
             anchor_occurrence=1,
             start=block_start,
-            end=block_end,
+            end=virtual_end,
             block_id=(
                 f"{document.label}:linked-image:{image_index}:"
-                f"{block_start}-{block_end}"
+                f"{block_start}-{virtual_end}"
             ),
             lines=anchored_lines,
             observed_issues=observed,
