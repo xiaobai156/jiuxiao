@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import re
 from dataclasses import replace
 
 from v2.domain.errors import ErrorCode, Failure
@@ -9,18 +8,20 @@ from v2.parsers.custom.common import select_current_content_mode
 from v2.parsers.image_ocr import ImageOcrParser
 from v2.parsers.registry import (
     LOCKED_MARKERS,
-    ZODIACS,
     ParseError,
     anchored_history_blocks,
     block_evidence_for,
     document_line_offset,
     evidence_for,
     joined_history_line,
-    line_issue,
     normalize_document_text,
 )
-
-ISSUE_PREFIX_PATTERN = re.compile(r"(?<!\d)\d{3}\s*期")
+from v2.parsers.safety import (
+    first_zodiac_field,
+    issue_scoped_segments,
+    observed_issues,
+    with_complete_observed_issues,
+)
 
 
 class FormulaNextIssueOcrParser:
@@ -60,11 +61,7 @@ class FormulaNextIssueOcrParser:
         for document_index, document in enumerate(source_documents):
             text = normalize_document_text(document.text)
             if document.method is DocumentMethod.IMAGE_OCR:
-                linked = ImageOcrParser._linked_image_block(
-                    document,
-                    source,
-                    text,
-                )
+                linked = ImageOcrParser._linked_image_block(document, source, text)
                 blocks = (linked,) if linked is not None else ()
             else:
                 blocks = anchored_history_blocks(
@@ -79,62 +76,57 @@ class FormulaNextIssueOcrParser:
                     raise ParseError(
                         Failure(
                             ErrorCode.SOURCE_UNTRUSTED,
-                            detail=(
-                                "ocr target is not linked to its image anchor"
-                            ),
+                            detail="ocr target is not linked to its image anchor",
                         )
                     )
                 continue
 
             for original_block in blocks:
+                block = with_complete_observed_issues(original_block)
                 parsed: list[
                     tuple[int, tuple[str, ...], str, str, int, str]
                 ] = []
                 invalid_lines: list[str] = []
                 derived_issues: list[int] = []
 
-                for anchored_index, anchored_line in enumerate(
-                    original_block.lines
-                ):
-                    source_line = joined_history_line(
-                        original_block.lines,
-                        anchored_index,
-                    )
-                    candidate = self._candidate(source_line)
-                    if candidate is None:
-                        continue
-                    target_issue, values, payload, mapping = candidate
-                    derived_issues.append(target_issue)
-                    if target_issue in requested and any(
-                        marker in source_line for marker in LOCKED_MARKERS
-                    ):
-                        raise ParseError(
-                            Failure(
-                                ErrorCode.LOCKED_CONTENT,
-                                context=(("issue", str(target_issue)),),
+                for anchored_index, anchored_line in enumerate(block.lines):
+                    source_line = joined_history_line(block.lines, anchored_index)
+                    for _printed_issue, scoped_line in issue_scoped_segments(source_line):
+                        candidate = self._candidate(scoped_line)
+                        if candidate is None:
+                            continue
+                        target_issue, values, payload, mapping = candidate
+                        derived_issues.append(target_issue)
+                        if target_issue in requested and any(
+                            marker in scoped_line for marker in LOCKED_MARKERS
+                        ):
+                            raise ParseError(
+                                Failure(
+                                    ErrorCode.LOCKED_CONTENT,
+                                    context=(("issue", str(target_issue)),),
+                                )
+                            )
+                        if len(values) != 9 or len(set(values)) != 9:
+                            invalid_lines.append(scoped_line)
+                            if target_issue in requested:
+                                malformed_requested.add(target_issue)
+                            continue
+                        parsed.append(
+                            (
+                                target_issue,
+                                values,
+                                scoped_line,
+                                payload,
+                                anchored_line.index,
+                                mapping,
                             )
                         )
-                    if len(values) != 9 or len(set(values)) != 9:
-                        invalid_lines.append(source_line)
-                        if target_issue in requested:
-                            malformed_requested.add(target_issue)
-                        continue
-                    parsed.append(
-                        (
-                            target_issue,
-                            values,
-                            source_line,
-                            payload,
-                            anchored_line.index,
-                            mapping,
-                        )
-                    )
 
                 block = replace(
-                    original_block,
+                    block,
                     observed_issues=tuple(
                         dict.fromkeys(
-                            (*original_block.observed_issues, *derived_issues)
+                            (*block.observed_issues, *derived_issues)
                         )
                     ),
                 )
@@ -201,11 +193,15 @@ class FormulaNextIssueOcrParser:
     def _candidate(
         source_line: str,
     ) -> tuple[int, tuple[str, ...], str, str] | None:
-        printed_issue = line_issue(source_line)
-        issue_match = ISSUE_PREFIX_PATTERN.search(source_line)
-        if printed_issue is None or issue_match is None:
+        segments = issue_scoped_segments(source_line)
+        if len(segments) != 1:
             return None
-        tail = source_line[issue_match.end() :]
+        printed_issue, scoped_line = segments[0]
+        marker = f"{printed_issue:03d}期"
+        marker_index = scoped_line.find(marker)
+        if marker_index < 0:
+            return None
+        tail = scoped_line[marker_index + len(marker) :]
         if "下期" in tail:
             payload = tail.split("下期", maxsplit=1)[1]
             target_issue = printed_issue + 1
@@ -214,7 +210,7 @@ class FormulaNextIssueOcrParser:
             payload = tail
             target_issue = printed_issue
             mapping = "explicit_issue"
-        values = tuple(character for character in payload if character in ZODIACS)
+        values = first_zodiac_field(payload)
         if not values:
             return None
         return target_issue, values, payload, mapping
@@ -223,7 +219,8 @@ class FormulaNextIssueOcrParser:
     def _observed_target_issues(cls, text: str) -> set[int]:
         observed: set[int] = set()
         for line in text.splitlines():
-            candidate = cls._candidate(line)
-            if candidate is not None:
-                observed.add(candidate[0])
+            for _issue, scoped_line in issue_scoped_segments(line):
+                candidate = cls._candidate(scoped_line)
+                if candidate is not None:
+                    observed.add(candidate[0])
         return observed
