@@ -22,6 +22,7 @@ class ErrorCode(str, Enum):
     SOURCE_UNTRUSTED = "SOURCE_UNTRUSTED"
     CROSS_DOMAIN = "CROSS_DOMAIN"
     WRITE_FAILED = "WRITE_FAILED"
+    INTERNAL_ERROR = "INTERNAL_ERROR"
 
 
 @dataclass(frozen=True, slots=True)
