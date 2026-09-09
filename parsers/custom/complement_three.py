@@ -8,13 +8,16 @@ from v2.parsers.registry import (
     ParseError,
     anchored_history_blocks,
     block_evidence_for,
-    complement_candidate,
     document_line_offset,
     evidence_for,
     has_data_marker,
     joined_history_line,
-    line_issue,
     normalize_document_text,
+)
+from v2.parsers.safety import (
+    complement_candidates,
+    issue_scoped_segments,
+    with_complete_observed_issues,
 )
 
 
@@ -41,12 +44,13 @@ class ComplementThreeParser:
         blocks = []
         for document_index, document in enumerate(documents):
             text = normalize_document_text(document.text)
-            for block in anchored_history_blocks(
+            for original_block in anchored_history_blocks(
                 text,
                 source,
                 document_label=document.label,
                 line_offset=document_line_offset(document),
             ):
+                block = with_complete_observed_issues(original_block)
                 blocks.append(
                     block_evidence_for(
                         source,
@@ -58,61 +62,54 @@ class ComplementThreeParser:
                 )
                 candidate_index = 0
                 for anchored_index, anchored_line in enumerate(block.lines):
-                    issue = line_issue(anchored_line.text)
-                    if issue is None:
-                        continue
-                    source_line = joined_history_line(
-                        block.lines,
-                        anchored_index,
-                    )
-                    if issue in requested and any(
-                        marker in source_line for marker in LOCKED_MARKERS
-                    ):
-                        raise ParseError(
-                            Failure(
-                                ErrorCode.LOCKED_CONTENT,
-                                context=(("issue", str(issue)),),
+                    source_line = joined_history_line(block.lines, anchored_index)
+                    for issue, scoped_line in issue_scoped_segments(source_line):
+                        if issue in requested and any(
+                            marker in scoped_line for marker in LOCKED_MARKERS
+                        ):
+                            raise ParseError(
+                                Failure(
+                                    ErrorCode.LOCKED_CONTENT,
+                                    context=(("issue", str(issue)),),
+                                )
                             )
-                        )
-                    if not has_data_marker(
-                        data_marker,
-                        source_line,
-                        block.anchor_line,
-                    ):
-                        continue
-                    zodiac = complement_candidate(source_line)
-                    if not zodiac:
-                        continue
-                    killed = "".join(
-                        animal
-                        for animal in CANONICAL_ZODIACS
-                        if animal not in zodiac
-                    )
-                    records.append(
-                        Record(
-                            issue=issue,
-                            zodiacs=tuple(zodiac),
-                            evidence=evidence_for(
-                                source,
-                                document,
-                                document_index,
-                                block,
-                                parser_id=self.parser_id,
-                                method="complement_three",
-                                source_line=source_line,
-                                raw_issue_line=anchored_line.text,
-                                raw_zodiac_line=source_line,
-                                line_index=anchored_line.index,
-                                candidate_index_in_block=candidate_index,
-                                data_marker=data_marker,
-                                metadata=(
-                                    ("killed_zodiacs", killed),
-                                    ("conversion", zodiac),
-                                ),
-                            ),
-                        )
-                    )
-                    candidate_index += 1
+                        if not has_data_marker(
+                            data_marker,
+                            scoped_line,
+                            block.anchor_line,
+                        ):
+                            continue
+                        for _raw_killed, zodiac in complement_candidates(scoped_line):
+                            killed = "".join(
+                                animal
+                                for animal in CANONICAL_ZODIACS
+                                if animal not in zodiac
+                            )
+                            records.append(
+                                Record(
+                                    issue=issue,
+                                    zodiacs=tuple(zodiac),
+                                    evidence=evidence_for(
+                                        source,
+                                        document,
+                                        document_index,
+                                        block,
+                                        parser_id=self.parser_id,
+                                        method="complement_three",
+                                        source_line=scoped_line,
+                                        raw_issue_line=scoped_line,
+                                        raw_zodiac_line=scoped_line,
+                                        line_index=anchored_line.index,
+                                        candidate_index_in_block=candidate_index,
+                                        data_marker=data_marker,
+                                        metadata=(
+                                            ("killed_zodiacs", killed),
+                                            ("conversion", zodiac),
+                                        ),
+                                    ),
+                                )
+                            )
+                            candidate_index += 1
         if not blocks:
             raise ParseError(
                 Failure(

@@ -42,10 +42,11 @@ class CacheSyncService:
         cycle: str,
     ) -> CacheSnapshot:
         previous = self._repository.load()
-        cycle = self._effective_cycle(previous.cycle, cycle)
+        requested_cycle = self._normalize_cycle(cycle)
         cycle_changed = bool(
-            previous.cycle and cycle and previous.cycle != cycle
+            requested_cycle and requested_cycle != previous.cycle
         )
+        effective_cycle = requested_cycle or previous.cycle
         old_by_identity = {
             source_identity(item.source).key: item
             for item in (() if cycle_changed else previous.sources)
@@ -84,7 +85,7 @@ class CacheSyncService:
             latest_issue=max(retained_issues),
             issues=tuple(retained_issues),
             sources=tuple(snapshots),
-            cycle=cycle,
+            cycle=effective_cycle,
         )
         return self._repository.sync(snapshot)
 
@@ -114,11 +115,13 @@ class CacheSyncService:
         cycle: str,
     ) -> CacheSnapshot:
         previous = self._repository.load()
-        cycle = self._effective_cycle(previous.cycle, cycle)
-        if previous.cycle and cycle and previous.cycle != cycle:
+        requested_cycle = self._normalize_cycle(cycle)
+        if requested_cycle and requested_cycle != previous.cycle:
             raise ValueError(
-                f"cache cycle mismatch: cache={previous.cycle} request={cycle}"
+                f"cache cycle mismatch: cache={previous.cycle} "
+                f"request={requested_cycle}"
             )
+        effective_cycle = requested_cycle or previous.cycle
         result_by_identity = {
             source_identity(result.source).key: result for result in results
         }
@@ -191,16 +194,18 @@ class CacheSyncService:
             latest_issue=max(retained_issues),
             issues=tuple(retained_issues),
             sources=tuple(snapshots),
-            cycle=cycle,
+            cycle=effective_cycle,
         )
         return self._repository.sync(snapshot)
 
     @staticmethod
-    def _effective_cycle(previous: str, requested: str) -> str:
-        normalized = str(requested).strip()
-        if len(normalized) > 64 or any(character.isspace() for character in normalized):
+    def _normalize_cycle(value: str) -> str:
+        normalized = str(value).strip()
+        if len(normalized) > 64 or any(
+            character.isspace() for character in normalized
+        ):
             raise ValueError("invalid cache cycle")
-        return normalized or previous
+        return normalized
 
     @staticmethod
     def _retain_cache_source(

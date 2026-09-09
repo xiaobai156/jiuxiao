@@ -24,6 +24,17 @@ _ZODIAC_RUN_PATTERN = re.compile(
     rf"([{CANONICAL_ZODIACS}](?:[{_ZODIAC_SEPARATOR}]*[{CANONICAL_ZODIACS}]){{0,11}})"
     rf"(?![{CANONICAL_ZODIACS}])"
 )
+_CONTINUATION_BOUNDARIES = (
+    "上一篇",
+    "下一篇",
+    "相关推荐",
+    "广告",
+    "客服",
+    "免责声明",
+    "版权所有",
+    "开奖",
+    "開獎",
+)
 
 
 def issue_scoped_segments(line: str) -> tuple[tuple[int, str], ...]:
@@ -90,12 +101,92 @@ def safe_zodiac_candidates(line: str) -> tuple[tuple[str, ...], ...]:
     return tuple(candidates)
 
 
-def first_zodiac_field(text: str) -> tuple[str, ...]:
+def zodiac_fields(
+    text: str,
+    *,
+    minimum_length: int = 6,
+) -> tuple[tuple[str, ...], ...]:
+    if minimum_length <= 0:
+        raise ValueError("minimum_length must be greater than zero")
     candidates = safe_zodiac_candidates(text)
-    for candidate in candidates:
-        if len(candidate) >= 6:
-            return candidate
-    return candidates[0] if candidates else ()
+    substantial = tuple(
+        candidate for candidate in candidates if len(candidate) >= minimum_length
+    )
+    return substantial or candidates
+
+
+def first_zodiac_field(text: str) -> tuple[str, ...]:
+    fields = zodiac_fields(text)
+    return fields[0] if fields else ()
+
+
+def joined_issue_content(
+    lines: tuple[object, ...],
+    index: int,
+    *,
+    max_continuations: int = 12,
+) -> str:
+    """Join contiguous no-issue OCR lines without crossing an issue/boundary."""
+    if max_continuations <= 0:
+        raise ValueError("max_continuations must be greater than zero")
+    if index < 0 or index >= len(lines):
+        raise IndexError(index)
+
+    current = lines[index]
+    current_text = str(getattr(current, "text", current)).strip()
+    if not current_text or not issue_scoped_segments(current_text):
+        return current_text
+
+    try:
+        previous_index = int(getattr(current, "index"))
+    except (TypeError, ValueError, AttributeError):
+        previous_index = index
+
+    parts = [current_text]
+    continuations = 0
+    for following in lines[index + 1 :]:
+        following_text = str(getattr(following, "text", following)).strip()
+        try:
+            following_index = int(getattr(following, "index"))
+        except (TypeError, ValueError, AttributeError):
+            following_index = previous_index + 1
+        if following_index != previous_index + 1:
+            break
+        if not following_text:
+            previous_index = following_index
+            continue
+        # Any printed period marker, including invalid 000期, is a hard
+        # boundary.  Invalid periods are ignored as data but never treated as
+        # continuation text for the preceding valid period.
+        if ISSUE_PATTERN.search(following_text):
+            break
+        if any(marker in following_text for marker in _CONTINUATION_BOUNDARIES):
+            break
+        parts.append(following_text)
+        previous_index = following_index
+        continuations += 1
+        if continuations >= max_continuations:
+            break
+    return " ".join(parts)
+
+
+def complement_candidates(line: str) -> tuple[tuple[str, str], ...]:
+    text = before_opening_result(line)
+    if "绝杀" not in text:
+        return ()
+    candidates: list[tuple[str, str]] = []
+    for bracket_text in BRACKET_PATTERN.findall(text):
+        killed = tuple(character for character in bracket_text if character in ZODIACS)
+        if len(killed) != 3 or len(set(killed)) != 3:
+            continue
+        killed_text = "".join(killed)
+        zodiac = "".join(
+            animal for animal in CANONICAL_ZODIACS if animal not in set(killed)
+        )
+        candidate = (killed_text, zodiac)
+        if candidate not in candidates:
+            candidates.append(candidate)
+    return tuple(candidates)
 
 
 def group_candidates(

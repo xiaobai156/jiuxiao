@@ -17,10 +17,11 @@ from v2.parsers.registry import (
     normalize_document_text,
 )
 from v2.parsers.safety import (
-    first_zodiac_field,
     issue_scoped_segments,
+    joined_issue_content,
     observed_issues,
     with_complete_observed_issues,
+    zodiac_fields,
 )
 
 
@@ -90,44 +91,46 @@ class FormulaNextIssueOcrParser:
                 derived_issues: list[int] = []
 
                 for anchored_index, anchored_line in enumerate(block.lines):
-                    source_line = joined_history_line(block.lines, anchored_index)
-                    for _printed_issue, scoped_line in issue_scoped_segments(source_line):
-                        candidate = self._candidate(scoped_line)
-                        if candidate is None:
-                            continue
-                        target_issue, values, payload, mapping = candidate
-                        derived_issues.append(target_issue)
-                        if target_issue in requested and any(
-                            marker in scoped_line for marker in LOCKED_MARKERS
-                        ):
-                            raise ParseError(
-                                Failure(
-                                    ErrorCode.LOCKED_CONTENT,
-                                    context=(("issue", str(target_issue)),),
+                    source_line = (
+                        joined_issue_content(block.lines, anchored_index)
+                        if document.method is DocumentMethod.IMAGE_OCR
+                        else joined_history_line(block.lines, anchored_index)
+                    )
+                    for _printed_issue, scoped_line in issue_scoped_segments(
+                        source_line
+                    ):
+                        candidates = self._candidates(scoped_line)
+                        for target_issue, values, payload, mapping in candidates:
+                            derived_issues.append(target_issue)
+                            if target_issue in requested and any(
+                                marker in scoped_line for marker in LOCKED_MARKERS
+                            ):
+                                raise ParseError(
+                                    Failure(
+                                        ErrorCode.LOCKED_CONTENT,
+                                        context=(("issue", str(target_issue)),),
+                                    )
+                                )
+                            if len(values) != 9 or len(set(values)) != 9:
+                                invalid_lines.append(scoped_line)
+                                if target_issue in requested:
+                                    malformed_requested.add(target_issue)
+                                continue
+                            parsed.append(
+                                (
+                                    target_issue,
+                                    values,
+                                    scoped_line,
+                                    payload,
+                                    anchored_line.index,
+                                    mapping,
                                 )
                             )
-                        if len(values) != 9 or len(set(values)) != 9:
-                            invalid_lines.append(scoped_line)
-                            if target_issue in requested:
-                                malformed_requested.add(target_issue)
-                            continue
-                        parsed.append(
-                            (
-                                target_issue,
-                                values,
-                                scoped_line,
-                                payload,
-                                anchored_line.index,
-                                mapping,
-                            )
-                        )
 
                 block = replace(
                     block,
                     observed_issues=tuple(
-                        dict.fromkeys(
-                            (*block.observed_issues, *derived_issues)
-                        )
+                        dict.fromkeys((*block.observed_issues, *derived_issues))
                     ),
                 )
                 blocks_evidence.append(
@@ -190,17 +193,17 @@ class FormulaNextIssueOcrParser:
         )
 
     @staticmethod
-    def _candidate(
+    def _candidates(
         source_line: str,
-    ) -> tuple[int, tuple[str, ...], str, str] | None:
+    ) -> tuple[tuple[int, tuple[str, ...], str, str], ...]:
         segments = issue_scoped_segments(source_line)
         if len(segments) != 1:
-            return None
+            return ()
         printed_issue, scoped_line = segments[0]
         marker = f"{printed_issue:03d}期"
         marker_index = scoped_line.find(marker)
         if marker_index < 0:
-            return None
+            return ()
         tail = scoped_line[marker_index + len(marker) :]
         if "下期" in tail:
             payload = tail.split("下期", maxsplit=1)[1]
@@ -210,17 +213,26 @@ class FormulaNextIssueOcrParser:
             payload = tail
             target_issue = printed_issue
             mapping = "explicit_issue"
-        values = first_zodiac_field(payload)
-        if not values:
-            return None
-        return target_issue, values, payload, mapping
+        fields = zodiac_fields(payload)
+        return tuple(
+            (target_issue, values, payload, mapping)
+            for values in fields
+        )
+
+    @classmethod
+    def _candidate(
+        cls,
+        source_line: str,
+    ) -> tuple[int, tuple[str, ...], str, str] | None:
+        candidates = cls._candidates(source_line)
+        return candidates[0] if len(candidates) == 1 else None
 
     @classmethod
     def _observed_target_issues(cls, text: str) -> set[int]:
         observed: set[int] = set()
         for line in text.splitlines():
             for _issue, scoped_line in issue_scoped_segments(line):
-                candidate = cls._candidate(scoped_line)
-                if candidate is not None:
-                    observed.add(candidate[0])
+                observed.update(
+                    candidate[0] for candidate in cls._candidates(scoped_line)
+                )
         return observed
