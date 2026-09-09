@@ -68,6 +68,20 @@ class CrawlService:
             )
         except (FetchError, ParseError, ValidationError) as exc:
             return Result.failed(source, issues, exc.failure)
+        except asyncio.CancelledError:
+            raise
+        except Exception as exc:
+            message = str(exc).strip()
+            detail = (
+                f"{type(exc).__name__}: {message}"
+                if message
+                else type(exc).__name__
+            )
+            return Result.failed(
+                source,
+                issues,
+                Failure(ErrorCode.INTERNAL_ERROR, detail=detail),
+            )
         return Result.succeeded(source, issues, verified.history)
 
     async def crawl_many(
@@ -87,7 +101,9 @@ class CrawlService:
         async def limited(index: int, source: Source) -> tuple[int, Result]:
             async with semaphore:
                 result = await self.crawl_one(
-                    source, issues, history_mode=history_mode
+                    source,
+                    issues,
+                    history_mode=history_mode,
                 )
                 return index, result
 
