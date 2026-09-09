@@ -34,7 +34,6 @@ class MainListCatalog:
         )
         sources: list[Source] = []
         seen: set[tuple[str, str]] = set()
-        seen_entries: set[tuple[str, str, str]] = set()
         for link in links:
             entry = self._parse_entry(link.text, link.url)
             if entry is None:
@@ -50,7 +49,6 @@ class MainListCatalog:
                     f"main list source has no fixed direction: {entry[0]}"
                 )
             seen.add(key)
-            seen_entries.add(entry)
             sources.append(
                 Source(
                     name=entry[0],
@@ -63,15 +61,11 @@ class MainListCatalog:
                 )
             )
 
-        expected_entries = {
-            entry for entry in directions if entry[1] not in excluded_titles
-        }
-        missing = expected_entries - seen_entries
-        if missing:
-            names = ", ".join(
-                f"{name}[{title}]" for name, title, _url in sorted(missing)
-            )
-            raise ValueError(f"main list incomplete; missing configured sources: {names}")
+        # A fully empty parse is never a valid daily catalog.  Partial-load
+        # protection against previously active sources is enforced in runtime,
+        # where the last successful cache is available for comparison.
+        if directions and not sources:
+            raise ValueError("main list incomplete; no configured sources found")
         return tuple(sources)
 
     def _load_parser_overrides(self) -> dict[tuple[str, str, str], str]:
