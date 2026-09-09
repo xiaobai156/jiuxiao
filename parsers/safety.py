@@ -32,6 +32,8 @@ _CONTINUATION_BOUNDARIES = (
     "客服",
     "免责声明",
     "版权所有",
+    "开奖",
+    "開獎",
 )
 
 
@@ -153,7 +155,10 @@ def joined_issue_content(
         if not following_text:
             previous_index = following_index
             continue
-        if issue_scoped_segments(following_text):
+        # Any printed period marker, including invalid 000期, is a hard
+        # boundary.  Invalid periods are ignored as data but never treated as
+        # continuation text for the preceding valid period.
+        if ISSUE_PATTERN.search(following_text):
             break
         if any(marker in following_text for marker in _CONTINUATION_BOUNDARIES):
             break
