@@ -3,6 +3,7 @@ from __future__ import annotations
 from v2.domain.errors import ErrorCode, Failure
 from v2.domain.models import Document, Record, RecordSet, Source
 from v2.parsers.registry import (
+    CANONICAL_ZODIACS,
     LOCKED_MARKERS,
     ParseError,
     anchored_history_blocks,
@@ -78,7 +79,12 @@ class ComplementThreeParser:
                             block.anchor_line,
                         ):
                             continue
-                        for killed, zodiac in complement_candidates(scoped_line):
+                        for _raw_killed, zodiac in complement_candidates(scoped_line):
+                            killed = "".join(
+                                animal
+                                for animal in CANONICAL_ZODIACS
+                                if animal not in zodiac
+                            )
                             records.append(
                                 Record(
                                     issue=issue,
