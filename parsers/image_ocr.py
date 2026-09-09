@@ -19,6 +19,7 @@ from v2.parsers.registry import (
 )
 from v2.parsers.safety import (
     issue_scoped_segments,
+    joined_issue_content,
     observed_issues,
     safe_zodiac_candidates,
     with_complete_observed_issues,
@@ -87,7 +88,11 @@ class ImageOcrParser:
                 )
                 candidate_index = 0
                 for anchored_index, anchored_line in enumerate(block.lines):
-                    source_line = joined_history_line(block.lines, anchored_index)
+                    source_line = (
+                        joined_issue_content(block.lines, anchored_index)
+                        if document.method is DocumentMethod.IMAGE_OCR
+                        else joined_history_line(block.lines, anchored_index)
+                    )
                     segments = issue_scoped_segments(source_line)
                     if not segments:
                         continue
