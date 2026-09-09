@@ -1,0 +1,219 @@
+name: Live 252 253 position test
+
+on:
+  push:
+    branches:
+      - test/live-252-253-position
+
+permissions:
+  contents: read
+
+jobs:
+  live-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install runtime dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright numpy opencv-python-headless
+          python -m pip install paddleocr paddlepaddle || echo 'OCR optional dependencies were not fully installed; OCR-backed sources may fail closed.'
+          python -m playwright install --with-deps chromium
+
+      - name: Run read-only 252/253 crawl
+        shell: bash
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import asyncio
+          import importlib.util
+          import json
+          import sys
+          import time
+          from collections import Counter
+          from pathlib import Path
+
+          ROOT = Path.cwd().resolve()
+          spec = importlib.util.spec_from_file_location(
+              "v2",
+              ROOT / "__init__.py",
+              submodule_search_locations=[str(ROOT)],
+          )
+          if spec is None or spec.loader is None:
+              raise RuntimeError("cannot load v2 package")
+          package = importlib.util.module_from_spec(spec)
+          sys.modules["v2"] = package
+          spec.loader.exec_module(package)
+
+          from v2 import runtime
+          from v2.domain.models import Position
+          from v2.parsers.factory import build_parser_registry
+          from v2.services.crawl import CrawlService
+          from v2.validator import Validator
+
+          ISSUES = (252, 253)
+          CONCURRENCY = 8
+          OUT = Path("live-test-artifacts")
+          OUT.mkdir(exist_ok=True)
+
+          def failure_payload(result):
+              failure = result.failures[0] if result.failures else None
+              if failure is None:
+                  return {"code": "UNKNOWN", "detail": "", "context": {}}
+              return {
+                  "code": failure.code.value,
+                  "detail": failure.detail,
+                  "context": dict(failure.context),
+              }
+
+          async def run():
+              started = time.monotonic()
+              all_rows = []
+              summaries = []
+              position_assertion_errors = []
+
+              async with runtime._browser_clients() as (context, browser):
+                  sources = await runtime.daily_sources(ROOT, browser)
+                  service = CrawlService(
+                      runtime._fetchers(context, browser),
+                      build_parser_registry(),
+                      Validator(),
+                  )
+                  print(f"loaded_sources={len(sources)}", flush=True)
+
+                  for issue in ISSUES:
+                      issue_started = time.monotonic()
+                      results = await service.crawl_many(
+                          sources,
+                          (issue,),
+                          concurrency=CONCURRENCY,
+                      )
+                      status_counts = Counter()
+                      error_counts = Counter()
+                      position_ok_count = 0
+
+                      for result in results:
+                          row = {
+                              "issue": issue,
+                              "name": result.source.name,
+                              "url": result.source.url,
+                              "configured_position": result.source.position.value,
+                              "parser": result.source.parser,
+                              "fetcher": result.source.fetcher,
+                              "successful": result.successful,
+                          }
+                          if result.successful:
+                              records = result.history.records_for(issue)
+                              if len(records) != 1:
+                                  row["position_assertion"] = "FAIL"
+                                  row["assertion_reason"] = f"success record count={len(records)}"
+                                  position_assertion_errors.append(row.copy())
+                                  status_counts["success_bad_record_count"] += 1
+                              else:
+                                  record = records[0]
+                                  evidence = record.evidence
+                                  metadata = dict(evidence.metadata)
+                                  issue_position = metadata.get("issue_position", "")
+                                  issue_count = metadata.get("issue_count", "")
+                                  expected_issue_position = (
+                                      "1"
+                                      if result.source.position is Position.TOP
+                                      else issue_count
+                                  )
+                                  position_ok = (
+                                      bool(evidence.direction_window)
+                                      and issue in evidence.direction_window
+                                      and len(evidence.direction_window) <= 3
+                                      and issue_position == expected_issue_position
+                                  )
+                                  row.update(
+                                      {
+                                          "zodiacs": record.zodiac_text,
+                                          "current_issue": result.history.current_issue,
+                                          "direction_window": list(evidence.direction_window),
+                                          "issue_position": issue_position,
+                                          "issue_count": issue_count,
+                                          "position_assertion": "PASS" if position_ok else "FAIL",
+                                          "document_method": evidence.document_method,
+                                          "parser_id": evidence.parser_id,
+                                          "block_id": evidence.block_id,
+                                          "source_line": evidence.source_line[:500],
+                                      }
+                                  )
+                                  if position_ok:
+                                      position_ok_count += 1
+                                      status_counts["success"] += 1
+                                  else:
+                                      position_assertion_errors.append(row.copy())
+                                      status_counts["success_position_fail"] += 1
+                          else:
+                              failure = failure_payload(result)
+                              row.update(
+                                  {
+                                      "failure": failure,
+                                      "direction_window": failure["context"].get("direction_window", ""),
+                                      "position_assertion": "NOT_APPLICABLE",
+                                  }
+                              )
+                              status_counts["failure"] += 1
+                              error_counts[failure["code"]] += 1
+
+                          all_rows.append(row)
+
+                      summary = {
+                          "issue": issue,
+                          "total": len(results),
+                          "success": status_counts["success"],
+                          "success_position_fail": status_counts["success_position_fail"],
+                          "success_bad_record_count": status_counts["success_bad_record_count"],
+                          "failure": status_counts["failure"],
+                          "position_pass": position_ok_count,
+                          "error_counts": dict(error_counts),
+                          "elapsed_seconds": round(time.monotonic() - issue_started, 3),
+                      }
+                      summaries.append(summary)
+                      print(json.dumps(summary, ensure_ascii=False), flush=True)
+
+              with (OUT / "results.jsonl").open("w", encoding="utf-8") as handle:
+                  for row in all_rows:
+                      handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+              (OUT / "summary.json").write_text(
+                  json.dumps(
+                      {
+                          "issues": summaries,
+                          "position_assertion_errors": position_assertion_errors,
+                          "total_elapsed_seconds": round(time.monotonic() - started, 3),
+                      },
+                      ensure_ascii=False,
+                      indent=2,
+                  ) + "\n",
+                  encoding="utf-8",
+              )
+
+              if position_assertion_errors:
+                  print(
+                      f"POSITION_ASSERTION_ERRORS={len(position_assertion_errors)}",
+                      flush=True,
+                  )
+                  raise SystemExit(2)
+
+          asyncio.run(run())
+          PY
+
+      - name: Upload live-test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-252-253-position-results
+          path: live-test-artifacts
+          if-no-files-found: warn
