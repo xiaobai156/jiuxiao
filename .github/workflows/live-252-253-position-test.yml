@@ -43,6 +43,8 @@ jobs:
           from collections import Counter
           from pathlib import Path
 
+          from playwright.async_api import async_playwright
+
           ROOT = Path.cwd().resolve()
           spec = importlib.util.spec_from_file_location(
               "v2",
@@ -55,8 +57,26 @@ jobs:
           sys.modules["v2"] = package
           spec.loader.exec_module(package)
 
-          from v2 import runtime
-          from v2.domain.models import Position
+          from v2.config.main_list import MainListCatalog
+          from v2.config.repository import SourceRepository
+          from v2.config.schema import source_from_dict
+          from v2.domain.identity import normalize_url, source_identity
+          from v2.domain.models import Position, Source
+          from v2.fetchers.browser_page import (
+              BrowserPageFetcher,
+              PlaywrightBrowserClient,
+              PlaywrightHttpClient,
+          )
+          from v2.fetchers.dynamic_article import DynamicArticleFetcher
+          from v2.fetchers.list_detail import (
+              ListDetailCurrentFetcher,
+              ListDetailFetcher,
+              ListDetailTopThreeFetcher,
+          )
+          from v2.fetchers.liuiuqu import LiuiuquFetcher
+          from v2.fetchers.narrow_image_browser import NarrowImagePlaywrightBrowserClient
+          from v2.fetchers.registry import FetcherRegistry
+          from v2.fetchers.static_page import StaticPageFetcher
           from v2.parsers.factory import build_parser_registry
           from v2.services.crawl import CrawlService
           from v2.validator import Validator
@@ -65,6 +85,115 @@ jobs:
           CONCURRENCY = 8
           OUT = Path("live-test-artifacts")
           OUT.mkdir(exist_ok=True)
+
+          def main_list_key(source: Source) -> tuple[str, str, str]:
+              return (
+                  source.name.strip(),
+                  source.section_marker.strip(),
+                  normalize_url(source.url),
+              )
+
+          def configured_main_list_keys() -> set[tuple[str, str, str]]:
+              document = json.loads(
+                  (ROOT / "config" / "main_list_directions.json").read_text(
+                      encoding="utf-8"
+                  )
+              )
+              excluded = {
+                  str(value).strip() for value in document.get("excluded_titles", ())
+              }
+              return {
+                  (
+                      str(item["name"]).strip(),
+                      str(item["title"]).strip(),
+                      normalize_url(str(item["url"])),
+                  )
+                  for item in document.get("sources", ())
+                  if isinstance(item, dict)
+                  and str(item.get("title", "")).strip() not in excluded
+              }
+
+          def validate_main_list_completeness(listed: tuple[Source, ...]) -> None:
+              configured = configured_main_list_keys()
+              cache_path = ROOT / "cache" / "recent_10_cache.json"
+              if not configured or not cache_path.is_file():
+                  return
+              document = json.loads(cache_path.read_text(encoding="utf-8"))
+              previous_sources = tuple(
+                  source_from_dict(item["source"])
+                  for item in document.get("sources", ())
+                  if isinstance(item, dict) and isinstance(item.get("source"), dict)
+              )
+              if not previous_sources:
+                  return
+              expected = {
+                  key
+                  for source in previous_sources
+                  if (key := main_list_key(source)) in configured
+              }
+              actual = {main_list_key(source) for source in listed}
+              missing = expected - actual
+              if missing:
+                  raise RuntimeError(
+                      "main list incomplete: "
+                      + ", ".join(
+                          f"{name}[{section}]" for name, section, _url in sorted(missing)
+                      )
+                  )
+
+          def liuiuqu_source() -> Source:
+              return Source(
+                  name="六爱趣",
+                  url="https://kef5b.6hgsiyutapp1.com/index/index/videoExplain.html",
+                  api_url="https://kef5b.6hgsiyutapp1.com/index/index/getziliaoExplain",
+                  position=Position.TOP,
+                  section_marker="六爱趣",
+                  fetcher="liuiuqu",
+                  parser="liuiuqu",
+              )
+
+          async def daily_sources(browser: PlaywrightBrowserClient) -> tuple[Source, ...]:
+              repository = SourceRepository(
+                  ROOT / "config" / "sources.json",
+                  ROOT / "config" / "archived_sources.json",
+              )
+              fixed = repository.load_active()
+              listed = await MainListCatalog(
+                  browser,
+                  ROOT / "config" / "main_list_directions.json",
+              ).load()
+              validate_main_list_completeness(listed)
+              sources = (*listed, liuiuqu_source(), *fixed)
+              names: set[str] = set()
+              identities: set[str] = set()
+              for source in sources:
+                  identity = source_identity(source).key
+                  if source.name in names or identity in identities:
+                      raise RuntimeError(f"daily source duplicate: {source.name}")
+                  names.add(source.name)
+                  identities.add(identity)
+              return tuple(sources)
+
+          def build_fetchers(context, browser: PlaywrightBrowserClient) -> FetcherRegistry:
+              http = PlaywrightHttpClient(context)
+              registry = FetcherRegistry()
+              registry.register("static_page", StaticPageFetcher(http))
+              registry.register("dynamic_article", DynamicArticleFetcher(http, browser))
+              registry.register("browser_page", BrowserPageFetcher(browser))
+              registry.register(
+                  "browser_page_narrow_image",
+                  BrowserPageFetcher(
+                      NarrowImagePlaywrightBrowserClient(
+                          browser.context,
+                          ocr_reader=browser.ocr_reader,
+                      )
+                  ),
+              )
+              registry.register("list_detail", ListDetailFetcher(browser))
+              registry.register("list_detail_top3", ListDetailTopThreeFetcher(browser))
+              registry.register("list_detail_current", ListDetailCurrentFetcher(browser))
+              registry.register("liuiuqu", LiuiuquFetcher(http))
+              return registry
 
           def failure_payload(result):
               failure = result.failures[0] if result.failures else None
@@ -82,107 +211,116 @@ jobs:
               summaries = []
               position_assertion_errors = []
 
-              async with runtime._browser_clients() as (context, browser):
-                  sources = await runtime.daily_sources(ROOT, browser)
-                  service = CrawlService(
-                      runtime._fetchers(context, browser),
-                      build_parser_registry(),
-                      Validator(),
-                  )
-                  print(f"loaded_sources={len(sources)}", flush=True)
+              async with async_playwright() as playwright:
+                  browser_process = await playwright.chromium.launch(headless=True)
+                  try:
+                      context = await browser_process.new_context(ignore_https_errors=False)
+                      try:
+                          browser = PlaywrightBrowserClient(context)
+                          sources = await daily_sources(browser)
+                          service = CrawlService(
+                              build_fetchers(context, browser),
+                              build_parser_registry(),
+                              Validator(),
+                          )
+                          print(f"loaded_sources={len(sources)}", flush=True)
 
-                  for issue in ISSUES:
-                      issue_started = time.monotonic()
-                      results = await service.crawl_many(
-                          sources,
-                          (issue,),
-                          concurrency=CONCURRENCY,
-                      )
-                      status_counts = Counter()
-                      error_counts = Counter()
-                      position_ok_count = 0
-
-                      for result in results:
-                          row = {
-                              "issue": issue,
-                              "name": result.source.name,
-                              "url": result.source.url,
-                              "configured_position": result.source.position.value,
-                              "parser": result.source.parser,
-                              "fetcher": result.source.fetcher,
-                              "successful": result.successful,
-                          }
-                          if result.successful:
-                              records = result.history.records_for(issue)
-                              if len(records) != 1:
-                                  row["position_assertion"] = "FAIL"
-                                  row["assertion_reason"] = f"success record count={len(records)}"
-                                  position_assertion_errors.append(row.copy())
-                                  status_counts["success_bad_record_count"] += 1
-                              else:
-                                  record = records[0]
-                                  evidence = record.evidence
-                                  metadata = dict(evidence.metadata)
-                                  issue_position = metadata.get("issue_position", "")
-                                  issue_count = metadata.get("issue_count", "")
-                                  expected_issue_position = (
-                                      "1"
-                                      if result.source.position is Position.TOP
-                                      else issue_count
-                                  )
-                                  position_ok = (
-                                      bool(evidence.direction_window)
-                                      and issue in evidence.direction_window
-                                      and len(evidence.direction_window) <= 3
-                                      and issue_position == expected_issue_position
-                                  )
-                                  row.update(
-                                      {
-                                          "zodiacs": record.zodiac_text,
-                                          "current_issue": result.history.current_issue,
-                                          "direction_window": list(evidence.direction_window),
-                                          "issue_position": issue_position,
-                                          "issue_count": issue_count,
-                                          "position_assertion": "PASS" if position_ok else "FAIL",
-                                          "document_method": evidence.document_method,
-                                          "parser_id": evidence.parser_id,
-                                          "block_id": evidence.block_id,
-                                          "source_line": evidence.source_line[:500],
-                                      }
-                                  )
-                                  if position_ok:
-                                      position_ok_count += 1
-                                      status_counts["success"] += 1
-                                  else:
-                                      position_assertion_errors.append(row.copy())
-                                      status_counts["success_position_fail"] += 1
-                          else:
-                              failure = failure_payload(result)
-                              row.update(
-                                  {
-                                      "failure": failure,
-                                      "direction_window": failure["context"].get("direction_window", ""),
-                                      "position_assertion": "NOT_APPLICABLE",
-                                  }
+                          for issue in ISSUES:
+                              issue_started = time.monotonic()
+                              results = await service.crawl_many(
+                                  sources,
+                                  (issue,),
+                                  concurrency=CONCURRENCY,
                               )
-                              status_counts["failure"] += 1
-                              error_counts[failure["code"]] += 1
+                              status_counts = Counter()
+                              error_counts = Counter()
+                              position_ok_count = 0
 
-                          all_rows.append(row)
+                              for result in results:
+                                  row = {
+                                      "issue": issue,
+                                      "name": result.source.name,
+                                      "url": result.source.url,
+                                      "configured_position": result.source.position.value,
+                                      "parser": result.source.parser,
+                                      "fetcher": result.source.fetcher,
+                                      "successful": result.successful,
+                                  }
+                                  if result.successful:
+                                      records = result.history.records_for(issue)
+                                      if len(records) != 1:
+                                          row["position_assertion"] = "FAIL"
+                                          row["assertion_reason"] = f"success record count={len(records)}"
+                                          position_assertion_errors.append(row.copy())
+                                          status_counts["success_bad_record_count"] += 1
+                                      else:
+                                          record = records[0]
+                                          evidence = record.evidence
+                                          metadata = dict(evidence.metadata)
+                                          issue_position = metadata.get("issue_position", "")
+                                          issue_count = metadata.get("issue_count", "")
+                                          expected_issue_position = (
+                                              "1"
+                                              if result.source.position is Position.TOP
+                                              else issue_count
+                                          )
+                                          position_ok = (
+                                              bool(evidence.direction_window)
+                                              and issue in evidence.direction_window
+                                              and len(evidence.direction_window) <= 3
+                                              and issue_position == expected_issue_position
+                                          )
+                                          row.update(
+                                              {
+                                                  "zodiacs": record.zodiac_text,
+                                                  "current_issue": result.history.current_issue,
+                                                  "direction_window": list(evidence.direction_window),
+                                                  "issue_position": issue_position,
+                                                  "issue_count": issue_count,
+                                                  "position_assertion": "PASS" if position_ok else "FAIL",
+                                                  "document_method": evidence.document_method,
+                                                  "parser_id": evidence.parser_id,
+                                                  "block_id": evidence.block_id,
+                                                  "source_line": evidence.source_line[:500],
+                                              }
+                                          )
+                                          if position_ok:
+                                              position_ok_count += 1
+                                              status_counts["success"] += 1
+                                          else:
+                                              position_assertion_errors.append(row.copy())
+                                              status_counts["success_position_fail"] += 1
+                                  else:
+                                      failure = failure_payload(result)
+                                      row.update(
+                                          {
+                                              "failure": failure,
+                                              "direction_window": failure["context"].get("direction_window", ""),
+                                              "position_assertion": "NOT_APPLICABLE",
+                                          }
+                                      )
+                                      status_counts["failure"] += 1
+                                      error_counts[failure["code"]] += 1
 
-                      summary = {
-                          "issue": issue,
-                          "total": len(results),
-                          "success": status_counts["success"],
-                          "success_position_fail": status_counts["success_position_fail"],
-                          "success_bad_record_count": status_counts["success_bad_record_count"],
-                          "failure": status_counts["failure"],
-                          "position_pass": position_ok_count,
-                          "error_counts": dict(error_counts),
-                          "elapsed_seconds": round(time.monotonic() - issue_started, 3),
-                      }
-                      summaries.append(summary)
-                      print(json.dumps(summary, ensure_ascii=False), flush=True)
+                                  all_rows.append(row)
+
+                              summary = {
+                                  "issue": issue,
+                                  "total": len(results),
+                                  "success": status_counts["success"],
+                                  "success_position_fail": status_counts["success_position_fail"],
+                                  "success_bad_record_count": status_counts["success_bad_record_count"],
+                                  "failure": status_counts["failure"],
+                                  "position_pass": position_ok_count,
+                                  "error_counts": dict(error_counts),
+                                  "elapsed_seconds": round(time.monotonic() - issue_started, 3),
+                              }
+                              summaries.append(summary)
+                              print(json.dumps(summary, ensure_ascii=False), flush=True)
+                      finally:
+                          await context.close()
+                  finally:
+                      await browser_process.close()
 
               with (OUT / "results.jsonl").open("w", encoding="utf-8") as handle:
                   for row in all_rows:
