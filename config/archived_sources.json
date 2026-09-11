@@ -1037,6 +1037,24 @@
       },
       "archived_at": "2026-09-04T18:30:09+08:00",
       "reason": "用户要求封存，不再抓取"
+    },
+    {
+      "source": {
+        "name": "夏目柚子",
+        "url": "https://nwrkkmv.rx287-rkrai-jsjccc.xyz:29499/article/manager/6a55f222f447e21b02daa6b2?url=ggz",
+        "position": "bottom",
+        "section_marker": "夏目柚子",
+        "fetcher": "dynamic_article",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-11T18:37:55+08:00",
+      "reason": "用户明确要求封存，不再抓取；254期页面无内容（API空壳，未找到目录关键字）"
     }
   ]
 }
