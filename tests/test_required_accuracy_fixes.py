@@ -134,6 +134,17 @@ def test_grouped_parser_exposes_same_issue_conflicts() -> None:
     assert captured.value.failure.code is ErrorCode.CANDIDATE_CONFLICT
 
 
+def test_main_list_entry_accepts_space_before_issue_suffix() -> None:
+    assert MainListCatalog._parse_entry(
+        "九肖区 254 期: 花前月下「花前九肖」198中139",
+        "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622320.html",
+    ) == (
+        "花前月下",
+        "花前九肖",
+        "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622320.html",
+    )
+
+
 class _EmptyLinksBrowser:
     async def links(self, *_args, **_kwargs):
         return ()

@@ -11,7 +11,7 @@ from v2.fetchers.registry import BrowserClient
 
 MAIN_LIST_URL = "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/theme/1.html"
 ENTRY_PATTERN = re.compile(
-    r"^九肖区\s*0*(?P<issue>\d{1,3})期\s*[:：]\s*"
+    r"^九肖区\s*0*(?P<issue>\d{1,3})\s*期\s*[:：]\s*"
     r"(?P<name>.+?)[「【](?P<title>[^」】]+)[」】]"
 )
 
