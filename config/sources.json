@@ -5315,6 +5315,20 @@
       "aliases": [],
       "data_marker": "",
       "source_policy": []
+    },
+    {
+      "name": "风铃歌",
+      "url": "https://wwlhc.com/thread-99865-1-1.html",
+      "position": "bottom",
+      "section_marker": "风铃歌 新澳九肖",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "新澳九肖",
+      "source_policy": []
     }
   ]
 }
