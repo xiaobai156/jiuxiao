@@ -221,7 +221,7 @@ async def daily_sources(
         v2_root / "config" / "main_list_directions.json",
     ).load()
     _validate_main_list_completeness(v2_root, listed)
-    sources = (*listed, liuiuqu_source(), *fixed)
+    sources = (*listed, *fixed)
     names: set[str] = set()
     identities: set[str] = set()
     for source in sources:

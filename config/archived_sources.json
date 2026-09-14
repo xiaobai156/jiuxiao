@@ -1055,6 +1055,24 @@
       },
       "archived_at": "2026-09-11T18:37:55+08:00",
       "reason": "用户明确要求封存，不再抓取；254期页面无内容（API空壳，未找到目录关键字）"
+    },
+    {
+      "source": {
+        "name": "六爱趣",
+        "url": "https://kef5b.6hgsiyutapp1.com/index/index/videoExplain.html",
+        "position": "top",
+        "section_marker": "六爱趣",
+        "fetcher": "liuiuqu",
+        "parser": "liuiuqu",
+        "api_url": "https://kef5b.6hgsiyutapp1.com/index/index/getziliaoExplain",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-14T00:00:00+08:00",
+      "reason": "用户要求封存，不再抓取；257期 API response is not json"
     }
   ]
 }

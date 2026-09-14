@@ -1104,37 +1104,6 @@
     },
     {
       "source": {
-        "name": "六爱趣",
-        "url": "https://kef5b.6hgsiyutapp1.com/index/index/videoExplain.html",
-        "position": "top",
-        "section_marker": "六爱趣",
-        "fetcher": "liuiuqu",
-        "parser": "liuiuqu",
-        "api_url": "https://kef5b.6hgsiyutapp1.com/index/index/getziliaoExplain",
-        "group_map": {},
-        "detail_link_keyword": "",
-        "aliases": [],
-        "data_marker": "",
-        "source_policy": []
-      },
-      "current_issue": 251,
-      "records": {
-        "251": "鸡虎马羊猪猴牛鼠蛇",
-        "248": "蛇牛猴马羊鸡龙鼠狗",
-        "247": "龙羊猪猴狗鼠鸡牛虎",
-        "246": "虎鸡狗兔牛龙猪蛇羊",
-        "244": "蛇龙羊兔马猪虎鸡牛",
-        "243": "猪虎兔猴牛马蛇鼠狗",
-        "242": "兔龙羊猪猴虎牛蛇马"
-      },
-      "errors": {
-        "250": "SOURCE_UNTRUSTED",
-        "249": "SOURCE_UNTRUSTED",
-        "245": "SOURCE_UNTRUSTED"
-      }
-    },
-    {
-      "source": {
         "name": "湘妹围特",
         "url": "https://ktlwqmob.m39ub-hzye8-jvwjdn.xyz:16677/",
         "position": "bottom",
