@@ -5318,14 +5318,14 @@
     },
     {
       "name": "风铃歌",
-      "url": "https://wwlhc.com/thread-99865-1-1.html",
+      "url": "https://wwlhc.com/forum-66-1.html",
       "position": "bottom",
       "section_marker": "风铃歌 新澳九肖",
-      "fetcher": "browser_page",
+      "fetcher": "list_detail_current",
       "parser": "direct_nine",
       "api_url": "",
       "group_map": {},
-      "detail_link_keyword": "",
+      "detail_link_keyword": "新澳九肖",
       "aliases": [],
       "data_marker": "新澳九肖",
       "source_policy": []
