@@ -66,6 +66,12 @@
       "title": "花前九肖",
       "url": "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622320.html",
       "parser": "topic_cyclic_nine"
+    },
+    {
+      "name": "鱼目混珠",
+      "title": "精准九肖",
+      "url": "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622283.html",
+      "parser": "topic_cyclic_nine"
     }
   ]
 }
