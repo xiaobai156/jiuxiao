@@ -1073,6 +1073,24 @@
       },
       "archived_at": "2026-09-14T00:00:00+08:00",
       "reason": "用户要求封存，不再抓取；257期 API response is not json"
+    },
+    {
+      "source": {
+        "name": "女霸君主",
+        "url": "https://buzsxio.821n4-hgj04-edkrft.xyz:29455/article/manager/6a5ee709f447e21b02dd535c?url=bxj",
+        "position": "bottom",
+        "section_marker": "女霸君主",
+        "fetcher": "dynamic_article",
+        "parser": "split_line",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-16T18:06:39+08:00",
+      "reason": "用户明确要求封存，不再抓取；259期栏目锚点校验失败：未找到目录关键字"
     }
   ]
 }

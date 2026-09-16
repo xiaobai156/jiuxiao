@@ -4466,20 +4466,6 @@
       "source_policy": []
     },
     {
-      "name": "女霸君主",
-      "url": "https://buzsxio.821n4-hgj04-edkrft.xyz:29455/article/manager/6a5ee709f447e21b02dd535c?url=bxj",
-      "position": "bottom",
-      "section_marker": "女霸君主",
-      "fetcher": "dynamic_article",
-      "parser": "split_line",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "",
-      "source_policy": []
-    },
-    {
       "name": "随遇而安",
       "url": "https://a.ttss.vip/listam.aspx?id=75&page=1",
       "position": "top",
