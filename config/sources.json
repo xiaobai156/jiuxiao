@@ -54,25 +54,6 @@
       "source_policy": []
     },
     {
-      "name": "无可非议",
-      "url": "https://lxlwskb.nboxw-3t1ws-uyicfb.work:29444/article/admin/6a14607431b8505dcf062063?url=scyd",
-      "position": "bottom",
-      "section_marker": "",
-      "fetcher": "dynamic_article",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "琴": "兔蛇鸡",
-        "棋": "鼠牛狗",
-        "书": "虎龙马",
-        "画": "羊猴猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "琴棋书画",
-      "source_policy": []
-    },
-    {
       "name": "过訜喜歡",
       "url": "https://ryfbdty.p4a53-f1hew-diwcrg.xyz:16677/topic/426220.html",
       "position": "bottom",
@@ -1410,25 +1391,6 @@
       "detail_link_keyword": "",
       "aliases": [],
       "data_marker": "梅兰菊竹",
-      "source_policy": []
-    },
-    {
-      "name": "映你眼眸",
-      "url": "https://gqdbokpx.ji2oa-rdhxt-girktl.work:29411/article/admin/6a03264de09a39d316b2239c?url=hj",
-      "position": "bottom",
-      "section_marker": "",
-      "fetcher": "dynamic_article",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "春": "虎兔龙",
-        "夏": "蛇马羊",
-        "秋": "猴鸡狗",
-        "冬": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "春夏秋冬",
       "source_policy": []
     },
     {
@@ -3578,25 +3540,6 @@
       "detail_link_keyword": "",
       "aliases": [],
       "data_marker": "琴棋书画",
-      "source_policy": []
-    },
-    {
-      "name": "后起之秀",
-      "url": "https://nwrkkmv.rx287-rkrai-jsjccc.xyz:29499/article/manager/6a33d21bdfa16552b923d097?url=ggz",
-      "position": "bottom",
-      "section_marker": "后起之秀",
-      "fetcher": "dynamic_article",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "春": "虎兔龙",
-        "夏": "蛇马羊",
-        "秋": "猴鸡狗",
-        "冬": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "春夏秋冬",
       "source_policy": []
     },
     {

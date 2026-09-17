@@ -1091,6 +1091,75 @@
       },
       "archived_at": "2026-09-16T18:06:39+08:00",
       "reason": "用户明确要求封存，不再抓取；259期栏目锚点校验失败：未找到目录关键字"
+    },
+    {
+      "source": {
+        "name": "无可非议",
+        "url": "https://lxlwskb.nboxw-3t1ws-uyicfb.work:29444/article/admin/6a14607431b8505dcf062063?url=scyd",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "琴": "兔蛇鸡",
+          "棋": "鼠牛狗",
+          "书": "虎龙马",
+          "画": "羊猴猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "琴棋书画",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-17T19:44:49+08:00",
+      "reason": "用户明确要求封存，不再抓取；260期抓取失败：文章已删除（接口 404 AdminArticle 不存在）"
+    },
+    {
+      "source": {
+        "name": "映你眼眸",
+        "url": "https://gqdbokpx.ji2oa-rdhxt-girktl.work:29411/article/admin/6a03264de09a39d316b2239c?url=hj",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "春": "虎兔龙",
+          "夏": "蛇马羊",
+          "秋": "猴鸡狗",
+          "冬": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "春夏秋冬",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-17T19:44:49+08:00",
+      "reason": "用户明确要求封存，不再抓取；260期抓取失败：文章已删除（接口 404 AdminArticle 不存在）"
+    },
+    {
+      "source": {
+        "name": "后起之秀",
+        "url": "https://nwrkkmv.rx287-rkrai-jsjccc.xyz:29499/article/manager/6a33d21bdfa16552b923d097?url=ggz",
+        "position": "bottom",
+        "section_marker": "后起之秀",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "春": "虎兔龙",
+          "夏": "蛇马羊",
+          "秋": "猴鸡狗",
+          "冬": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "春夏秋冬",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-17T19:44:49+08:00",
+      "reason": "用户明确要求封存，不再抓取；260期抓取失败：文章已删除（接口 404 AdminArticle 不存在）"
     }
   ]
 }
