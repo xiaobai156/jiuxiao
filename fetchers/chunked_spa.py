@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import base64
 import binascii
+import html
 import re
 import zlib
 from urllib.parse import urljoin, urlsplit
@@ -32,10 +33,49 @@ CHUNK_SRC_PATTERN = re.compile(
     re.IGNORECASE,
 )
 PAYLOAD_PATTERN = re.compile(r"[A-Za-z0-9+/]{60,}={0,2}")
+# 分块是 JS 字符串：Base64 里的 "/" 常被转义成 "\/"，不还原会把串截断
+ESCAPED_SLASH_PATTERN = re.compile(r"\\/")
+# 站点分组写法：╠画肖,棋肖,书肖╣（分组字间带「肖」与分隔符）。
+# 抓取层只做写法归一（保留原文进 metadata），分组语义仍由解析器按 group_map 裁决。
+GROUP_LIST_PATTERN = re.compile(
+    r"╠\s*((?:[\u4e00-\u9fff]\s*肖\s*[,，、.·|/\s]*){2,4})╣"
+)
+GROUP_CHARACTER_PATTERN = re.compile(r"[\u4e00-\u9fff]")
+HTML_TAG_PATTERN = re.compile(r"<[^>]*>")
+LINE_BREAK_PATTERN = re.compile(r"<\s*br\s*/?\s*>", re.IGNORECASE)
+ISSUE_HINT_PATTERN = re.compile(r"\d{1,3}\s*期")
+
+
+def _normalize_group_notation(text: str) -> str:
+    """把「╠琴肖,书肖,画肖╣」这类分组写法归一成解析器可识别的「╠琴书画╣」。
+
+    站点用 <font>/<span> 包裹分组原文，故先把「带期号且含 ╠…╣ 的行」去标签、
+    反转义，再压缩写法；其余内容原样保留，不改变任何分组字与顺序。
+    """
+
+    def _replace(match: re.Match[str]) -> str:
+        characters = [
+            character
+            for character in GROUP_CHARACTER_PATTERN.findall(match.group(1))
+            if character != "肖"
+        ]
+        return "╠" + "".join(characters) + "╣" if characters else match.group(0)
+
+    lines: list[str] = []
+    for line in text.split("\n"):
+        if "╠" in line and "╣" in line and ISSUE_HINT_PATTERN.search(line):
+            # <br> 是行分隔证据，必须保留为换行，否则区块边界会被破坏
+            separated = LINE_BREAK_PATTERN.sub("\n", line)
+            stripped = html.unescape(HTML_TAG_PATTERN.sub("", separated))
+            lines.append(GROUP_LIST_PATTERN.sub(_replace, stripped))
+        else:
+            lines.append(line)
+    return "\n".join(lines)
 
 
 def inflate_blobs(payload: str) -> str:
     """还原分块中全部可解压片段，按出现顺序拼接。"""
+    payload = ESCAPED_SLASH_PATTERN.sub("/", payload)
     fragments: list[str] = []
     seen: set[str] = set()
     for blob in PAYLOAD_PATTERN.findall(payload):
@@ -55,7 +95,7 @@ def inflate_blobs(payload: str) -> str:
                 continue
     # 片段是定长切分（常见每段 300 字符），会从行中间截断，
     # 必须无缝拼接还原原始流；若插入换行会把被截断的期拆成两半而丢数据。
-    return "".join(fragments)
+    return _normalize_group_notation("".join(fragments))
 
 
 def chunk_sources(shell: str) -> tuple[tuple[str, str], ...]:

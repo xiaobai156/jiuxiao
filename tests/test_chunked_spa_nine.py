@@ -31,6 +31,7 @@ from v2.domain.errors import ErrorCode  # noqa: E402
 from v2.domain.models import DocumentMethod, Position, Source  # noqa: E402
 from v2.fetchers.chunked_spa import (  # noqa: E402
     ChunkedSpaFetcher,
+    _normalize_group_notation,
     chunk_sources,
     inflate_blobs,
 )
@@ -53,7 +54,7 @@ MAPPING = (
 # 站点原文写法：风雷云雨（云＝项目体系的「电」）
 # 结构：数据分块按「栏目锚点行 → 期号由新到旧」排列（最新期在锚点之后 → 方向 top）
 # 注：真实分块中可用的锚点行是分组栏目名「风雷云雨」；站名本身不出现在数据里。
-ANCHOR_LINE = '<div class="column-title">风雷电雨</div>'
+ANCHOR_LINE = '<div class="column-title">风雷电雨</div><br>'
 LINES = (
     "261期:风雷云雨╠雨风雷╣开:發00准",
     "260期:风雷云雨╠雷云风╣开:猪20错",
@@ -142,12 +143,78 @@ def test_shell_chunk_id_and_url_are_detected() -> None:
 def test_inflate_blobs_skips_undecodable_noise() -> None:
     text = inflate_blobs(build_payload())
     assert "261期" in text
-    assert ">雨风雷</font>" in text
-    assert "column-title" in text
+    # 归一化后分组写成紧邻三字，HTML 标签与 <br> 均被处理
+    assert "╠雨风雷╣" in text
+    assert "<font" not in text
 
 
 def test_inflate_blobs_returns_empty_for_garbage() -> None:
     assert inflate_blobs("not-base64-and-no-blobs") == ""
+
+
+def _escaped_payload() -> str:
+    """分块是 JS 字符串：Base64 中的 "/" 被转义成 "\\/"，必须能还原。"""
+    blobs = []
+    for line in LINES:
+        compressed = zlib.compress(ANCHOR_LINE.encode("utf-8"))[2:-4]
+        blobs.append(base64.b64encode(compressed).decode("ascii"))
+        break
+    for line in LINES:
+        compressed = zlib.compress(_fragment(line).encode("utf-8"))[2:-4]
+        blobs.append(base64.b64encode(compressed).decode("ascii"))
+    joined = "';var b='".join(blobs)
+    return joined.replace("/", "\\/")
+
+
+def test_inflate_blobs_restores_escaped_slashes() -> None:
+    """\\/ 转义不还原会把 Base64 截断，导致解压片段缺失。"""
+    text = inflate_blobs(_escaped_payload())
+    assert "261期" in text
+    # 未还原转义时，含 "/" 的串会被截断，解出的期数明显更少
+    assert sum(1 for line in LINES if line.split("期")[0] in text) == len(LINES)
+
+
+def test_escaped_slash_is_not_silently_dropped() -> None:
+    """转义串在还原前不应被当成完整 Base64 直接解压出错误内容。"""
+    escaped = build_payload().replace("/", "\\/")
+    restored = inflate_blobs(escaped)
+    assert "261期" in restored
+    assert "╠雨风雷╣" in restored
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    (
+        ("╠琴肖,书肖,画肖╣", "╠琴书画╣"),
+        ("╠琴肖 书肖 画肖╣", "╠琴书画╣"),
+        ("╠琴肖,画肖,棋肖╣", "╠琴画棋╣"),
+        ("╠画棋书╣", "╠画棋书╣"),
+    ),
+)
+def test_group_notation_is_normalized(raw: str, expected: str) -> None:
+    line = f"261期琴棋书画{raw}开:發00准"
+    assert expected in _normalize_group_notation(line)
+
+
+def test_group_notation_keeps_unrelated_lines_untouched() -> None:
+    other = "作者:自求多福更新:1789681349000"
+    assert _normalize_group_notation(other) == other
+
+
+def test_normalized_group_notation_is_parsable() -> None:
+    """归一化后的分组必须能被既有解析器识别（不改 parsers）。"""
+    from v2.parsers.safety import group_candidates
+    from v2.parsers.registry import normalize_document_text
+
+    mapping = {"琴": "兔蛇鸡", "棋": "鼠牛狗", "书": "虎龙马", "画": "羊猴猪"}
+    raw = '261期<font color="#1140cb">琴棋书画</font>╠<font>画肖,<span>棋肖</span>,书肖</font>╣开:發00准'
+    normalized = normalize_document_text(_normalize_group_notation(raw))
+    candidates = group_candidates(normalized, mapping)
+    assert candidates, "归一化后应能识别分组"
+    method, category, groups, zodiac = candidates[0]
+    assert groups == "画棋书"
+    assert zodiac == "羊猴猪鼠牛狗虎龙马"
+    assert category == "".join(mapping)
 
 
 async def _fetch(source: Source):

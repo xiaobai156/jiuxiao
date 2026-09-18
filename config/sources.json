@@ -5295,6 +5295,27 @@
       ],
       "data_marker": "",
       "source_policy": []
+    },
+    {
+      "name": "自求多福",
+      "url": "https://dh81162.0gln642de8.cyou/Vl8CPhDsIO.html",
+      "position": "bottom",
+      "section_marker": "自求多福",
+      "fetcher": "chunked_spa",
+      "parser": "chunked_grouped",
+      "api_url": "https://api.kxusu.com",
+      "group_map": {
+        "琴": "兔蛇鸡",
+        "棋": "鼠牛狗",
+        "书": "虎龙马",
+        "画": "羊猴猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "琴棋书画",
+      "source_policy": [
+        "chunked_data"
+      ]
     }
   ]
 }
