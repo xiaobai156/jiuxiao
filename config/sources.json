@@ -5258,6 +5258,27 @@
       "aliases": [],
       "data_marker": "新澳九肖",
       "source_policy": []
+    },
+    {
+      "name": "密密麻麻",
+      "url": "https://dh81162.0gln642de8.cyou/TwldclGzSC.html",
+      "position": "top",
+      "section_marker": "风雷电雨",
+      "fetcher": "chunked_spa",
+      "parser": "chunked_grouped",
+      "api_url": "https://api.kxusu.com",
+      "group_map": {
+        "风": "虎兔龙",
+        "雨": "蛇羊马",
+        "雷": "猴狗鸡",
+        "电": "鼠牛猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "风雷电雨",
+      "source_policy": [
+        "chunked_data"
+      ]
     }
   ]
 }

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from v2.parsers.custom.chunked_grouped import ChunkedGroupedParser
 from v2.parsers.custom.color_info_grouped import ColorInfoGroupedParser
 from v2.parsers.custom.complement_three import ComplementThreeParser
 from v2.parsers.custom.dynamic_article_grouped import (
@@ -88,4 +89,5 @@ def build_parser_registry() -> ParserRegistry:
         "topic_cyclic_grouped",
         TopicCyclicGroupedParser(),
     )
+    registry.register("chunked_grouped", ChunkedGroupedParser())
     return registry

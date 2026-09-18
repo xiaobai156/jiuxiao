@@ -21,6 +21,7 @@ class DocumentMethod(str, Enum):
     SCRIPT = "script"
     IMAGE_OCR = "image_ocr"
     LIST_DETAIL = "list_detail"
+    CHUNKED_DATA = "chunked_data"
 
 
 class SourceRole(str, Enum):

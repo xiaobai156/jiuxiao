@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+
 from v2.domain.errors import ErrorCode, Failure
 from v2.domain.models import Document, DocumentMethod, Record, RecordSet, Source
 from v2.parsers.registry import (
@@ -20,6 +22,10 @@ from v2.parsers.safety import (
     issue_scoped_segments,
     with_complete_observed_issues,
 )
+
+
+# 分组字之间可能出现的分隔符（比较前剥离，用于判断分组是否连续出现）
+_GROUP_SEPARATOR = re.compile(r"[\s.,，、。·•|/\\\-—_+=:：;；~～]+")
 
 
 class GroupedParser:
@@ -92,6 +98,11 @@ class GroupedParser:
                                 )
                                 else groups
                             )
+                            # 分组字必须连续出现在该行，避免子串误判
+                            # （例如 风云 会被 风雷云雨 包含，但不是该行的分组）。
+                            # 比较前剥离分组字之间的分隔符（点、空格等）
+                            if groups not in _GROUP_SEPARATOR.sub("", scoped_line):
+                                continue
                             records.append(
                                 Record(
                                     issue=issue,

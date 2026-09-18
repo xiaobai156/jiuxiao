@@ -189,11 +189,28 @@ def complement_candidates(line: str) -> tuple[tuple[str, str], ...]:
     return tuple(candidates)
 
 
+def collapse_group_spans(text: str) -> str:
+    """合并 ╠…╣ / 『…』 包裹内的空白。
+
+    站点常把被高亮的那一个分组字单独用 <span> 包起来，规范化去标签后会插进空格
+    （如「风雷 云」），导致分组字不再连续、无法识别；此处只压缩包裹内的空白，
+    不改变字符本身，也不影响包裹外的内容。
+    """
+    spans = re.compile(r"([╠『【])(.*?)([╣』】])")
+    whitespace = re.compile(r"\s+")
+
+    def _squash(match: re.Match[str]) -> str:
+        inner = whitespace.sub("", match.group(2))
+        return f"{match.group(1)}{inner}{match.group(3)}"
+
+    return spans.sub(_squash, text)
+
+
 def group_candidates(
     line: str,
     mapping: dict[str, str] | None = None,
 ) -> tuple[tuple[str, str, str, str], ...]:
-    text = before_opening_result(line)
+    text = before_opening_result(collapse_group_spans(line))
     categories = (
         (("".join(mapping), mapping),)
         if mapping is not None
@@ -218,6 +235,9 @@ def group_candidates(
             add("equal_wrapped_group", category, raw, values)
         for raw in re.findall(rf"☸\s*☸\s*([{keys}]{{3}})\s*☸\s*☸", text):
             add("double_diamond_group", category, raw, values)
+        # ╠…╣ 包法（分块型页面常见）
+        for raw in re.findall(rf"╠\s*([{keys}]{{3}})\s*╣", text):
+            add("diamond_wrapped_group", category, raw, values)
     tail = re.split(r"[】》〗』」）)\]>〉}┫]", text)[-1]
     for category, values in categories:
         add("tail_group", category, tail, values)

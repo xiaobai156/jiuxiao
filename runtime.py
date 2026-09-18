@@ -16,6 +16,7 @@ from v2.fetchers.browser_page import (
     PlaywrightBrowserClient,
     PlaywrightHttpClient,
 )
+from v2.fetchers.chunked_spa import ChunkedSpaFetcher
 from v2.fetchers.dynamic_article import DynamicArticleFetcher
 from v2.fetchers.list_detail import (
     ListDetailCurrentFetcher,
@@ -152,6 +153,7 @@ def _fetchers(context, browser: PlaywrightBrowserClient) -> FetcherRegistry:
     registry.register("list_detail_top3", ListDetailTopThreeFetcher(browser))
     registry.register("list_detail_current", ListDetailCurrentFetcher(browser))
     registry.register("liuiuqu", LiuiuquFetcher(http))
+    registry.register("chunked_spa", ChunkedSpaFetcher(http))
     return registry
 
 
