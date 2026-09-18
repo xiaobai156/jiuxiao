@@ -6,7 +6,7 @@ from typing import Iterable
 
 CANONICAL_ZODIACS = "鼠牛虎兔龙蛇马羊猴鸡狗猪"
 ZODIACS = frozenset(CANONICAL_ZODIACS)
-ISSUE_PATTERN = re.compile(r"(?<!\d)(?P<issue>\d{3})期")
+ISSUE_PATTERN = re.compile(r"(?<!\d)(?P<issue>\d{3})\s*期")
 BRACKET_PATTERN = re.compile(
     r"[【《〖『「（(\[<〈{┣]([^】》〗』」）)\]>〉}┫]+)[】》〗』」）)\]>〉}┫]"
 )

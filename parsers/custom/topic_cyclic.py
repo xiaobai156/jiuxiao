@@ -87,13 +87,16 @@ class TopicCyclicParser:
                     ),),
                 )
             )
+        # 统一校验要求 source.parser == 证据 parser_id，故按实际分支回写解析器标识
+        parser_id = "topic_cyclic_grouped" if source.group_map else self.parser_id
+        effective_source = replace(source, parser=parser_id)
         parser = (
-            GroupedParser(self.parser_id)
+            GroupedParser(parser_id)
             if source.group_map
-            else DirectNineParser(self.parser_id)
+            else DirectNineParser(parser_id)
         )
         return parser.parse(
-            source,
+            effective_source,
             tuple(selected_documents),
             issues,
         )
@@ -129,3 +132,9 @@ class TopicCyclicParser:
             text="\n".join(lines),
             metadata=metadata,
         )
+
+
+class TopicCyclicGroupedParser(TopicCyclicParser):
+    """循环切轮后再按分组映射转换（页面每期只列 3 个分组字）。"""
+
+    parser_id = "topic_cyclic_grouped"

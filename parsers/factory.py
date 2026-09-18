@@ -25,7 +25,10 @@ from v2.parsers.custom.profile_history import ProfileHistoryParser
 from v2.parsers.custom.single_season_complement import (
     SingleSeasonComplementParser,
 )
-from v2.parsers.custom.topic_cyclic import TopicCyclicParser
+from v2.parsers.custom.topic_cyclic import (
+    TopicCyclicGroupedParser,
+    TopicCyclicParser,
+)
 from v2.parsers.custom.white_tiger import WhiteTigerParser
 from v2.parsers.custom.yueying import YueyingParser
 from v2.parsers.direct_nine import DirectNineParser
@@ -81,4 +84,8 @@ def build_parser_registry() -> ParserRegistry:
         ),
     )
     registry.register("topic_cyclic_nine", TopicCyclicParser())
+    registry.register(
+        "topic_cyclic_grouped",
+        TopicCyclicGroupedParser(),
+    )
     return registry
