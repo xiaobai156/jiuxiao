@@ -5279,6 +5279,22 @@
       "source_policy": [
         "chunked_data"
       ]
+    },
+    {
+      "name": "造褔人群",
+      "url": "https://bbyy.700020.com/read.php?tid=7072",
+      "position": "bottom",
+      "section_marker": "造褔人群",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [
+        "造福人群"
+      ],
+      "data_marker": "",
+      "source_policy": []
     }
   ]
 }
