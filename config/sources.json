@@ -896,7 +896,7 @@
       "position": "top",
       "section_marker": "",
       "fetcher": "browser_page",
-      "parser": "grouped",
+      "parser": "topic_cyclic_grouped",
       "api_url": "",
       "group_map": {
         "琴": "兔蛇鸡",
@@ -1095,7 +1095,7 @@
       "position": "top",
       "section_marker": "",
       "fetcher": "browser_page",
-      "parser": "topic_cyclic_nine",
+      "parser": "topic_cyclic_grouped",
       "api_url": "",
       "group_map": {
         "春": "虎兔龙",
@@ -1770,7 +1770,7 @@
       "position": "top",
       "section_marker": "",
       "fetcher": "browser_page",
-      "parser": "direct_nine",
+      "parser": "topic_cyclic_grouped",
       "api_url": "",
       "group_map": {},
       "detail_link_keyword": "",
@@ -3111,7 +3111,7 @@
       "position": "top",
       "section_marker": "喜上眉梢",
       "fetcher": "browser_page",
-      "parser": "topic_cyclic_nine",
+      "parser": "topic_cyclic_grouped",
       "api_url": "",
       "group_map": {
         "春": "虎兔龙",
@@ -4053,7 +4053,7 @@
       "position": "top",
       "section_marker": "焦唇干舌",
       "fetcher": "browser_page",
-      "parser": "topic_cyclic_nine",
+      "parser": "topic_cyclic_grouped",
       "api_url": "",
       "group_map": {
         "春": "虎兔龙",
@@ -4213,7 +4213,7 @@
       "position": "top",
       "section_marker": "淑女是姐",
       "fetcher": "browser_page",
-      "parser": "topic_cyclic_nine",
+      "parser": "topic_cyclic_grouped",
       "api_url": "",
       "group_map": {
         "琴": "兔蛇鸡",
@@ -4508,7 +4508,7 @@
       "position": "top",
       "section_marker": "翻天覆地",
       "fetcher": "browser_page",
-      "parser": "topic_cyclic_nine",
+      "parser": "topic_cyclic_grouped",
       "api_url": "",
       "group_map": {
         "琴": "兔蛇鸡",
