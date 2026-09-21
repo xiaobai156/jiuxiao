@@ -5316,6 +5316,54 @@
       "source_policy": [
         "chunked_data"
       ]
+    },
+    {
+      "name": "木鱼丸",
+      "url": "https://m.aczj.cc/bbs.aspx?id=001",
+      "position": "top",
+      "section_marker": "木_鱼丸",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": [
+        "browser_dom"
+      ]
+    },
+    {
+      "name": "温柔三刀",
+      "url": "https://www.www144344.com/read.php?tid=1898",
+      "position": "bottom",
+      "section_marker": "温柔三刀",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": [
+        "browser_dom"
+      ]
+    },
+    {
+      "name": "归隐山林",
+      "url": "https://www.930600.com/bbs/read.php?tid=1794200",
+      "position": "top",
+      "section_marker": "归隐山林",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": [
+        "browser_dom"
+      ]
     }
   ]
 }
