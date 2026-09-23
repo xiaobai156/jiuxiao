@@ -89,6 +89,35 @@ def test_direct_parser_does_not_borrow_nine_zodiacs_from_next_issue_segment() ->
     assert captured.value.failure.code is ErrorCode.INVALID_ZODIAC_COUNT
 
 
+def test_direct_parser_keeps_history_across_bare_domain_interstitial() -> None:
+    target = Source(
+        name="出言不逊",
+        url="https://example.test/read.php?tid=53440",
+        position=Position.BOTTOM,
+        section_marker="出言不逊",
+        fetcher="browser_page",
+        parser="direct_nine",
+    )
+    document = Document(
+        label="browser-dom",
+        url=target.url,
+        text=(
+            "【出言不逊】\n"
+            "264期:【出言不逊】九肖中特【鼠鸡蛇狗龙猪虎兔羊】开:狗21中\n"
+            "922308.com 七星好料\n"
+            "265期:【出言不逊】九肖中特【猴牛鸡羊马猪蛇鼠龙】开:马49中\n"
+            "266期:【出言不逊】九肖中特【马牛龙羊虎狗蛇兔猴】开:？00中\n"
+        ),
+        method=DocumentMethod.BROWSER_DOM,
+    )
+
+    parsed = DirectNineParser().parse(target, (document,), (266,))
+    verified = Validator().validate(target, parsed, (266,))
+
+    assert verified.history.records[0].zodiac_text == "马牛龙羊虎狗蛇兔猴"
+    assert verified.history.records[0].evidence.direction_window == (266, 265, 264)
+
+
 def test_formula_ocr_does_not_complete_eight_zodiacs_with_opening_result() -> None:
     target = _source(
         parser="formula_next_issue_ocr",

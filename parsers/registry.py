@@ -72,6 +72,12 @@ HISTORY_INTERSTITIAL_MARKERS = (
     "欢迎转发+关注",
     "所有记录真实永不作假",
 )
+DOMAIN_INTERSTITIAL_PATTERN = re.compile(
+    r"^\s*(?:www\.)?[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+    r"(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+"
+    r"(?:\s+[\u4e00-\u9fff]{1,12})?\s*$",
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -334,7 +340,10 @@ def anchored_history_blocks(
                     AnchoredLine(index + line_offset, line)
                 )
                 continue
-            if any(marker in line for marker in HISTORY_INTERSTITIAL_MARKERS):
+            if (
+                any(marker in line for marker in HISTORY_INTERSTITIAL_MARKERS)
+                or DOMAIN_INTERSTITIAL_PATTERN.fullmatch(line) is not None
+            ):
                 continue
             if not line or HISTORY_SEPARATOR_PATTERN.fullmatch(line):
                 continue

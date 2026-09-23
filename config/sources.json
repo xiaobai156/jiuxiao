@@ -5364,6 +5364,76 @@
       "source_policy": [
         "browser_dom"
       ]
+    },
+    {
+      "name": "出言不逊",
+      "url": "https://6yrtfjghvnb-0978dtuxfyh.xyz/read.php?tid=53440",
+      "position": "bottom",
+      "section_marker": "出言不逊",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
+    },
+    {
+      "name": "如雪若梦",
+      "url": "https://6yrtfjghvnb-0978dtuxfyh.xyz/read.php?tid=53977",
+      "position": "bottom",
+      "section_marker": "如雪若梦",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
+    },
+    {
+      "name": "美酒咖啡",
+      "url": "https://6yrtfjghvnb-0978dtuxfyh.xyz/read.php?tid=54123",
+      "position": "bottom",
+      "section_marker": "美酒咖啡",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
+    },
+    {
+      "name": "宝刀不老",
+      "url": "https://www.jinjintianniulaihenhaokan.xyz/read.php?tid=6030",
+      "position": "bottom",
+      "section_marker": "宝刀不老",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
+    },
+    {
+      "name": "王者攻略",
+      "url": "https://www.jinjintianniulaihenhaokan.xyz/read.php?tid=5559",
+      "position": "bottom",
+      "section_marker": "王者攻略",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "9 肖",
+      "source_policy": []
     }
   ]
 }
