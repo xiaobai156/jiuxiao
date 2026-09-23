@@ -2083,25 +2083,6 @@
       "source_policy": []
     },
     {
-      "name": "人多人少",
-      "url": "https://asmfkb.dfkxu-0rwnp-wevqzo.work:29466/article/admin/6a1465a831b8505dcf06215d?url=fcw",
-      "position": "bottom",
-      "section_marker": "",
-      "fetcher": "dynamic_article",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "春": "虎兔龙",
-        "夏": "蛇马羊",
-        "秋": "猴鸡狗",
-        "冬": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "春夏秋冬",
-      "source_policy": []
-    },
-    {
       "name": "人山人海",
       "url": "https://asmfkb.dfkxu-0rwnp-wevqzo.work:29466/article/admin/6a0dd5818f97c679c745698e?url=fcw",
       "position": "bottom",
@@ -3604,20 +3585,6 @@
       "url": "https://fansiggg.jc2q8-whfmg-vajjui.xyz:29433/article/manager/6a096b38291caff3edcb8b9a?url=dyj",
       "position": "bottom",
       "section_marker": "宝彩太子",
-      "fetcher": "dynamic_article",
-      "parser": "split_line",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "",
-      "source_policy": []
-    },
-    {
-      "name": "宝藏神料",
-      "url": "https://vnxqseiu.ymm13-381iq-zcgmtu.xyz:29400/article/manager/6a081955e0d076537e1df869?url=jdb",
-      "position": "bottom",
-      "section_marker": "宝藏神料",
       "fetcher": "dynamic_article",
       "parser": "split_line",
       "api_url": "",
