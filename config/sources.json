@@ -5417,6 +5417,25 @@
       "source_policy": [
         "browser_dom"
       ]
+    },
+    {
+      "name": "一纸乱言",
+      "url": "https://sgghdnx.47598995.app:17466/topic/205245.html",
+      "position": "top",
+      "section_marker": "一纸乱言",
+      "fetcher": "browser_page",
+      "parser": "grouped",
+      "api_url": "",
+      "group_map": {
+        "春": "虎兔龙",
+        "夏": "蛇马羊",
+        "秋": "猴鸡狗",
+        "冬": "鼠牛猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "春夏秋冬",
+      "source_policy": []
     }
   ]
 }
