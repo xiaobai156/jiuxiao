@@ -5436,6 +5436,38 @@
       "aliases": [],
       "data_marker": "春夏秋冬",
       "source_policy": []
+    },
+    {
+      "name": "害怕妈祖",
+      "url": "https://zcphjs.ce83x-ms2rz-orwude.work:12277/#/users/4030",
+      "position": "top",
+      "section_marker": "九肖中特",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": [
+        "browser_dom"
+      ]
+    },
+    {
+      "name": "错过火车",
+      "url": "https://zcphjs.ce83x-ms2rz-orwude.work:12277/#/users/2056",
+      "position": "top",
+      "section_marker": "九肖中特",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": [
+        "browser_dom"
+      ]
     }
   ]
 }
