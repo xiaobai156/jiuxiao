@@ -5401,6 +5401,22 @@
       "aliases": [],
       "data_marker": "9 肖",
       "source_policy": []
+    },
+    {
+      "name": "依然公主九肖",
+      "url": "http://www.2018512.com/read.php?tid=15&fpage=1&page=2",
+      "position": "bottom",
+      "section_marker": "天机阁 依然公主",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": [
+        "browser_dom"
+      ]
     }
   ]
 }
