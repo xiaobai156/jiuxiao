@@ -1602,7 +1602,7 @@
       "position": "bottom",
       "section_marker": "嫦娥彩报╠无错九肖╣公式规律",
       "fetcher": "browser_page_narrow_image",
-      "parser": "formula_article_ocr_alias",
+      "parser": "formula_next_issue_ocr",
       "api_url": "",
       "group_map": {},
       "detail_link_keyword": "",
