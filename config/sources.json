@@ -6035,6 +6035,20 @@
       "aliases": [],
       "data_marker": "春夏秋冬",
       "source_policy": []
+    },
+    {
+      "name": "花纹衬布",
+      "url": "https://bgyvmaax.uqy1r-wtvrz-ogztri.work:17488/topic/245041.html",
+      "position": "top",
+      "section_marker": "花纹衬布",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
     }
   ]
 }
