@@ -5468,6 +5468,189 @@
       "source_policy": [
         "browser_dom"
       ]
+    },
+    {
+      "name": "CC琴棋",
+      "url": "https://www.502066.com/index/index/tiezi?type=chess",
+      "position": "top",
+      "section_marker": "琴棋书画",
+      "fetcher": "browser_page",
+      "parser": "grouped",
+      "api_url": "",
+      "group_map": {
+        "琴": "兔蛇鸡",
+        "棋": "鼠牛狗",
+        "书": "虎龙马",
+        "画": "羊猴猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "琴棋书画",
+      "source_policy": []
+    },
+    {
+      "name": "CC春秋",
+      "url": "https://www.502066.com/index/index/tiezi?type=four_seasons",
+      "position": "top",
+      "section_marker": "四季生肖",
+      "fetcher": "browser_page",
+      "parser": "grouped",
+      "api_url": "",
+      "group_map": {
+        "春": "虎兔龙",
+        "夏": "蛇马羊",
+        "秋": "猴鸡狗",
+        "冬": "鼠牛猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "春夏秋冬",
+      "source_policy": []
+    },
+    {
+      "name": "洗心革面",
+      "url": "https://zq.907588.com/gszl/1.html",
+      "position": "bottom",
+      "section_marker": "九肖中特",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": [
+        "browser_frame",
+        "browser_dom"
+      ]
+    },
+    {
+      "name": "乾坤运转",
+      "url": "https://xuknerw.fu5qv-a7f7o-nxmebt.work:16633/topic/472194.html",
+      "position": "top",
+      "section_marker": "乾坤运转",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_grouped",
+      "api_url": "",
+      "group_map": {
+        "琴": "兔蛇鸡",
+        "棋": "鼠牛狗",
+        "书": "虎龙马",
+        "画": "羊猴猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "琴棋书画",
+      "source_policy": []
+    },
+    {
+      "name": "跷足抗首",
+      "url": "https://yioznkua.snfqn-48psf-vctwsw.xyz:16677/topic/236854.html",
+      "position": "top",
+      "section_marker": "跷足抗首",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_grouped",
+      "api_url": "",
+      "group_map": {
+        "春": "虎兔龙",
+        "夏": "蛇马羊",
+        "秋": "猴鸡狗",
+        "冬": "鼠牛猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "春夏秋冬",
+      "source_policy": []
+    },
+    {
+      "name": "发愤自厉",
+      "url": "https://xuknerw.fu5qv-a7f7o-nxmebt.work:16633/topic/272857.html",
+      "position": "top",
+      "section_marker": "发愤自厉",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_grouped",
+      "api_url": "",
+      "group_map": {
+        "琴": "兔蛇鸡",
+        "棋": "鼠牛狗",
+        "书": "虎龙马",
+        "画": "羊猴猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "琴棋书画",
+      "source_policy": []
+    },
+    {
+      "name": "兴微继絶",
+      "url": "https://xuknerw.fu5qv-a7f7o-nxmebt.work:16633/topic/272858.html",
+      "position": "top",
+      "section_marker": "兴微继絶",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_grouped",
+      "api_url": "",
+      "group_map": {
+        "春": "虎兔龙",
+        "夏": "蛇马羊",
+        "秋": "猴鸡狗",
+        "冬": "鼠牛猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "春夏秋冬",
+      "source_policy": []
+    },
+    {
+      "name": "百岁千秋",
+      "url": "https://xuknerw.fu5qv-a7f7o-nxmebt.work:16633/topic/272659.html",
+      "position": "top",
+      "section_marker": "百岁千秋",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_grouped",
+      "api_url": "",
+      "group_map": {
+        "春": "虎兔龙",
+        "夏": "蛇马羊",
+        "秋": "猴鸡狗",
+        "冬": "鼠牛猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "春夏秋冬",
+      "source_policy": []
+    },
+    {
+      "name": "一财万贯",
+      "url": "https://hhsmgw.rcl5b-akta2-ylzzwv.xyz:16677/topic/457708.html",
+      "position": "top",
+      "section_marker": "一财万贯",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
+    },
+    {
+      "name": "六六大顺",
+      "url": "https://hhsmgw.rcl5b-akta2-ylzzwv.xyz:16677/topic/328430.html",
+      "position": "top",
+      "section_marker": "六六大顺",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_grouped",
+      "api_url": "",
+      "group_map": {
+        "春": "虎兔龙",
+        "夏": "蛇马羊",
+        "秋": "猴鸡狗",
+        "冬": "鼠牛猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "春夏秋冬",
+      "source_policy": []
     }
   ]
 }
