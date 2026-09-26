@@ -1201,6 +1201,62 @@
       },
       "archived_at": "2026-09-23T18:06:47+08:00",
       "reason": "用户明确封存，不再抓取；266期抓取失败：文章已不存在（页面为 SPA 空壳，接口 404 AdminArticle 不存在）"
+    },
+    {
+      "source": {
+        "name": "风铃歌",
+        "url": "https://wwlhc.com/forum-66-1.html",
+        "position": "bottom",
+        "section_marker": "风铃歌 新澳九肖",
+        "fetcher": "list_detail_current",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "新澳九肖",
+        "aliases": [],
+        "data_marker": "新澳九肖",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-26T19:00:13+08:00",
+      "reason": "用户明确封存，不再抓取；269期抓取失败：作者未发布（帖页仍为267期，268/269 均无记录）"
+    },
+    {
+      "source": {
+        "name": "归隐山林",
+        "url": "https://www.930600.com/bbs/read.php?tid=1794200",
+        "position": "top",
+        "section_marker": "归隐山林",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "九肖",
+        "source_policy": [
+          "browser_dom"
+        ]
+      },
+      "archived_at": "2026-09-26T19:00:13+08:00",
+      "reason": "用户明确封存，不再抓取；269期抓取失败：原帖失效（页面提示帖子ID非法/需登录），缓存从未有记录"
+    },
+    {
+      "source": {
+        "name": "尽心竭力",
+        "url": "https://nwrkkmv.rx287-rkrai-jsjccc.xyz:29499/article/manager/6a55d834f447e21b02daa63f?url=ggz",
+        "position": "bottom",
+        "section_marker": "尽心竭力",
+        "fetcher": "dynamic_article",
+        "parser": "split_line",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-26T19:00:13+08:00",
+      "reason": "用户明确封存，不再抓取；269期抓取失败：站点已删除该文章（landing 229 条记录中无此文，相邻 id 都在）"
     }
   ]
 }

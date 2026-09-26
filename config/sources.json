@@ -3689,20 +3689,6 @@
       "source_policy": []
     },
     {
-      "name": "尽心竭力",
-      "url": "https://nwrkkmv.rx287-rkrai-jsjccc.xyz:29499/article/manager/6a55d834f447e21b02daa63f?url=ggz",
-      "position": "bottom",
-      "section_marker": "尽心竭力",
-      "fetcher": "dynamic_article",
-      "parser": "split_line",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "",
-      "source_policy": []
-    },
-    {
       "name": "田乘风破",
       "url": "https://hcsuuoy.nimo7-9bgj4-fmspxt.xyz:29466/article/manager/6a3146cf32c7c4bb3c056f95?url=cww",
       "position": "bottom",
@@ -5213,20 +5199,6 @@
       "source_policy": []
     },
     {
-      "name": "风铃歌",
-      "url": "https://wwlhc.com/forum-66-1.html",
-      "position": "bottom",
-      "section_marker": "风铃歌 新澳九肖",
-      "fetcher": "list_detail_current",
-      "parser": "direct_nine",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "新澳九肖",
-      "aliases": [],
-      "data_marker": "新澳九肖",
-      "source_policy": []
-    },
-    {
       "name": "密密麻麻",
       "url": "https://dh81162.0gln642de8.cyou/TwldclGzSC.html",
       "position": "top",
@@ -5305,22 +5277,6 @@
       "url": "http://38.177.253.132:31882/read.php?tid=1898",
       "position": "bottom",
       "section_marker": "温柔三刀",
-      "fetcher": "browser_page",
-      "parser": "direct_nine",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "九肖",
-      "source_policy": [
-        "browser_dom"
-      ]
-    },
-    {
-      "name": "归隐山林",
-      "url": "https://www.930600.com/bbs/read.php?tid=1794200",
-      "position": "top",
-      "section_marker": "归隐山林",
       "fetcher": "browser_page",
       "parser": "direct_nine",
       "api_url": "",
