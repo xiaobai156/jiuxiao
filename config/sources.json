@@ -5830,14 +5830,14 @@
       "parser": "topic_cyclic_grouped",
       "api_url": "",
       "group_map": {
-        "风": "虎兔龙",
-        "雨": "蛇羊马",
-        "雷": "猴狗鸡",
-        "电": "鼠牛猪"
+        "风": "虎龙兔",
+        "雨": "猪鼠牛",
+        "雷": "蛇马羊",
+        "云": "猴鸡狗"
       },
       "detail_link_keyword": "",
       "aliases": [],
-      "data_marker": "风雨雷电",
+      "data_marker": "风雨雷云",
       "source_policy": []
     },
     {
