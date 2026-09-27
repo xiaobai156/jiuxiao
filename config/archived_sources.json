@@ -1257,6 +1257,24 @@
       },
       "archived_at": "2026-09-26T19:00:13+08:00",
       "reason": "用户明确封存，不再抓取；269期抓取失败：站点已删除该文章（landing 229 条记录中无此文，相邻 id 都在）"
+    },
+    {
+      "source": {
+        "name": "如雪若梦",
+        "url": "https://6yrtfjghvnb-0978dtuxfyh.xyz/read.php?tid=53977",
+        "position": "bottom",
+        "section_marker": "如雪若梦",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-27T19:56:46+08:00",
+      "reason": "用户明确封存，不再抓取；270期抓取失败：站点侧原帖已删除/受限（read.php 返回「您没有登录或者您没有权限访问此页面…链接无效/数据已被删除」，同宿主论坛首页 165 条【270期】帖中无本站、无 tid=53977）"
     }
   ]
 }

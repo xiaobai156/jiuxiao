@@ -5303,20 +5303,6 @@
       "source_policy": []
     },
     {
-      "name": "如雪若梦",
-      "url": "https://6yrtfjghvnb-0978dtuxfyh.xyz/read.php?tid=53977",
-      "position": "bottom",
-      "section_marker": "如雪若梦",
-      "fetcher": "browser_page",
-      "parser": "direct_nine",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "",
-      "source_policy": []
-    },
-    {
       "name": "美酒咖啡",
       "url": "https://6yrtfjghvnb-0978dtuxfyh.xyz/read.php?tid=54123",
       "position": "bottom",
