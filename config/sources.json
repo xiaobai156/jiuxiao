@@ -6072,6 +6072,27 @@
       "source_policy": [
         "browser_dom"
       ]
+    },
+    {
+      "name": "强死强活",
+      "url": "https://qhfsrngx.x9mcp-vrrqh-dzqfro.xyz:16677/topic/451405.html",
+      "position": "top",
+      "section_marker": "强死强活",
+      "fetcher": "browser_page",
+      "parser": "grouped",
+      "api_url": "",
+      "group_map": {
+        "春": "兔虎龙",
+        "夏": "蛇马羊",
+        "秋": "猴鸡狗",
+        "冬": "猪鼠牛"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "春夏秋冬",
+      "source_policy": [
+        "browser_dom"
+      ]
     }
   ]
 }
