@@ -6033,6 +6033,43 @@
       "aliases": [],
       "data_marker": "",
       "source_policy": []
+    },
+    {
+      "name": "烈焰风暴",
+      "url": "https://ulefrw.i6sml-u8o4o-eibogo.work:17455/topic/610836.html",
+      "position": "top",
+      "section_marker": "烈焰风暴",
+      "fetcher": "browser_page",
+      "parser": "grouped",
+      "api_url": "",
+      "group_map": {
+        "琴": "兔蛇鸡",
+        "棋": "鼠牛狗",
+        "书": "虎龙马",
+        "画": "羊猴猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "琴棋书画",
+      "source_policy": [
+        "browser_dom"
+      ]
+    },
+    {
+      "name": "灯火辉煌",
+      "url": "https://cubkunjt.pvjc8-6od3n-hnuygu.work:17488/topic/444000.html",
+      "position": "bottom",
+      "section_marker": "灯火辉煌",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": [
+        "browser_dom"
+      ]
     }
   ]
 }
