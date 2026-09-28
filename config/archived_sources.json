@@ -1275,6 +1275,24 @@
       },
       "archived_at": "2026-09-27T19:56:46+08:00",
       "reason": "用户明确封存，不再抓取；270期抓取失败：站点侧原帖已删除/受限（read.php 返回「您没有登录或者您没有权限访问此页面…链接无效/数据已被删除」，同宿主论坛首页 165 条【270期】帖中无本站、无 tid=53977）"
+    },
+    {
+      "source": {
+        "name": "因材施教",
+        "url": "https://4-0oufiyhcjg-ipg0ojv.xyz/read.php?tid=74028",
+        "position": "bottom",
+        "section_marker": "因材施教",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-28T19:12:38+08:00",
+      "reason": "用户明确封存，不再抓取；271期抓取失败：站点侧原帖已删除（read.php 返回「您没有登录或者您没有权限访问此页面…链接无效/数据已被删除」，同宿主论坛版块首页 234 条帖中无本站、无 tid=74028；同批接入的阿猫阿狗/长生轮回 271 期均正常）"
     }
   ]
 }
