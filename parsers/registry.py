@@ -303,10 +303,20 @@ def anchored_history_blocks(
         observed: list[int] = []
         found_candidate = False
         end = natural_end
+        previous_issue: int | None = None
         for index in range(anchor_index, natural_end):
             line = lines[index]
             issue = line_issue(line)
             if issue is not None:
+                if (
+                    found_candidate
+                    and previous_issue is not None
+                    and issue > previous_issue
+                    and source.parser == "direct_nine"
+                ):
+                    end = index
+                    break
+                previous_issue = issue
                 observed.append(issue)
                 selected.append(
                     AnchoredLine(index + line_offset, line)
