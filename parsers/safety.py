@@ -231,6 +231,8 @@ def group_candidates(
             add("bracket_group", category, bracket_text, values)
     for category, values in categories:
         keys = "".join(re.escape(key) for key in values)
+        for raw in re.findall(rf"[★☆]\s*([{keys}]{{3}})\s*[★☆]", text):
+            add("star_wrapped_group", category, raw, values)
         for raw in re.findall(rf"=+\s*([{keys}]{{3}})\s*=+", text):
             add("equal_wrapped_group", category, raw, values)
         for raw in re.findall(rf"☸\s*☸\s*([{keys}]{{3}})\s*☸\s*☸", text):

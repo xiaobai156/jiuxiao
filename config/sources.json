@@ -6109,6 +6109,43 @@
       "source_policy": [
         "browser_dom"
       ]
+    },
+    {
+      "name": "省身克己",
+      "url": "https://kjqba.ipvrs-9mw2c-wdnuvo.work/topic/234983.html",
+      "position": "top",
+      "section_marker": "省身克己",
+      "fetcher": "browser_page",
+      "parser": "grouped",
+      "api_url": "",
+      "group_map": {
+        "琴": "兔蛇鸡",
+        "棋": "鼠牛狗",
+        "书": "虎龙马",
+        "画": "羊猴猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "琴棋书画",
+      "source_policy": [
+        "browser_dom"
+      ]
+    },
+    {
+      "name": "斯抬斯敬",
+      "url": "https://zurzgbji.y5fbz-z5q1f-suyalq.work:17477/topic/455070.html",
+      "position": "top",
+      "section_marker": "斯抬斯敬",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": [
+        "browser_dom"
+      ]
     }
   ]
 }
