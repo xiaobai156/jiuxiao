@@ -6242,6 +6242,22 @@
       "source_policy": [
         "browser_dom"
       ]
+    },
+    {
+      "name": "移花换柳",
+      "url": "https://hqukoej.4r7ey-l73ae-clkcxs.xyz:16677/topic/382368.html",
+      "position": "top",
+      "section_marker": "移花换柳",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "精准九肖中特",
+      "source_policy": [
+        "browser_dom"
+      ]
     }
   ]
 }
