@@ -6093,6 +6093,22 @@
       "source_policy": [
         "browser_dom"
       ]
+    },
+    {
+      "name": "得意之作",
+      "url": "https://pvxiftuf.yumkw-u4s81-hpytyz.work:16677/topic/551881.html",
+      "position": "top",
+      "section_marker": "得意之作",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": [
+        "browser_dom"
+      ]
     }
   ]
 }
