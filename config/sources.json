@@ -6258,6 +6258,34 @@
       "source_policy": [
         "browser_dom"
       ]
+    },
+    {
+      "name": "细枝末节",
+      "url": "https://hqukoej.4r7ey-l73ae-clkcxs.xyz:16677/topic/622383.html",
+      "position": "bottom",
+      "section_marker": "细枝末节",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
+    },
+    {
+      "name": "如意阁七剑",
+      "url": "https://ukmscalf.oyxaj-id1y3-ccimxm.work:17477/",
+      "position": "top",
+      "section_marker": "由龙剑稳中九肖",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
     }
   ]
 }
