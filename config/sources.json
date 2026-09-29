@@ -6302,6 +6302,38 @@
       "source_policy": [
         "browser_dom"
       ]
+    },
+    {
+      "name": "旬月之间",
+      "url": "https://admugb.asqn9-fejhx-vmbfkd.work:17455/topic/541692.html",
+      "position": "top",
+      "section_marker": "旬月之间",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": [
+        "browser_dom"
+      ]
+    },
+    {
+      "name": "熏腐之余",
+      "url": "https://admugb.asqn9-fejhx-vmbfkd.work:17455/topic/541691.html",
+      "position": "top",
+      "section_marker": "熏腐之余",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": [
+        "browser_dom"
+      ]
     }
   ]
 }
