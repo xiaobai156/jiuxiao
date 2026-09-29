@@ -6350,6 +6350,22 @@
       "source_policy": [
         "browser_dom"
       ]
+    },
+    {
+      "name": "语重心长",
+      "url": "https://bqipgah.pvib6-ptrqe-ihcefh.xyz:16677/topic/268625.html",
+      "position": "top",
+      "section_marker": "语重心长",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖13码",
+      "source_policy": [
+        "browser_dom"
+      ]
     }
   ]
 }
