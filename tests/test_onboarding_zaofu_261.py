@@ -78,7 +78,9 @@ def test_formal_source_is_registered_exactly_once() -> None:
     )
     matches = [s for s in repo.load_active() if s.name == NAME]
     assert len(matches) == 1
-    assert matches[0] == source()
+    # 272 期起该页栏目标记只出现在标题行，正式配置已改绑 topic_cyclic_nine
+    # （见 audit\probe-272\rebind-verify.txt 的逐站页面对照）。
+    assert matches[0] == replace(source(), parser="topic_cyclic_nine")
 
 
 def test_bottom_window_selects_current_issue() -> None:
