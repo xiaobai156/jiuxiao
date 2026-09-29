@@ -6382,6 +6382,22 @@
       "source_policy": [
         "browser_dom"
       ]
+    },
+    {
+      "name": "和和美美",
+      "url": "https://bbuueerm.pxcma-jyfok-mvduyw.xyz:16633/topic/455098.html",
+      "position": "top",
+      "section_marker": "和和美美",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": [
+        "browser_dom"
+      ]
     }
   ]
 }
