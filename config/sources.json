@@ -6398,6 +6398,22 @@
       "source_policy": [
         "browser_dom"
       ]
+    },
+    {
+      "name": "断章取义",
+      "url": "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622424.html",
+      "position": "bottom",
+      "section_marker": "断章九肖",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [
+        "断章取义"
+      ],
+      "data_marker": "",
+      "source_policy": []
     }
   ]
 }
