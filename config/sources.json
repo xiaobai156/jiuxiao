@@ -6286,6 +6286,22 @@
       "aliases": [],
       "data_marker": "",
       "source_policy": []
+    },
+    {
+      "name": "回忆渐冷",
+      "url": "https://zdwcig.iyo4d-81klf-udwkqg.work:16677/topic/350493.html",
+      "position": "top",
+      "section_marker": "回忆渐冷",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": [
+        "browser_dom"
+      ]
     }
   ]
 }
