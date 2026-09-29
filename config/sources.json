@@ -6366,6 +6366,22 @@
       "source_policy": [
         "browser_dom"
       ]
+    },
+    {
+      "name": "朴斲之材",
+      "url": "https://bqipgah.pvib6-ptrqe-ihcefh.xyz:16677/topic/268629.html",
+      "position": "top",
+      "section_marker": "朴斲之材",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "超准九肖",
+      "source_policy": [
+        "browser_dom"
+      ]
     }
   ]
 }
