@@ -6414,6 +6414,20 @@
       ],
       "data_marker": "",
       "source_policy": []
+    },
+    {
+      "name": "炉火纯青",
+      "url": "https://bgwvlo.0uc91-3j90x-qmdyev.work:17477/topic/615902.html",
+      "position": "top",
+      "section_marker": "炉火纯青",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
     }
   ]
 }
