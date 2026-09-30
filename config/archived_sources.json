@@ -1293,6 +1293,42 @@
       },
       "archived_at": "2026-09-28T19:12:38+08:00",
       "reason": "用户明确封存，不再抓取；271期抓取失败：站点侧原帖已删除（read.php 返回「您没有登录或者您没有权限访问此页面…链接无效/数据已被删除」，同宿主论坛版块首页 234 条帖中无本站、无 tid=74028；同批接入的阿猫阿狗/长生轮回 271 期均正常）"
+    },
+    {
+      "source": {
+        "name": "长生轮回",
+        "url": "https://4-0oufiyhcjg-ipg0ojv.xyz/read.php?tid=73702",
+        "position": "bottom",
+        "section_marker": "长生轮回",
+        "fetcher": "browser_page",
+        "parser": "topic_cyclic_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-30T19:29:55+08:00",
+      "reason": "用户明确封存，不再抓取；273期抓取失败：站点侧要求登录/拒绝访客（browser_dom 正文仅 161 字符，为「您没有登录或者您没有权限访问此页面…链接无效/数据已被删除…请先登录论坛」登录墙，页面无任何九肖原文）"
+    },
+    {
+      "source": {
+        "name": "风度翩翩",
+        "url": "https://jusbfyu.mkdwi-xa2ua-rsovan.work:29422/article/manager/6a3236bff21d7a093399eec3?url=hjc",
+        "position": "bottom",
+        "section_marker": "风度翩翩",
+        "fetcher": "dynamic_article",
+        "parser": "split_line",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-09-30T19:29:55+08:00",
+      "reason": "用户明确封存，不再抓取；273期抓取失败：源文章内容已变更（/api/proxy/manager-articles/6a3236bff21d7a093399eec3 返回 200，内容为「桀骜不驯 五肖中特」5 肖实战记录，updatedAt 2026-09-30T11:18Z，payload 内无「九肖」/「风度翩翩」字样，配置锚点 风度翩翩 永不命中）"
     }
   ]
 }

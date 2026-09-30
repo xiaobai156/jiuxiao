@@ -4404,20 +4404,6 @@
       "source_policy": []
     },
     {
-      "name": "风度翩翩",
-      "url": "https://jusbfyu.mkdwi-xa2ua-rsovan.work:29422/article/manager/6a3236bff21d7a093399eec3?url=hjc",
-      "position": "bottom",
-      "section_marker": "风度翩翩",
-      "fetcher": "dynamic_article",
-      "parser": "split_line",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "",
-      "source_policy": []
-    },
-    {
       "name": "雪中送炭",
       "url": "https://buzsxio.821n4-hgj04-edkrft.xyz:29455/article/manager/6a5ee821f447e21b02dd536a?url=bxj",
       "position": "bottom",
@@ -5997,20 +5983,6 @@
       "url": "https://4-0oufiyhcjg-ipg0ojv.xyz/read.php?tid=73957",
       "position": "bottom",
       "section_marker": "阿猫阿狗",
-      "fetcher": "browser_page",
-      "parser": "topic_cyclic_nine",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "",
-      "source_policy": []
-    },
-    {
-      "name": "长生轮回",
-      "url": "https://4-0oufiyhcjg-ipg0ojv.xyz/read.php?tid=73702",
-      "position": "bottom",
-      "section_marker": "长生轮回",
       "fetcher": "browser_page",
       "parser": "topic_cyclic_nine",
       "api_url": "",
