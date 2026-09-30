@@ -59,12 +59,27 @@ def project_root() -> Path:
 
 
 def _playwright_temp_dir() -> Path:
+    local_appdata = os.environ.get("LOCALAPPDATA")
     base = (
-        Path(os.environ.get("LOCALAPPDATA") or tempfile.gettempdir())
-        / "灵蛇九肖_修复版v2"
+        Path(local_appdata)
+        if local_appdata
+        else Path.home() / "AppData" / "Local"
     )
-    base.mkdir(parents=True, exist_ok=True)
-    return Path(tempfile.mkdtemp(prefix="playwright-", dir=base))
+    base = base / "灵蛇九肖_修复版v2" / "playwright-temp"
+    temp_dir: Path | None = None
+    try:
+        base.mkdir(parents=True, exist_ok=True)
+        temp_dir = Path(tempfile.mkdtemp(prefix="run-", dir=base))
+        probe = temp_dir / ".write-check"
+        probe.write_bytes(b"")
+        probe.unlink()
+        return temp_dir
+    except OSError as exc:
+        if temp_dir is not None:
+            shutil.rmtree(temp_dir, ignore_errors=True)
+        raise RuntimeError(
+            f"无法创建 Playwright 专用临时目录：{base}；请检查当前用户对 LocalAppData 的写入权限"
+        ) from exc
 
 
 def _v2_root(root: Path) -> Path:

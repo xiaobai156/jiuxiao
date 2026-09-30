@@ -55,6 +55,11 @@ class _FakePlaywrightManager:
         self.observed_env.update(
             {key: os.environ[key] for key in ("TEMP", "TMP")}
         )
+        isolated_temp = Path(self.observed_env["TEMP"])
+        assert isolated_temp.is_dir()
+        probe = isolated_temp / "write-check"
+        probe.write_text("ok", encoding="utf-8")
+        probe.unlink()
         return self.playwright
 
     async def __aexit__(self, *_args) -> None:
@@ -80,7 +85,9 @@ def test_browser_uses_isolated_writable_temp_and_restores_environment(
 
     isolated_temp = Path(observed_env["TEMP"])
     assert observed_env["TEMP"] == observed_env["TMP"]
-    assert isolated_temp.parent == local_appdata / "灵蛇九肖_修复版v2"
+    assert isolated_temp.parent == (
+        local_appdata / "灵蛇九肖_修复版v2" / "playwright-temp"
+    )
     assert not isolated_temp.exists()
     assert os.environ["TEMP"] == "original-temp"
     assert os.environ["TMP"] == "original-tmp"
