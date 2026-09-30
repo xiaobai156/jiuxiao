@@ -6398,6 +6398,20 @@
       "aliases": [],
       "data_marker": "风暴九肖",
       "source_policy": []
+    },
+    {
+      "name": "人物为主",
+      "url": "https://cxmrkyu.5pcm7-dxccw-wzyngg.work:17466/topic/461678.html",
+      "position": "top",
+      "section_marker": "人物为主",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "必中九肖",
+      "source_policy": []
     }
   ]
 }
