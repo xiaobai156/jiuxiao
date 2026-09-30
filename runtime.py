@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import json
+import os
+import shutil
+import tempfile
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -53,6 +56,15 @@ def project_root() -> Path:
     if package.name.casefold() == "v2" and (legacy_root / "crawler.py").is_file():
         return legacy_root
     return package
+
+
+def _playwright_temp_dir() -> Path:
+    base = (
+        Path(os.environ.get("LOCALAPPDATA") or tempfile.gettempdir())
+        / "灵蛇九肖_修复版v2"
+    )
+    base.mkdir(parents=True, exist_ok=True)
+    return Path(tempfile.mkdtemp(prefix="playwright-", dir=base))
 
 
 def _v2_root(root: Path) -> Path:
@@ -185,16 +197,32 @@ def _cycle_label(cycle: str | None) -> str:
 async def _browser_clients() -> AsyncIterator[
     tuple[object, PlaywrightBrowserClient]
 ]:
-    async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(headless=True)
-        try:
-            context = await browser.new_context(ignore_https_errors=False)
+    temp_dir = _playwright_temp_dir()
+    previous_temp = os.environ.get("TEMP")
+    previous_tmp = os.environ.get("TMP")
+    os.environ["TEMP"] = str(temp_dir)
+    os.environ["TMP"] = str(temp_dir)
+    try:
+        async with async_playwright() as playwright:
+            browser = await playwright.chromium.launch(headless=True)
             try:
-                yield context, PlaywrightBrowserClient(context)
+                context = await browser.new_context(ignore_https_errors=False)
+                try:
+                    yield context, PlaywrightBrowserClient(context)
+                finally:
+                    await context.close()
             finally:
-                await context.close()
-        finally:
-            await browser.close()
+                await browser.close()
+    finally:
+        if previous_temp is None:
+            os.environ.pop("TEMP", None)
+        else:
+            os.environ["TEMP"] = previous_temp
+        if previous_tmp is None:
+            os.environ.pop("TMP", None)
+        else:
+            os.environ["TMP"] = previous_tmp
+        shutil.rmtree(temp_dir, ignore_errors=True)
 
 
 def liuiuqu_source() -> Source:
