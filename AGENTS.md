@@ -7,7 +7,7 @@
 - 项目根目录：`C:\Users\Administrator\Desktop\每天工具\爬虫合集\灵蛇九肖_修复版v2`。
 - 活跃站点：`config\sources.json`。
 - 封存站点：`config\archived_sources.json`。
-- 动态主列表解析覆盖：`config\main_list_parser_overrides.json`；按“目录名+栏目标题+完整URL”绑定，不改变方向。
+- 生产抓取只使用正式固定站点配置 `config\sources.json`；动态主列表不再参与运行。
 - 正式近10期缓存：`cache\recent_10_cache.json`。
 - 单期成功报告：`C:\Users\Administrator\Desktop\每天工具\爬虫合集\七类数据统一归纳\<期数>期-生肖.txt`。
 - 单期失败报告：`C:\Users\Administrator\Desktop\每天工具\爬虫合集\七类数据统一归纳失败\<期数>期-生肖-失败.txt`。

@@ -24,7 +24,6 @@ if "v2" not in sys.modules:
 
 from v2.domain.errors import ErrorCode, Failure  # noqa: E402
 from v2.config.schema import source_to_dict  # noqa: E402
-from v2.config.main_list import MainListCatalog  # noqa: E402
 from v2.config.repository import SourceRepository  # noqa: E402
 from v2.domain.identity import source_identity  # noqa: E402
 from v2.domain.models import (  # noqa: E402
@@ -778,13 +777,6 @@ def test_source_identity_changes_with_business_parser_configuration() -> None:
     changed = replace(original, parser="grouped")
 
     assert source_identity(original).key != source_identity(changed).key
-
-
-def test_missing_main_list_override_file_fails_closed(tmp_path: Path) -> None:
-    catalog = MainListCatalog(StubBrowser(()), tmp_path / "directions.json")
-
-    with pytest.raises(ValueError, match="parser overrides"):
-        catalog._load_parser_overrides()
 
 
 class SuccessfulHistoryCrawl:

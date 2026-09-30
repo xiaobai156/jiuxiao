@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import asyncio
 import importlib.util
-import json
 import sys
 from pathlib import Path
 
@@ -21,7 +20,6 @@ if "v2" not in sys.modules:
     sys.modules["v2"] = package
     specification.loader.exec_module(package)
 
-from v2.config.main_list import MainListCatalog  # noqa: E402
 from v2.domain.errors import ErrorCode  # noqa: E402
 from v2.domain.models import (  # noqa: E402
     Document,
@@ -46,7 +44,6 @@ from v2.storage.cache import (  # noqa: E402
 )
 from v2.storage.reports import ReportRepository  # noqa: E402
 from v2.validator import ValidationError, Validator  # noqa: E402
-from v2.runtime import _validate_main_list_completeness  # noqa: E402
 
 
 def _source(
@@ -161,107 +158,6 @@ def test_grouped_parser_exposes_same_issue_conflicts() -> None:
     with pytest.raises(ValidationError) as captured:
         Validator().validate(target, parsed, (251,))
     assert captured.value.failure.code is ErrorCode.CANDIDATE_CONFLICT
-
-
-def test_main_list_entry_accepts_space_before_issue_suffix() -> None:
-    assert MainListCatalog._parse_entry(
-        "九肖区 254 期: 花前月下「花前九肖」198中139",
-        "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622320.html",
-    ) == (
-        "花前月下",
-        "花前九肖",
-        "https://jogavu.6bl6s-ilo1w-yfnvvl.work:16677/topic/622320.html",
-    )
-
-
-class _EmptyLinksBrowser:
-    async def links(self, *_args, **_kwargs):
-        return ()
-
-
-def test_main_list_partial_load_fails_before_daily_catalog_can_shrink(
-    tmp_path: Path,
-) -> None:
-    directions = tmp_path / "main_list_directions.json"
-    directions.write_text(
-        json.dumps(
-            {
-                "schema_version": 2,
-                "excluded_titles": [],
-                "sources": [
-                    {
-                        "name": "目录甲",
-                        "title": "九肖中特",
-                        "url": "https://example.test/topic/1.html",
-                        "position": "top",
-                    }
-                ],
-            },
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-    (tmp_path / "main_list_parser_overrides.json").write_text(
-        json.dumps({"schema_version": 1, "overrides": []}),
-        encoding="utf-8",
-    )
-
-    with pytest.raises(ValueError, match="main list incomplete"):
-        asyncio.run(MainListCatalog(_EmptyLinksBrowser(), directions).load())
-
-
-def test_partial_main_list_is_rejected_against_previous_active_cache(
-    tmp_path: Path,
-) -> None:
-    config_dir = tmp_path / "config"
-    cache_dir = tmp_path / "cache"
-    config_dir.mkdir()
-    cache_dir.mkdir()
-    first = _source(
-        name="目录甲",
-        url="https://example.test/topic/1.html",
-        section_marker="甲九肖",
-    )
-    second = _source(
-        name="目录乙",
-        url="https://example.test/topic/2.html",
-        section_marker="乙九肖",
-    )
-    (config_dir / "main_list_directions.json").write_text(
-        json.dumps(
-            {
-                "schema_version": 2,
-                "excluded_titles": [],
-                "sources": [
-                    {
-                        "name": first.name,
-                        "title": first.section_marker,
-                        "url": first.url,
-                        "position": "top",
-                    },
-                    {
-                        "name": second.name,
-                        "title": second.section_marker,
-                        "url": second.url,
-                        "position": "top",
-                    },
-                ],
-            },
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
-    snapshot = CacheSnapshot(
-        latest_issue=251,
-        issues=(251,),
-        sources=(CacheSource(first), CacheSource(second)),
-    )
-    (cache_dir / "recent_10_cache.json").write_bytes(
-        CacheRepository._encode(snapshot)
-    )
-
-    with pytest.raises(ValueError, match="missing previously active sources"):
-        _validate_main_list_completeness(tmp_path, (first,))
 
 
 def test_failed_retry_rejects_ambiguous_same_url_sources(tmp_path: Path) -> None:

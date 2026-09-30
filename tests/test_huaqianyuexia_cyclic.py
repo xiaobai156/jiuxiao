@@ -115,16 +115,18 @@ def test_cyclic_parser_keeps_outside_issue_out_of_bottom_window() -> None:
     assert captured.value.failure.code is ErrorCode.ISSUE_MISSING
 
 
-def test_formal_override_uses_cyclic_parser_for_exact_identity() -> None:
+def test_formal_config_uses_cyclic_parser_for_exact_identity() -> None:
     config = json.loads(
-        (PROJECT_ROOT / "config" / "main_list_parser_overrides.json").read_text(
+        (PROJECT_ROOT / "config" / "sources.json").read_text(
             encoding="utf-8"
         )
     )
     matches = tuple(
         item
-        for item in config["overrides"]
-        if item["name"] == NAME and item["title"] == TITLE and item["url"] == URL
+        for item in config["sources"]
+        if item["name"] == NAME
+        and item["section_marker"] == TITLE
+        and item["url"] == URL
     )
 
     assert len(matches) == 1

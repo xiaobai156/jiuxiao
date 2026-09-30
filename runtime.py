@@ -10,9 +10,8 @@ from pathlib import Path
 
 from playwright.async_api import async_playwright
 
-from v2.config.main_list import MainListCatalog
 from v2.config.repository import SourceRepository
-from v2.domain.identity import normalize_url, source_identity
+from v2.domain.identity import source_identity
 from v2.domain.models import Position, Source
 from v2.fetchers.browser_page import (
     BrowserPageFetcher,
@@ -95,62 +94,6 @@ def _v2_root(root: Path) -> Path:
     ):
         return nested
     return root
-
-
-def _main_list_key(source: Source) -> tuple[str, str, str]:
-    return (
-        source.name.strip(),
-        source.section_marker.strip(),
-        normalize_url(source.url),
-    )
-
-
-def _configured_main_list_keys(directions_path: Path) -> set[tuple[str, str, str]]:
-    document = json.loads(Path(directions_path).read_text(encoding="utf-8"))
-    excluded = {
-        str(value).strip() for value in document.get("excluded_titles", ())
-    }
-    return {
-        (
-            str(item["name"]).strip(),
-            str(item["title"]).strip(),
-            normalize_url(str(item["url"])),
-        )
-        for item in document.get("sources", ())
-        if isinstance(item, dict)
-        and str(item.get("title", "")).strip() not in excluded
-    }
-
-
-def _validate_main_list_completeness(
-    v2_root: Path,
-    listed: tuple[Source, ...],
-) -> None:
-    configured = _configured_main_list_keys(
-        v2_root / "config" / "main_list_directions.json"
-    )
-    if not configured:
-        return
-    previous = CacheRepository(
-        v2_root / "cache" / "recent_10_cache.json"
-    ).load()
-    if not previous.sources:
-        return
-    expected = {
-        key
-        for cached in previous.sources
-        if (key := _main_list_key(cached.source)) in configured
-    }
-    actual = {_main_list_key(source) for source in listed}
-    missing = expected - actual
-    if missing:
-        names = ", ".join(
-            f"{name}[{section}]"
-            for name, section, _url in sorted(missing)
-        )
-        raise ValueError(
-            f"main list incomplete; missing previously active sources: {names}"
-        )
 
 
 def _source_repository(root: Path) -> SourceRepository:
@@ -254,30 +197,11 @@ def liuiuqu_source() -> Source:
 
 async def daily_sources(
     root: Path,
-    browser: PlaywrightBrowserClient,
     repository: SourceRepository | None = None,
 ) -> tuple[Source, ...]:
-    """Build the configured daily catalog without importing another project."""
-    root = Path(root).resolve()
-    v2_root = _v2_root(root)
+    """Return the fixed catalog used by every production crawl mode."""
     fixed = (repository or _source_repository(root)).load_active()
-    directions_path = v2_root / "config" / "main_list_directions.json"
-    previous = CacheRepository(
-        v2_root / "cache" / "recent_10_cache.json"
-    ).load()
-    configured = _configured_main_list_keys(directions_path)
-    fallback = tuple(
-        cached.source
-        for cached in previous.sources
-        if _main_list_key(cached.source) in configured
-    )
-    listed = await MainListCatalog(
-        browser,
-        directions_path,
-        fallback_sources=fallback,
-    ).load()
-    _validate_main_list_completeness(v2_root, listed)
-    sources = (*listed, *fixed)
+    sources = tuple(fixed)
     names: set[str] = set()
     identities: set[str] = set()
     for source in sources:
@@ -301,7 +225,7 @@ async def run_crawl(
     v2_root = _v2_root(root)
     cycle_label = _cycle_label(cycle)
     async with _browser_clients() as (context, browser_client):
-        sources = await daily_sources(root, browser_client)
+        sources = await daily_sources(root)
         service = CrawlRunService(
             CrawlService(
                 _fetchers(context, browser_client),
@@ -340,7 +264,7 @@ async def run_crawl_range(
     v2_root = _v2_root(root)
     issues = tuple(range(start_issue, end_issue - 1, -1))
     async with _browser_clients() as (context, browser_client):
-        sources = await daily_sources(root, browser_client)
+        sources = await daily_sources(root)
         service = CrawlRunService(
             CrawlService(
                 _fetchers(context, browser_client),
@@ -370,7 +294,7 @@ async def run_retry_failed(
     v2_root = _v2_root(root)
     cycle_label = _cycle_label(cycle)
     async with _browser_clients() as (context, browser_client):
-        all_sources = await daily_sources(root, browser_client)
+        all_sources = await daily_sources(root)
         reports = _reports(v2_root)
         sources = reports.failed_sources(issue, all_sources)
         if not sources:
