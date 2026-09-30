@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from v2.domain.identity import normalize_url
 from v2.domain.models import Position, Source
 from v2.fetchers.registry import BrowserClient
 
@@ -17,9 +18,16 @@ ENTRY_PATTERN = re.compile(
 
 
 class MainListCatalog:
-    def __init__(self, browser: BrowserClient, directions_path: Path) -> None:
+    def __init__(
+        self,
+        browser: BrowserClient,
+        directions_path: Path,
+        *,
+        fallback_sources: tuple[Source, ...] = (),
+    ) -> None:
         self._browser = browser
         self._directions_path = Path(directions_path)
+        self._fallback_sources = tuple(fallback_sources)
         self._parser_overrides_path = (
             self._directions_path.parent / "main_list_parser_overrides.json"
         )
@@ -27,20 +35,31 @@ class MainListCatalog:
     async def load(self) -> tuple[Source, ...]:
         directions, excluded_titles = self._load_directions()
         parser_overrides = self._load_parser_overrides()
-        links = await self._browser.links(
-            MAIN_LIST_URL,
-            timeout_ms=60_000,
-            settle_ms=4_000,
-        )
+        try:
+            links = await self._browser.links(
+                MAIN_LIST_URL,
+                timeout_ms=60_000,
+                settle_ms=4_000,
+            )
+        except Exception as exc:
+            if not self._fallback_sources:
+                raise ValueError(
+                    f"main list unavailable: {MAIN_LIST_URL}"
+                ) from exc
+            print(
+                "[警告] 动态主列表暂时不可访问，使用最近一次已验证目录："
+                f"{MAIN_LIST_URL}（{len(self._fallback_sources)} 项）"
+            )
+            return self._fallback_sources
         sources: list[Source] = []
-        seen: set[tuple[str, str]] = set()
+        seen: set[tuple[str, str, str]] = set()
         for link in links:
             entry = self._parse_entry(link.text, link.url)
             if entry is None:
                 continue
             if entry[1] in excluded_titles:
                 continue
-            key = (entry[0], entry[2])
+            key = (entry[0], entry[1], normalize_url(entry[2]))
             if key in seen:
                 continue
             position = directions.get(entry)

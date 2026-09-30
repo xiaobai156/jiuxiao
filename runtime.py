@@ -261,9 +261,20 @@ async def daily_sources(
     root = Path(root).resolve()
     v2_root = _v2_root(root)
     fixed = (repository or _source_repository(root)).load_active()
+    directions_path = v2_root / "config" / "main_list_directions.json"
+    previous = CacheRepository(
+        v2_root / "cache" / "recent_10_cache.json"
+    ).load()
+    configured = _configured_main_list_keys(directions_path)
+    fallback = tuple(
+        cached.source
+        for cached in previous.sources
+        if _main_list_key(cached.source) in configured
+    )
     listed = await MainListCatalog(
         browser,
-        v2_root / "config" / "main_list_directions.json",
+        directions_path,
+        fallback_sources=fallback,
     ).load()
     _validate_main_list_completeness(v2_root, listed)
     sources = (*listed, *fixed)
