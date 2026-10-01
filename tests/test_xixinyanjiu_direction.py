@@ -128,7 +128,15 @@ def test_same_block_same_issue_conflict_fails() -> None:
     assert captured.value.failure.code is ErrorCode.CANDIDATE_CONFLICT
 
 
-def test_formal_config_uses_top_direction() -> None:
+def test_formal_config_uses_bottom_direction_after_layout_change() -> None:
+    """正式配置方向：站点已把帖子记录改为升序（最新期在末尾），故用 bottom。
+
+    274 期实抓：页面为 `274期： 神庙网 【财神九肖】 已公开` + 作者行
+    `喜新厌旧 发表于 …` + 记录 271/272/273/274（升序）。旧配置 top 的
+    3 期窗口只覆盖 271/272/273，274 被排除 → ISSUE_MISSING；bottom 窗口
+    为 (274,273,272)，命中 274=龙猪兔蛇羊牛猴虎鸡。
+    本文件其余用例仍用倒序合成页面，继续守卫窗口语义（bottom+倒序应失败）。
+    """
     active = SourceRepository(
         PROJECT_ROOT / "config" / "sources.json",
         PROJECT_ROOT / "config" / "archived_sources.json",
@@ -137,4 +145,4 @@ def test_formal_config_uses_top_direction() -> None:
 
     assert len(matches) == 1
     assert matches[0].url == URL
-    assert matches[0].position is Position.TOP
+    assert matches[0].position is Position.BOTTOM

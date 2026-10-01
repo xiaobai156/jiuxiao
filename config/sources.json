@@ -1059,7 +1059,7 @@
     {
       "name": "喜新厌旧",
       "url": "https://qarppl.154bo-trld9-qppors.xyz:16677/topic/622194.html",
-      "position": "top",
+      "position": "bottom",
       "section_marker": "",
       "fetcher": "browser_page",
       "parser": "topic_cyclic_nine",
