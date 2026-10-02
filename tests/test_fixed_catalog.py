@@ -63,7 +63,8 @@ def test_dynamic_catalog_definitions_are_migrated_to_formal_config() -> None:
     configured = {item["url"]: item for item in config["sources"]}
 
     assert len(dynamic) == 34
-    assert len(config["sources"]) == 437
+    # 437 起为 f045ed7 固定目录基线；2026-10-02 接入「止痛水路」后为 438。
+    assert len(config["sources"]) == 438
     assert [configured[item["url"]]["name"] for item in dynamic] == [
         item["name"] for item in dynamic
     ]

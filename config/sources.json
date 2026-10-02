@@ -6956,6 +6956,20 @@
       "aliases": [],
       "data_marker": "必中九肖",
       "source_policy": []
+    },
+    {
+      "name": "止痛水路",
+      "url": "https://uymqfn.87hgg-q31ih-msufih.work:17466/topic/678719.html",
+      "position": "bottom",
+      "section_marker": "止痛水路",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": []
     }
   ]
 }
