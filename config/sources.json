@@ -1261,7 +1261,7 @@
     {
       "name": "举措失当",
       "url": "https://ylogqyol.5cn5d-gjibo-wiycut.xyz:16677/topic/282911.html",
-      "position": "bottom",
+      "position": "top",
       "section_marker": "",
       "fetcher": "browser_page",
       "parser": "topic_cyclic_nine",
