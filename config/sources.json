@@ -6956,6 +6956,20 @@
       "aliases": [],
       "data_marker": "九肖",
       "source_policy": []
+    },
+    {
+      "name": "后会无期",
+      "url": "https://uymqfn.87hgg-q31ih-msufih.work:17466/topic/678133.html",
+      "position": "top",
+      "section_marker": "后会无期",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "无错九肖",
+      "source_policy": []
     }
   ]
 }
