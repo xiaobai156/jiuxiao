@@ -6523,20 +6523,6 @@
       "source_policy": []
     },
     {
-      "name": "阿猫阿狗",
-      "url": "https://4-0oufiyhcjg-ipg0ojv.xyz/read.php?tid=73957",
-      "position": "bottom",
-      "section_marker": "阿猫阿狗",
-      "fetcher": "browser_page",
-      "parser": "topic_cyclic_nine",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "",
-      "source_policy": []
-    },
-    {
       "name": "烈焰风暴",
       "url": "https://ulefrw.i6sml-u8o4o-eibogo.work:17455/topic/610836.html",
       "position": "top",

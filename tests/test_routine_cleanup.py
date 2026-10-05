@@ -154,6 +154,8 @@ def test_retired_sources_are_archived_and_absent_from_cache() -> None:
             "https://czcvzk.4n5g7-o871g-hqmkwz.work:29422/article/admin/"
             "6a1cd89dc8b23672c8140715?url=tsp"
         ),
+        # 278 期站方侧拒绝访客（登录墙），2026-10-05 封存。
+        "阿猫阿狗": "https://4-0oufiyhcjg-ipg0ojv.xyz/read.php?tid=73957",
     }
     sources = SourceRepository(
         PROJECT_ROOT / "config" / "sources.json",
