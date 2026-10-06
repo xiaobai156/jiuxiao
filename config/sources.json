@@ -6956,6 +6956,20 @@
       "aliases": [],
       "data_marker": "无错九肖",
       "source_policy": []
+    },
+    {
+      "name": "火烧眉毛",
+      "url": "https://osmhftc.o1yjs-3zkeh-ezzkuf.work:17455/topic/622261.html",
+      "position": "top",
+      "section_marker": "火烧眉毛",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "眉毛九肖",
+      "source_policy": []
     }
   ]
 }
