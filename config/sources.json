@@ -5847,20 +5847,6 @@
       "source_policy": []
     },
     {
-      "name": "宝刀不老",
-      "url": "https://www.jinjintianniulaihenhaokan.xyz/read.php?tid=6030",
-      "position": "bottom",
-      "section_marker": "宝刀不老",
-      "fetcher": "browser_page",
-      "parser": "topic_cyclic_nine",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "",
-      "source_policy": []
-    },
-    {
       "name": "王者攻略",
       "url": "https://www.jinjintianniulaihenhaokan.xyz/read.php?tid=5559",
       "position": "bottom",
