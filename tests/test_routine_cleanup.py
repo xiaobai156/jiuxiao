@@ -158,6 +158,8 @@ def test_retired_sources_are_archived_and_absent_from_cache() -> None:
         "阿猫阿狗": "https://4-0oufiyhcjg-ipg0ojv.xyz/read.php?tid=73957",
         # 279 期站方侧登录墙（游客不可见），2026-10-06 用户点名封存。
         "宝刀不老": "https://www.jinjintianniulaihenhaokan.xyz/read.php?tid=6030",
+        # 281 期站方侧登录墙（游客不可见），2026-10-08 用户点名封存。
+        "一语破特": "https://hl.www73261a.com/read.php?tid=543",
     }
     sources = SourceRepository(
         PROJECT_ROOT / "config" / "sources.json",

@@ -4299,25 +4299,6 @@
       "source_policy": []
     },
     {
-      "name": "一语破特",
-      "url": "https://hl.www73261a.com/read.php?tid=543",
-      "position": "bottom",
-      "section_marker": "一语破特",
-      "fetcher": "browser_page",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "风": "虎兔龙",
-        "雨": "蛇羊马",
-        "雷": "猴狗鸡",
-        "电": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "风雨雷电",
-      "source_policy": []
-    },
-    {
       "name": "疾风迅雷",
       "url": "https://drxgkjt.uu1oc-eyjpt-uxyccu.xyz:29400/article/manager/6a33eb5bdfa16552b923d516?url=jyb",
       "position": "bottom",
