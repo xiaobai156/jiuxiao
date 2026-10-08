@@ -6948,6 +6948,20 @@
       "aliases": [],
       "data_marker": "九肖",
       "source_policy": []
+    },
+    {
+      "name": "如图地方",
+      "url": "https://osmhftc.o1yjs-3zkeh-ezzkuf.work:17455/topic/382413.html",
+      "position": "top",
+      "section_marker": "如图地方",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "精准九肖",
+      "source_policy": []
     }
   ]
 }
