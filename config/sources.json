@@ -6951,6 +6951,20 @@
       "aliases": [],
       "data_marker": "眉毛九肖",
       "source_policy": []
+    },
+    {
+      "name": "做贼心虚",
+      "url": "https://npidtkm.q3tp6-0te2h-sfvcbc.work:17477/topic/678418.html",
+      "position": "top",
+      "section_marker": "做贼心虚",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖资料",
+      "source_policy": []
     }
   ]
 }
