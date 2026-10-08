@@ -258,11 +258,18 @@ def test_formal_config_selects_strict_ocr_alias_parser_for_target() -> None:
         PROJECT_ROOT / "config" / "archived_sources.json",
     )
     active = repository.load_active()
-    matches = tuple(item for item in active if item.name == "风神九肖")
+    archived = repository.load_archived()
+    # 2026-10-08 用户点名封存「风神九肖」（与活跃站「嫦娥奔月」近 10 期逐期完全一致的同源镜像），
+    # 该站的严格 OCR 别名解析绑定随之进入封存配置；此处改为在封存配置上校验同一绑定契约。
+    active_matches = tuple(item for item in active if item.name == "风神九肖")
+    archived_matches = tuple(
+        item.source for item in archived if item.source.name == "风神九肖"
+    )
 
-    assert len(matches) == 1
-    assert matches[0].parser == "formula_article_ocr_alias"
+    assert not active_matches
+    assert len(archived_matches) == 1
+    assert archived_matches[0].parser == "formula_article_ocr_alias"
     assert isinstance(
-        build_parser_registry().resolve(matches[0].parser),
+        build_parser_registry().resolve(archived_matches[0].parser),
         FormulaArticleOcrAliasParser,
     )
