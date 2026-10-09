@@ -109,8 +109,11 @@ OCR_IMAGE_DAY = """224期:251908491836+09公式：+9下期：虎牛鼠猪狗鸡�
 225期：073427101938+01公式：+9下期：鼠猪狗鸡猴羊马蛇龙×
 226期:011129380433+17公式：+9下期：蛇龙兔虎牛鼠猪狗鸡√
 227期：232429071331+16公式：+9下期：羊马蛇龙兔虎牛鼠猪√
-228期：羊马蛇龙免虎牛鼠猪
+228期：羊马蛇龙免虎牛鼠猪狗
 """
+# 注：228 行故意使用「10 个生肖」这种 OCR 纠错也救不回的形式
+#（若只写「羊马蛇龙免虎牛鼠猪」，免→兔 的纠错会把它修成合法 9 肖，
+#  该纠错路径由 tests/test_ocr_confusion_repair.py 覆盖）。
 
 
 DOM_TEXT_DAY = """澳门白虎
@@ -235,7 +238,8 @@ def test_valid_dom_and_ocr_disagreement_is_rejected() -> None:
 
 
 def test_malformed_target_without_valid_previous_mapping_fails() -> None:
-    malformed_only = ocr_document("228期：羊马蛇龙免虎牛鼠猪")
+    # 10 个生肖属 OCR 纠错也救不回的畸形行（见 OCR_IMAGE_DAY 注释）。
+    malformed_only = ocr_document("228期：羊马蛇龙免虎牛鼠猪狗")
 
     with pytest.raises(ParseError) as captured:
         validate((dom_document(DOM_IMAGE_DAY), malformed_only))

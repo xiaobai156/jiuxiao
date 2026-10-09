@@ -24,6 +24,24 @@ _ZODIAC_RUN_PATTERN = re.compile(
     rf"([{CANONICAL_ZODIACS}](?:[{_ZODIAC_SEPARATOR}]*[{CANONICAL_ZODIACS}]){{0,11}})"
     rf"(?![{CANONICAL_ZODIACS}])"
 )
+# OCR（图片文字识别）常见形近/同形误读 → 规范生肖。
+# 仅在「纠错后恰好得到 9 个互不相同的规范生肖」时才被采纳（见 ocr_repaired_candidates）。
+OCR_ZODIAC_CONFUSIONS = {
+    "免": "兔",  # 兔
+    "兎": "兔",  # 兔（异体）
+    "菟": "兔",
+    "龍": "龙",
+    "馬": "马",
+    "雞": "鸡",
+    "豬": "猪",
+    "犬": "狗",
+}
+_OCR_ALPHABET = CANONICAL_ZODIACS + "".join(OCR_ZODIAC_CONFUSIONS)
+_OCR_RUN_PATTERN = re.compile(
+    rf"(?<![{_OCR_ALPHABET}])"
+    rf"([{_OCR_ALPHABET}](?:[{_ZODIAC_SEPARATOR}]*[{_OCR_ALPHABET}]){{0,11}})"
+    rf"(?![{_OCR_ALPHABET}])"
+)
 _CONTINUATION_BOUNDARIES = (
     "上一篇",
     "下一篇",
@@ -82,6 +100,47 @@ def before_opening_result(line: str) -> str:
     return text[: opening.start()] if opening is not None else text
 
 
+def _collapse_adjacent_duplicate_once(values: list[str]) -> list[tuple[str, ...]]:
+    collapsed_values: list[tuple[str, ...]] = []
+    for index in range(len(values) - 1):
+        if values[index] == values[index + 1]:
+            collapsed = tuple(values[:index] + values[index + 1 :])
+            if collapsed not in collapsed_values:
+                collapsed_values.append(collapsed)
+    return collapsed_values
+
+
+def ocr_repaired_candidates(text: str) -> tuple[tuple[str, ...], ...]:
+    """OCR 误读纠错候选：只有纠错后恰好是 9 个互异规范生肖才返回，否则返回空。
+
+    采纳条件（严格、可审计）：
+    1) 形近字映射后全部落在规范生肖内（如「免」→「兔」、「龍」→「龙」、「馬」→「马」）；
+    2) 允许折叠**唯一一处相邻重复**（OCR 双写，如「兔兔」→「兔」），且折叠后恰好 9 个互异；
+    3) 任何不满足的情况一律返回空元组，保持原有失败行为（不猜值、不凑数）。
+    原始 OCR 原文仍会写入记录证据（raw_zodiac_line），纠错只影响取值。
+    """
+    accepted: list[tuple[str, ...]] = []
+    for match in _OCR_RUN_PATTERN.finditer(text):
+        raw = [character for character in match.group(1) if character in _OCR_ALPHABET]
+        mapped = [OCR_ZODIAC_CONFUSIONS.get(character, character) for character in raw]
+        if any(character not in ZODIACS for character in mapped):
+            continue
+        if len(mapped) == 9 and len(set(mapped)) == 9:
+            repaired: tuple[str, ...] = tuple(mapped)
+        else:
+            repaired = next(
+                (
+                    collapsed
+                    for collapsed in _collapse_adjacent_duplicate_once(mapped)
+                    if len(collapsed) == 9 and len(set(collapsed)) == 9
+                ),
+                (),
+            )
+        if repaired and repaired not in accepted:
+            accepted.append(repaired)
+    return tuple(accepted)
+
+
 def safe_zodiac_candidates(line: str) -> tuple[tuple[str, ...], ...]:
     text = before_opening_result(line)
     candidates: list[tuple[str, ...]] = []
@@ -98,6 +157,13 @@ def safe_zodiac_candidates(line: str) -> tuple[tuple[str, ...], ...]:
         values = tuple(character for character in match.group(1) if character in ZODIACS)
         if values and values not in candidates:
             candidates.append(values)
+    # OCR 纠错只在「原文本身给不出合法 9 肖」时接管，保证既有行为逐字不变。
+    if not any(
+        len(candidate) == 9 and len(set(candidate)) == 9 for candidate in candidates
+    ):
+        repaired = ocr_repaired_candidates(text)
+        if repaired:
+            return repaired
     return tuple(candidates)
 
 
