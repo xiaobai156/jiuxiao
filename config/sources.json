@@ -940,20 +940,6 @@
       "source_policy": []
     },
     {
-      "name": "灵丹妙药",
-      "url": "https://www28651a.com/read.php?tid=546",
-      "position": "bottom",
-      "section_marker": "",
-      "fetcher": "browser_page",
-      "parser": "complement_three",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "绝杀三肖",
-      "source_policy": []
-    },
-    {
       "name": "赢码公司",
       "url": "https://sndaygl.egjtc-sgs8w-taclan.work:29400/article/admin/6a140dbfbf0a6cb1dd38f9d5?url=nmw",
       "position": "bottom",

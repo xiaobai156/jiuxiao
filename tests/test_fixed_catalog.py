@@ -72,8 +72,9 @@ def test_dynamic_catalog_definitions_are_migrated_to_formal_config() -> None:
     # 2026-10-08 接入「做贼心虚」（281 期，用户投喂）后为 438；
     # 2026-10-08 封存同源镜像「风神九肖」（对 嫦娥奔月）、「炉火纯青」（对 朴斲之材）后为 436；
     # 2026-10-08 接入「博敞花坛」（281 期，尾部，用户投喂 + 近 10 期缓存补齐）后为 437；
-    # 2026-10-08 接入「如图地方」（281 期，顶部，用户投喂 + 近 10 期缓存补齐）后为 438。
-    assert len(config["sources"]) == 438
+    # 2026-10-08 接入「如图地方」（281 期，顶部，用户投喂 + 近 10 期缓存补齐）后为 438；
+    # 2026-10-09 封存「灵丹妙药」（282 期站方侧登录墙，游客不可见）后为 437。
+    assert len(config["sources"]) == 437
     assert [configured[item["url"]]["name"] for item in dynamic] == [
         item["name"] for item in dynamic
     ]

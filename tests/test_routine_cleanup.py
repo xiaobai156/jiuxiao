@@ -164,6 +164,8 @@ def test_retired_sources_are_archived_and_absent_from_cache() -> None:
         "风神九肖": "https://bemgrnty.o1uab-4e5oe-yyddxc.xyz:16677/topic/433514.html",
         # 281 期同源镜像（与 朴斲之材 近 10 期逐期完全一致），2026-10-08 用户点名封存。
         "炉火纯青": "https://bgwvlo.0uc91-3j90x-qmdyev.work:17477/topic/615902.html",
+        # 282 期站方侧登录墙（游客不可见），2026-10-09 用户点名封存。
+        "灵丹妙药": "https://www28651a.com/read.php?tid=546",
     }
     sources = SourceRepository(
         PROJECT_ROOT / "config" / "sources.json",
