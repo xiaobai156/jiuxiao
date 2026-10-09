@@ -6948,6 +6948,20 @@
       "aliases": [],
       "data_marker": "精准九肖",
       "source_policy": []
+    },
+    {
+      "name": "冰清玉洁",
+      "url": "https://xcccax.h9yy9-lb8h2-stvkkn.work:17455/topic/216612.html",
+      "position": "top",
+      "section_marker": "冰清玉洁",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": []
     }
   ]
 }
