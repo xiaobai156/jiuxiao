@@ -1445,6 +1445,24 @@
       },
       "archived_at": "2026-10-09T19:07:40+08:00",
       "reason": "用户明确封存，不再抓取；282期抓取失败：站方侧拒绝访客，需登录（browser_dom 正文仅 140 字符，为「提示信息：您没有登录或者没有权限访问此页面…您还不是论坛会员,请先登录论坛」登录墙，页内「绝杀三肖」「282」「281」命中均为 0，无任何三肖/期号原文）"
+    },
+    {
+      "source": {
+        "name": "田乘风破",
+        "url": "https://hcsuuoy.nimo7-9bgj4-fmspxt.xyz:29466/article/manager/6a3146cf32c7c4bb3c056f95?url=cww",
+        "position": "bottom",
+        "section_marker": "田乘风破",
+        "fetcher": "dynamic_article",
+        "parser": "split_line",
+        "api_url": "/api/proxy/manager-articles/6a3146cf32c7c4bb3c056f95",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-10-10T18:44:18+08:00",
+      "reason": "用户明确封存，不再抓取；283期抓取失败：站方已删除该文章（browser_dom 正文仅 45 字符，为前端壳页「Failed to fetch / 首页 / 规则 / 充值 / 客服」，页内「田乘风破」「283」「九肖」命中均为 0；该站 api_url=/api/proxy/manager-articles/6a3146cf32c7c4bb3c056f95 直连返回 HTTP 404 {\"message\":\"AdminArticle 不存在\",\"error\":\"Not Found\"}）"
     }
   ]
 }

@@ -4202,20 +4202,6 @@
       "source_policy": []
     },
     {
-      "name": "田乘风破",
-      "url": "https://hcsuuoy.nimo7-9bgj4-fmspxt.xyz:29466/article/manager/6a3146cf32c7c4bb3c056f95?url=cww",
-      "position": "bottom",
-      "section_marker": "田乘风破",
-      "fetcher": "dynamic_article",
-      "parser": "split_line",
-      "api_url": "/api/proxy/manager-articles/6a3146cf32c7c4bb3c056f95",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "",
-      "source_policy": []
-    },
-    {
       "name": "透特赌王",
       "url": "https://djimkyw.n7ht1-wp4vm-ljitjr.xyz:29488/article/manager/6a3389cfdfa16552b923c7c9?url=cmzj",
       "position": "bottom",

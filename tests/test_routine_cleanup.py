@@ -166,6 +166,11 @@ def test_retired_sources_are_archived_and_absent_from_cache() -> None:
         "炉火纯青": "https://bgwvlo.0uc91-3j90x-qmdyev.work:17477/topic/615902.html",
         # 282 期站方侧登录墙（游客不可见），2026-10-09 用户点名封存。
         "灵丹妙药": "https://www28651a.com/read.php?tid=546",
+        # 283 期站方删帖（AdminArticle 404），2026-10-10 用户点名封存。
+        "田乘风破": (
+            "https://hcsuuoy.nimo7-9bgj4-fmspxt.xyz:29466/article/manager/"
+            "6a3146cf32c7c4bb3c056f95?url=cww"
+        ),
     }
     sources = SourceRepository(
         PROJECT_ROOT / "config" / "sources.json",
