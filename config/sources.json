@@ -6949,6 +6949,20 @@
       "aliases": [],
       "data_marker": "九肖",
       "source_policy": []
+    },
+    {
+      "name": "闻风而动",
+      "url": "https://pbihleo.n2t9e-qcqhn-arwwct.xyz:16677/topic/463123.html",
+      "position": "top",
+      "section_marker": "闻风而动",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": []
     }
   ]
 }
