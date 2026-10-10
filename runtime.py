@@ -166,7 +166,13 @@ async def _browser_clients() -> AsyncIterator[
             try:
                 context = await browser.new_context(ignore_https_errors=False)
                 try:
-                    yield context, PlaywrightBrowserClient(context)
+                    yield context, PlaywrightBrowserClient(
+                        context,
+                        # 仅配置显式授权的站点会用到这个工厂（见 allow_invalid_certificate）。
+                        insecure_context_factory=lambda: browser.new_context(
+                            ignore_https_errors=True
+                        ),
+                    )
                 finally:
                     await context.close()
             finally:

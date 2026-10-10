@@ -3,8 +3,8 @@ from __future__ import annotations
 import asyncio
 import json
 import re
-from collections.abc import Callable
-from contextlib import suppress
+from collections.abc import AsyncIterator, Awaitable, Callable
+from contextlib import asynccontextmanager, suppress
 from urllib.parse import urljoin, urlsplit
 
 from playwright.async_api import (
@@ -129,9 +129,27 @@ class PlaywrightBrowserClient:
         self,
         context: BrowserContext,
         ocr_reader: OcrReader | None = None,
+        insecure_context_factory: Callable[[], Awaitable[BrowserContext]] | None = None,
     ) -> None:
         self.context = context
         self.ocr_reader = ocr_reader or _read_image_text
+        # 仅当站点在配置中显式授权（allow_invalid_certificate）时，才用该工厂
+        # 另建一个 ignore_https_errors=True 的临时上下文；其它站点始终用严格上下文。
+        self.insecure_context_factory = insecure_context_factory
+
+    @asynccontextmanager
+    async def _call_context(
+        self,
+        allow_invalid_certificate: bool,
+    ) -> AsyncIterator[BrowserContext]:
+        if not allow_invalid_certificate or self.insecure_context_factory is None:
+            yield self.context
+            return
+        context = await self.insecure_context_factory()
+        try:
+            yield context
+        finally:
+            await context.close()
 
     async def collect(
         self,
@@ -142,8 +160,31 @@ class PlaywrightBrowserClient:
         include_image_ocr: bool = False,
         anchor_terms: tuple[str, ...] = (),
         data_marker_terms: tuple[str, ...] = (),
+        allow_invalid_certificate: bool = False,
     ) -> tuple[Document, ...]:
-        page = await self.context.new_page()
+        async with self._call_context(allow_invalid_certificate) as context:
+            return await self._collect_in(
+                context,
+                url,
+                timeout_ms=timeout_ms,
+                settle_ms=settle_ms,
+                include_image_ocr=include_image_ocr,
+                anchor_terms=anchor_terms,
+                data_marker_terms=data_marker_terms,
+            )
+
+    async def _collect_in(
+        self,
+        context: BrowserContext,
+        url: str,
+        *,
+        timeout_ms: int,
+        settle_ms: int,
+        include_image_ocr: bool = False,
+        anchor_terms: tuple[str, ...] = (),
+        data_marker_terms: tuple[str, ...] = (),
+    ) -> tuple[Document, ...]:
+        page = await context.new_page()
         try:
             try:
                 await page.goto(
@@ -220,8 +261,25 @@ class PlaywrightBrowserClient:
         *,
         timeout_ms: int,
         settle_ms: int,
+        allow_invalid_certificate: bool = False,
     ) -> tuple[Link, ...]:
-        page = await self.context.new_page()
+        async with self._call_context(allow_invalid_certificate) as context:
+            return await self._links_in(
+                context,
+                url,
+                timeout_ms=timeout_ms,
+                settle_ms=settle_ms,
+            )
+
+    async def _links_in(
+        self,
+        context: BrowserContext,
+        url: str,
+        *,
+        timeout_ms: int,
+        settle_ms: int,
+    ) -> tuple[Link, ...]:
+        page = await context.new_page()
         try:
             try:
                 await page.goto(
@@ -506,6 +564,7 @@ class BrowserPageFetcher:
                         if include_image_ocr
                         else ()
                     ),
+                    allow_invalid_certificate=source.allow_invalid_certificate,
                 )
             except Exception as exc:
                 last_error = _error_detail(exc)

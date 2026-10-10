@@ -20,6 +20,7 @@ SOURCE_FIELDS = {
     "aliases",
     "data_marker",
     "source_policy",
+    "allow_invalid_certificate",
 }
 REQUIRED_SOURCE_FIELDS = {"name", "url", "position", "fetcher", "parser"}
 
@@ -84,6 +85,9 @@ def source_from_dict(value: Any) -> Source:
         _required_string(method, "source_policy method")
         for method in raw_source_policy
     )
+    raw_allow_invalid = value.get("allow_invalid_certificate", False)
+    if not isinstance(raw_allow_invalid, bool):
+        raise ConfigValidationError("allow_invalid_certificate 必须是布尔值")
 
     try:
         return Source(
@@ -108,13 +112,14 @@ def source_from_dict(value: Any) -> Source:
                 "data_marker",
             ),
             source_policy=source_policy,
+            allow_invalid_certificate=raw_allow_invalid,
         )
     except (TypeError, ValueError) as exc:
         raise ConfigValidationError(str(exc)) from exc
 
 
 def source_to_dict(source: Source) -> dict[str, Any]:
-    return {
+    result: dict[str, Any] = {
         "name": source.name,
         "url": source.url,
         "position": source.position.value,
@@ -128,3 +133,7 @@ def source_to_dict(source: Source) -> dict[str, Any]:
         "data_marker": source.data_marker,
         "source_policy": list(source.source_policy),
     }
+    # 只在显式授权时输出该字段，保证未授权站点的序列化结果逐字节不变。
+    if source.allow_invalid_certificate:
+        result["allow_invalid_certificate"] = True
+    return result

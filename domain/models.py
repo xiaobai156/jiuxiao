@@ -70,6 +70,9 @@ class Source:
     aliases: tuple[str, ...] = ()
     data_marker: str = ""
     source_policy: tuple[str, ...] = ()
+    # 显式白名单：仅该站点允许忽略 TLS 证书错误（站点证书过期等站方侧故障）。
+    # 默认 False；其它站点始终保持严格校验。须用户逐站授权后才可置为 True。
+    allow_invalid_certificate: bool = False
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "name", _required_text(self.name, "name"))
@@ -136,6 +139,8 @@ class Source:
         if len(normalized_policy) != len(set(normalized_policy)):
             raise ValueError("source_policy 不能重复")
         object.__setattr__(self, "source_policy", normalized_policy)
+        if not isinstance(self.allow_invalid_certificate, bool):
+            raise TypeError("allow_invalid_certificate 必须是布尔值")
 
 
 @dataclass(frozen=True, slots=True)

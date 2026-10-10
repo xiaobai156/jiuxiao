@@ -81,6 +81,7 @@ class BrowserClient(Protocol):
         include_image_ocr: bool = False,
         anchor_terms: tuple[str, ...] = (),
         data_marker_terms: tuple[str, ...] = (),
+        allow_invalid_certificate: bool = False,
     ) -> tuple[Document, ...]: ...
 
     async def links(
@@ -89,6 +90,7 @@ class BrowserClient(Protocol):
         *,
         timeout_ms: int,
         settle_ms: int,
+        allow_invalid_certificate: bool = False,
     ) -> tuple[Link, ...]: ...
 
 
