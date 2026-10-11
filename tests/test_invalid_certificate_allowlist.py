@@ -157,21 +157,22 @@ def test_browser_page_fetcher_forwards_the_certificate_flag() -> None:
     asyncio.run(run())
 
 
-def test_formal_config_flags_only_the_authorised_station() -> None:
+def test_formal_config_flags_only_the_authorised_stations() -> None:
     config = json.loads(
         (PROJECT_ROOT / "config" / "sources.json").read_text(encoding="utf-8")
     )
+    authorised = ["否极泰来", "橘色日落"]
     flagged = [
         item["name"]
         for item in config["sources"]
         if item.get("allow_invalid_certificate")
     ]
-    assert flagged == ["否极泰来"], flagged
-    # 只有该站多出这一个字段，其余站点保持原样
+    assert flagged == authorised, flagged
+    # 只有这两站多出这一个字段，其余站点保持原样
     extra = [
         item["name"]
         for item in config["sources"]
-        if "allow_invalid_certificate" in item and item["name"] != "否极泰来"
+        if "allow_invalid_certificate" in item and item["name"] not in authorised
     ]
     assert extra == [], extra
 

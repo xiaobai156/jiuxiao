@@ -3959,7 +3959,8 @@
       "detail_link_keyword": "",
       "aliases": [],
       "data_marker": "",
-      "source_policy": []
+      "source_policy": [],
+      "allow_invalid_certificate": true
     },
     {
       "name": "物微志信",
