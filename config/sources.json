@@ -6950,6 +6950,20 @@
       "aliases": [],
       "data_marker": "九肖中特",
       "source_policy": []
+    },
+    {
+      "name": "娄底太师",
+      "url": "https://halxhje.uomne-2a0nc-yjyzjh.xyz:16677/topic/264839.html",
+      "position": "top",
+      "section_marker": "娄底太师",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖王",
+      "source_policy": []
     }
   ]
 }
