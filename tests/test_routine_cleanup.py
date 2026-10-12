@@ -171,6 +171,8 @@ def test_retired_sources_are_archived_and_absent_from_cache() -> None:
             "https://hcsuuoy.nimo7-9bgj4-fmspxt.xyz:29466/article/manager/"
             "6a3146cf32c7c4bb3c056f95?url=cww"
         ),
+        # 285 期站方侧论坛登录墙（属牛的女孩论坛，游客不可见），2026-10-12 用户点名封存。
+        "美酒咖啡": "https://6yrtfjghvnb-0978dtuxfyh.xyz/read.php?tid=54123",
     }
     sources = SourceRepository(
         PROJECT_ROOT / "config" / "sources.json",
