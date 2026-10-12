@@ -1463,6 +1463,24 @@
       },
       "archived_at": "2026-10-10T18:44:18+08:00",
       "reason": "用户明确封存，不再抓取；283期抓取失败：站方已删除该文章（browser_dom 正文仅 45 字符，为前端壳页「Failed to fetch / 首页 / 规则 / 充值 / 客服」，页内「田乘风破」「283」「九肖」命中均为 0；该站 api_url=/api/proxy/manager-articles/6a3146cf32c7c4bb3c056f95 直连返回 HTTP 404 {\"message\":\"AdminArticle 不存在\",\"error\":\"Not Found\"}）"
+    },
+    {
+      "source": {
+        "name": "美酒咖啡",
+        "url": "https://6yrtfjghvnb-0978dtuxfyh.xyz/read.php?tid=54123",
+        "position": "bottom",
+        "section_marker": "美酒咖啡",
+        "fetcher": "browser_page",
+        "parser": "topic_cyclic_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-10-12T20:08:38+08:00",
+      "reason": "用户明确封存，不再抓取；285期抓取失败：站方侧论坛登录墙，游客不可见（browser_dom 正文仅 157 字符，为「属牛的女孩论坛」访客错误页：「提示信息 » 您没有登录或者没有权限访问此页面，可能有如下几个原因: 读取数据错误,原因：您要访问的链接无效,可能链接不完整,或数据已被删除! 您还不是论坛会员,请先登录论坛」，含登录表单 document.login.pwuser；页内「美酒咖啡」「285」「九肖」命中均为 0；独立佐证：站点根域返回 HTTP 200、read.php?tid=54123 亦 HTTP 200（4092 B），站点存活但该帖对游客不可见）"
     }
   ]
 }
