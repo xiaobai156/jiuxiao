@@ -1874,20 +1874,6 @@
       "source_policy": []
     },
     {
-      "name": "海立云垂",
-      "url": "https://czcvzk.4n5g7-o871g-hqmkwz.work:29422/article/admin/6a0969ec291caff3edcb8b75?url=tsp",
-      "position": "bottom",
-      "section_marker": "",
-      "fetcher": "dynamic_article",
-      "parser": "split_line",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "",
-      "source_policy": []
-    },
-    {
       "name": "联盟之皇",
       "url": "https://gqdbokpx.ji2oa-rdhxt-girktl.work:29411/article/admin/6a032842e09a39d316b223a3?url=hj",
       "position": "bottom",

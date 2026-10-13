@@ -1481,6 +1481,24 @@
       },
       "archived_at": "2026-10-12T20:08:38+08:00",
       "reason": "用户明确封存，不再抓取；285期抓取失败：站方侧论坛登录墙，游客不可见（browser_dom 正文仅 157 字符，为「属牛的女孩论坛」访客错误页：「提示信息 » 您没有登录或者没有权限访问此页面，可能有如下几个原因: 读取数据错误,原因：您要访问的链接无效,可能链接不完整,或数据已被删除! 您还不是论坛会员,请先登录论坛」，含登录表单 document.login.pwuser；页内「美酒咖啡」「285」「九肖」命中均为 0；独立佐证：站点根域返回 HTTP 200、read.php?tid=54123 亦 HTTP 200（4092 B），站点存活但该帖对游客不可见）"
+    },
+    {
+      "source": {
+        "name": "海立云垂",
+        "url": "https://czcvzk.4n5g7-o871g-hqmkwz.work:29422/article/admin/6a0969ec291caff3edcb8b75?url=tsp",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "split_line",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-10-13T19:00:33+08:00",
+      "reason": "用户明确封存，不再抓取；286期抓取失败：站方数据接口异常，页面为 Next.js SPA 纯壳。证据：原始文档 HTTP 200 / 49349 B，全文「九肖」「生肖」「286」命中均为 0（仅构建脚本与样式）；浏览器渲染后正文仅 45–88 B，为「Failed to fetch」报错页 + 「搜索 登陆 注册 / 首页 规则 充值 客服」导航；同文档配置为 dynamic_article + split_line，锚点「海立云垂」不可达（ANCHOR_MISSING）。站点存活但该文章数据不可得。"
     }
   ]
 }

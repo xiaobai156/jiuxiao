@@ -173,6 +173,11 @@ def test_retired_sources_are_archived_and_absent_from_cache() -> None:
         ),
         # 285 期站方侧论坛登录墙（属牛的女孩论坛，游客不可见），2026-10-12 用户点名封存。
         "美酒咖啡": "https://6yrtfjghvnb-0978dtuxfyh.xyz/read.php?tid=54123",
+        # 286 期站方数据接口异常（Next.js SPA 纯壳，渲染后仅 Failed to fetch），2026-10-13 用户点名封存。
+        "海立云垂": (
+            "https://czcvzk.4n5g7-o871g-hqmkwz.work:29422/article/admin/"
+            "6a0969ec291caff3edcb8b75?url=tsp"
+        ),
     }
     sources = SourceRepository(
         PROJECT_ROOT / "config" / "sources.json",
