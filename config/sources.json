@@ -6950,6 +6950,34 @@
       "aliases": [],
       "data_marker": "九肖王",
       "source_policy": []
+    },
+    {
+      "name": "新陈代谢",
+      "url": "https://kulipur.l5paz-a0o8v-uozmmd.xyz:16677/topic/435531.html",
+      "position": "top",
+      "section_marker": "新陈代谢",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "无错九肖",
+      "source_policy": []
+    },
+    {
+      "name": "与众不同",
+      "url": "https://kulipur.l5paz-a0o8v-uozmmd.xyz:16677/topic/435535.html",
+      "position": "top",
+      "section_marker": "与众不同",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": []
     }
   ]
 }
