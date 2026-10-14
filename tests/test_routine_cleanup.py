@@ -178,6 +178,11 @@ def test_retired_sources_are_archived_and_absent_from_cache() -> None:
             "https://czcvzk.4n5g7-o871g-hqmkwz.work:29422/article/admin/"
             "6a0969ec291caff3edcb8b75?url=tsp"
         ),
+        # 287 期站方删文（manager-articles 接口 404 AdminArticle 不存在），2026-10-14 用户点名封存。
+        "半斤八两": (
+            "https://xozgdo.um2zi-vbge0-emngyq.work:29422/article/admin/"
+            "6a3a0ec4018539c611cb9d94?url=sgnn"
+        ),
     }
     sources = SourceRepository(
         PROJECT_ROOT / "config" / "sources.json",

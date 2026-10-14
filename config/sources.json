@@ -3025,25 +3025,6 @@
       "source_policy": []
     },
     {
-      "name": "半斤八两",
-      "url": "https://xozgdo.um2zi-vbge0-emngyq.work:29422/article/admin/6a3a0ec4018539c611cb9d94?url=sgnn",
-      "position": "bottom",
-      "section_marker": "",
-      "fetcher": "dynamic_article",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "风": "虎兔龙",
-        "雨": "蛇羊马",
-        "雷": "猴狗鸡",
-        "电": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "风雨雷电",
-      "source_policy": []
-    },
-    {
       "name": "英雄财经",
       "url": "https://18118.73829.com/read.php?tid=815",
       "position": "bottom",

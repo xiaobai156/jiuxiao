@@ -1499,6 +1499,29 @@
       },
       "archived_at": "2026-10-13T19:00:33+08:00",
       "reason": "用户明确封存，不再抓取；286期抓取失败：站方数据接口异常，页面为 Next.js SPA 纯壳。证据：原始文档 HTTP 200 / 49349 B，全文「九肖」「生肖」「286」命中均为 0（仅构建脚本与样式）；浏览器渲染后正文仅 45–88 B，为「Failed to fetch」报错页 + 「搜索 登陆 注册 / 首页 规则 充值 客服」导航；同文档配置为 dynamic_article + split_line，锚点「海立云垂」不可达（ANCHOR_MISSING）。站点存活但该文章数据不可得。"
+    },
+    {
+      "source": {
+        "name": "半斤八两",
+        "url": "https://xozgdo.um2zi-vbge0-emngyq.work:29422/article/admin/6a3a0ec4018539c611cb9d94?url=sgnn",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "风": "虎兔龙",
+          "雨": "蛇羊马",
+          "雷": "猴狗鸡",
+          "电": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "风雨雷电",
+        "source_policy": []
+      },
+      "archived_at": "2026-10-14T19:03:21+08:00",
+      "reason": "用户点名封存，不再抓取；287期抓取失败：站方删除文章，接口返回 404。证据：manager-articles 接口 /api/proxy/manager-articles/6a3a0ec4018539c611cb9d94 → HTTP 404 / 73 B {\"message\":\"AdminArticle 不存在\",\"error\":\"Not Found\",\"statusCode\":404}；浏览器渲染后正文仅 45 字符「Failed to fetch」，8 个 script 文档对「风雨雷电/287/286/九肖/开」命中全为 0；同宿主对照站「攻城略地」接口正常（HTTP 200 / 195729 B，缓存 current_issue=287）⇒ 属该篇被站方删除，非站点整体故障。"
     }
   ]
 }
