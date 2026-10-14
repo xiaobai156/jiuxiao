@@ -81,8 +81,9 @@ def test_dynamic_catalog_definitions_are_migrated_to_formal_config() -> None:
     # 2026-10-12 接入「娄底太师」（285 期，顶部，用户投喂 + 近 10 期缓存补齐）后为 438；
     # 2026-10-13 封存「海立云垂」（286 期站方数据接口异常，SPA 纯壳无内容）后为 437；
     # 2026-10-13 接入「新陈代谢」「与众不同」（286 期，顶部，用户投喂 + 近 10 期缓存补齐）后为 439；
-    # 2026-10-14 封存「半斤八两」（287 期站方删文，AdminArticle 404）后为 438。
-    assert len(config["sources"]) == 438
+    # 2026-10-14 封存「半斤八两」（287 期站方删文，AdminArticle 404）后为 438；
+    # 2026-10-14 接入「脸红筋暴」（287 期，顶部，用户投喂 + 近 10 期缓存补齐）后为 439。
+    assert len(config["sources"]) == 439
     assert [configured[item["url"]]["name"] for item in dynamic] == [
         item["name"] for item in dynamic
     ]
