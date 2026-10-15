@@ -6987,6 +6987,39 @@
       "aliases": [],
       "data_marker": "劲爆九肖",
       "source_policy": []
+    },
+    {
+      "name": "孤独与酒",
+      "url": "https://aa.828797a.com:1888/art_art/8130.html",
+      "position": "top",
+      "section_marker": "孤独与酒",
+      "fetcher": "browser_page",
+      "parser": "grouped",
+      "api_url": "",
+      "group_map": {
+        "春": "虎兔龙",
+        "夏": "蛇马羊",
+        "秋": "猴鸡狗",
+        "冬": "鼠牛猪"
+      },
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "春夏秋冬",
+      "source_policy": []
+    },
+    {
+      "name": "九死一生",
+      "url": "https://tnaaxlx.5pkg1-jydnh-ayeggu.cyou:17488/topic/486493.html",
+      "position": "bottom",
+      "section_marker": "九死一生",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": []
     }
   ]
 }
