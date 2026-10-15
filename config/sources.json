@@ -6973,6 +6973,20 @@
       "aliases": [],
       "data_marker": "聪明九肖",
       "source_policy": []
+    },
+    {
+      "name": "唯一无二",
+      "url": "https://qnvmjjgp.iph80-4i9lt-cqmwgy.work:17477/topic/325223.html",
+      "position": "top",
+      "section_marker": "唯一无二《劲爆九肖》",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "劲爆九肖",
+      "source_policy": []
     }
   ]
 }
