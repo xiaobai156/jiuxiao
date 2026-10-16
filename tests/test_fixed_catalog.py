@@ -84,8 +84,9 @@ def test_dynamic_catalog_definitions_are_migrated_to_formal_config() -> None:
     # 2026-10-14 封存「半斤八两」（287 期站方删文，AdminArticle 404）后为 438；
     # 2026-10-14 接入「脸红筋暴」（287 期，顶部，用户投喂 + 近 10 期缓存补齐）后为 439；
     # 2026-10-15 接入「唯一无二」（288 期，顶部，用户投喂 + 近 10 期缓存补齐）后为 440；
-    # 2026-10-15 接入「孤独与酒」（288 期，顶部）、「九死一生」（288 期，尾部）（用户投喂 + 近 10 期缓存补齐）后为 442。
-    assert len(config["sources"]) == 442
+    # 2026-10-15 接入「孤独与酒」（288 期，顶部）、「九死一生」（288 期，尾部）（用户投喂 + 近 10 期缓存补齐）后为 442；
+    # 2026-10-16 接入「顺风顺水」（289 期，顶部，用户投喂 + 近 10 期缓存补齐）后为 443。
+    assert len(config["sources"]) == 443
     assert [configured[item["url"]]["name"] for item in dynamic] == [
         item["name"] for item in dynamic
     ]
