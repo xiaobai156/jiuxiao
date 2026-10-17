@@ -7020,6 +7020,20 @@
       "aliases": [],
       "data_marker": "九肖中特",
       "source_policy": []
+    },
+    {
+      "name": "天马行空",
+      "url": "https://lrwvjj.3v95n-3h9g2-xdvasi.work:17488/topic/622254.html",
+      "position": "top",
+      "section_marker": "天马行空",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": []
     }
   ]
 }

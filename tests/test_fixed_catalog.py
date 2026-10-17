@@ -86,8 +86,9 @@ def test_dynamic_catalog_definitions_are_migrated_to_formal_config() -> None:
     # 2026-10-15 接入「唯一无二」（288 期，顶部，用户投喂 + 近 10 期缓存补齐）后为 440；
     # 2026-10-15 接入「孤独与酒」（288 期，顶部）、「九死一生」（288 期，尾部）（用户投喂 + 近 10 期缓存补齐）后为 442；
     # 2026-10-16 接入「顺风顺水」（289 期，顶部，用户投喂 + 近 10 期缓存补齐）后为 443；
-    # 2026-10-17 封存「诗情画意」（287/288/289 连续三期站方 TLS 证书不可用，游客不可访问）后为 442。
-    assert len(config["sources"]) == 442
+    # 2026-10-17 封存「诗情画意」（287/288/289 连续三期站方 TLS 证书不可用，游客不可访问）后为 442；
+    # 2026-10-17 接入「天马行空」（290 期，顶部，用户投喂 + 近 10 期缓存补齐）后为 443。
+    assert len(config["sources"]) == 443
     assert [configured[item["url"]]["name"] for item in dynamic] == [
         item["name"] for item in dynamic
     ]
