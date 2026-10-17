@@ -183,6 +183,8 @@ def test_retired_sources_are_archived_and_absent_from_cache() -> None:
             "https://xozgdo.um2zi-vbge0-emngyq.work:29422/article/admin/"
             "6a3a0ec4018539c611cb9d94?url=sgnn"
         ),
+        # 287/288/289 连续三期站方 TLS 证书不可用（游客不可访问），2026-10-17 用户点名封存。
+        "诗情画意": "https://mhpayza.30mg9-m9j7l-obwrmb.xyz/topic/766658.html",
     }
     sources = SourceRepository(
         PROJECT_ROOT / "config" / "sources.json",

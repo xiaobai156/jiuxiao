@@ -1522,6 +1522,24 @@
       },
       "archived_at": "2026-10-14T19:03:21+08:00",
       "reason": "用户点名封存，不再抓取；287期抓取失败：站方删除文章，接口返回 404。证据：manager-articles 接口 /api/proxy/manager-articles/6a3a0ec4018539c611cb9d94 → HTTP 404 / 73 B {\"message\":\"AdminArticle 不存在\",\"error\":\"Not Found\",\"statusCode\":404}；浏览器渲染后正文仅 45 字符「Failed to fetch」，8 个 script 文档对「风雨雷电/287/286/九肖/开」命中全为 0；同宿主对照站「攻城略地」接口正常（HTTP 200 / 195729 B，缓存 current_issue=287）⇒ 属该篇被站方删除，非站点整体故障。"
+    },
+    {
+      "source": {
+        "name": "诗情画意",
+        "url": "https://mhpayza.30mg9-m9j7l-obwrmb.xyz/topic/766658.html",
+        "position": "top",
+        "section_marker": "诗情画意",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      },
+      "archived_at": "2026-10-17T11:57:38+08:00",
+      "reason": "用户点名封存，不再抓取；289期抓取失败：站方 TLS 证书不可用，游客无法访问。证据：浏览器 Page.goto https://mhpayza.30mg9-m9j7l-obwrmb.xyz/topic/766658.html → net::ERR_CERT_COMMON_NAME_INVALID；curl.exe -s -o NUL -w \"http=%{http_code} size=%{size_download}\" → http=000 size=0，287/288/289 连续三期同一错误；缓存 current_issue 停留在 286 ⇒ 站点整体证书异常，非单篇问题。"
     }
   ]
 }
