@@ -10,7 +10,7 @@ from v2.domain.models import Document, Source
 @dataclass(frozen=True, slots=True)
 class FetchRequest:
     issues: tuple[int, ...]
-    attempts: int = 5
+    attempts: int = 3
     timeout_ms: int = 60_000
     settle_ms: int = 1_200
     retry_delay_ms: int = 0

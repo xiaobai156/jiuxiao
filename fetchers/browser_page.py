@@ -9,6 +9,8 @@ from urllib.parse import urljoin, urlsplit
 
 from playwright.async_api import (
     BrowserContext,
+    Error as PlaywrightError,
+    Page,
 )
 from playwright.async_api import (
     TimeoutError as PlaywrightTimeoutError,
@@ -27,6 +29,22 @@ from v2.fetchers.registry import (
 OcrReader = Callable[[bytes], str]
 
 
+# 站方会随机掐断首连（Chromium 报 ERR_CONNECTION_CLOSED），同一地址新连接重试即可成功。
+# 这类错误发生在导航阶段、走不到解析器，所以必须在这里重试；连接被拒/域名解析失败
+# 等确定性错误不在名单内，仍然立即抛出，避免把真实故障拖成超时。
+TRANSIENT_NAVIGATION_MARKERS = (
+    "ERR_CONNECTION_CLOSED",
+    "ERR_CONNECTION_RESET",
+    "ERR_CONNECTION_ABORTED",
+    "ERR_EMPTY_RESPONSE",
+    "ERR_SOCKET_NOT_CONNECTED",
+    "ERR_NETWORK_CHANGED",
+    "ERR_TIMED_OUT",
+)
+NAVIGATION_ATTEMPTS = 3
+NAVIGATION_RETRY_DELAY_MS = 1_500
+
+
 _PADDLE_OCR_READER = PaddleOcrReader()
 
 
@@ -37,6 +55,37 @@ def _read_image_text(content: bytes) -> str:
 def _error_detail(exc: Exception) -> str:
     message = str(exc).strip()
     return f"{type(exc).__name__}: {message}" if message else type(exc).__name__
+
+
+def _is_transient_navigation_error(exc: PlaywrightError) -> bool:
+    message = str(exc)
+    return any(marker in message for marker in TRANSIENT_NAVIGATION_MARKERS)
+
+
+async def _goto_with_retry(
+    page: Page,
+    url: str,
+    *,
+    timeout_ms: int,
+) -> None:
+    """导航到目标地址；连接类抖动时换新连接重试。
+
+    导航超时沿用原逻辑（页面可能已渲染出可用内容，交给后续解析判断）；
+    确定性错误与重试用尽后的抖动错误原样抛出，由调用方记录失败原因。
+    """
+    for attempt in range(1, NAVIGATION_ATTEMPTS + 1):
+        try:
+            await page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+            return
+        except PlaywrightTimeoutError:
+            return
+        except PlaywrightError as exc:
+            if (
+                attempt == NAVIGATION_ATTEMPTS
+                or not _is_transient_navigation_error(exc)
+            ):
+                raise
+            await asyncio.sleep(NAVIGATION_RETRY_DELAY_MS / 1000)
 
 
 def same_origin(left: str, right: str) -> bool:
@@ -186,14 +235,11 @@ class PlaywrightBrowserClient:
     ) -> tuple[Document, ...]:
         page = await context.new_page()
         try:
-            try:
-                await page.goto(
-                    url,
-                    wait_until="domcontentloaded",
-                    timeout=timeout_ms,
-                )
-            except PlaywrightTimeoutError:
-                pass
+            await _goto_with_retry(
+                page,
+                url,
+                timeout_ms=timeout_ms,
+            )
             if settle_ms:
                 await page.wait_for_timeout(settle_ms)
             documents: list[Document] = []
@@ -281,14 +327,11 @@ class PlaywrightBrowserClient:
     ) -> tuple[Link, ...]:
         page = await context.new_page()
         try:
-            try:
-                await page.goto(
-                    url,
-                    wait_until="domcontentloaded",
-                    timeout=timeout_ms,
-                )
-            except PlaywrightTimeoutError:
-                pass
+            await _goto_with_retry(
+                page,
+                url,
+                timeout_ms=timeout_ms,
+            )
             if settle_ms:
                 await page.wait_for_timeout(settle_ms)
             raw_links = await page.locator("a").evaluate_all(
