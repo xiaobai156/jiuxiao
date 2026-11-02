@@ -59,6 +59,22 @@ def render_failure(failure: Failure) -> str:
     return f"{failure.code.value}：{message}{detail}"
 
 
+def _remove_if_exists(path: Path) -> None:
+    """删除文件；不存在时静默返回（失败清单清空后不留空壳文件）。"""
+    try:
+        path.unlink()
+    except FileNotFoundError:
+        pass
+
+
+def _write_or_remove(path: Path, text: str) -> None:
+    """有内容就原子写入，没内容就删掉文件本身。"""
+    if text:
+        atomic_write_text(path, text)
+    else:
+        _remove_if_exists(path)
+
+
 def _failure_reason(failure: Failure) -> str:
     detail = " ".join(failure.detail.split())
     return detail or ERROR_MESSAGES[failure.code]
@@ -125,7 +141,8 @@ class ReportRepository:
             output_path,
             "\n".join(success_lines) + ("\n" if success_lines else ""),
         )
-        atomic_write_text(
+        # 失败清单清空后必须删除文件本身，不留 0 字节空壳。
+        _write_or_remove(
             failure_path,
             "\n\n".join(failure_lines) + ("\n" if failure_lines else ""),
         )
@@ -167,16 +184,21 @@ class ReportRepository:
             "\n" if failure_entries else ""
         )
         if output_path.parent.resolve() == failure_path.parent.resolve():
-            atomic_write_many(
-                {
-                    output_path: success_text.encode("utf-8"),
-                    failure_path: failure_text.encode("utf-8"),
-                },
-                self.output_dir / ".report-transaction.json",
-            )
+            if failure_text:
+                atomic_write_many(
+                    {
+                        output_path: success_text.encode("utf-8"),
+                        failure_path: failure_text.encode("utf-8"),
+                    },
+                    self.output_dir / ".report-transaction.json",
+                )
+            else:
+                # 失败清单已清空：只写成功报告，并把失败文件本身删掉。
+                atomic_write_text(output_path, success_text)
+                _remove_if_exists(failure_path)
         else:
             atomic_write_text(output_path, success_text)
-            atomic_write_text(failure_path, failure_text)
+            _write_or_remove(failure_path, failure_text)
         return output_path, failure_path
 
     @staticmethod

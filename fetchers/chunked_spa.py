@@ -29,7 +29,7 @@ from v2.parsers.registry import normalize_document_text
 
 
 CHUNK_SRC_PATTERN = re.compile(
-    r"""/js-\d+-\d+""",
+    r"""/js-\d+-\d+(?:\?[^"'\s>]*)? """.strip(),
     re.IGNORECASE,
 )
 PAYLOAD_PATTERN = re.compile(r"[A-Za-z0-9+/]{60,}={0,2}")
@@ -99,16 +99,17 @@ def inflate_blobs(payload: str) -> str:
 
 
 def chunk_sources(shell: str) -> tuple[tuple[str, str], ...]:
-    """从壳 HTML 取 (chunk_id, 分块绝对地址) 列表，去重保序。"""
+    """从壳 HTML 取 (chunk_id, 分块地址含版本参数) 列表，去重保序。"""
     result: list[tuple[str, str]] = []
     seen: set[str] = set()
     for match in CHUNK_SRC_PATTERN.finditer(shell):
-        path = match.group(0)
+        reference = match.group(0)
+        path = reference.split("?", 1)[0]
         chunk_id = path.rsplit("-", 1)[-1]
         if chunk_id in seen:
             continue
         seen.add(chunk_id)
-        result.append((chunk_id, path))
+        result.append((chunk_id, reference))
     return tuple(result)
 
 
@@ -173,13 +174,19 @@ class ChunkedSpaFetcher:
 
     @staticmethod
     def _with_base(source: Source, chunk_url: str) -> str:
-        """把壳内分块地址落到配置的 api_url 基址上（去掉查询参数）。"""
+        """把壳内分块地址落到配置的 api_url 基址上，保留分块自身的版本参数。
+
+        分块地址形如 ``/js-153-10691?v=10314``；``v`` 是站点内容版本号，CDN 按
+        完整 URL 缓存。丢掉查询参数会命中无版本号的旧缓存（只到较早期数），
+        因此必须原样带上。
+        """
         base = (source.api_url or "").strip().rstrip("/")
         parts = urlsplit(chunk_url)
         filename = parts.path.rsplit("/", 1)[-1]
+        query = f"?{parts.query}" if parts.query else ""
         if not base:
-            return f"{parts.scheme}://{parts.netloc}/{filename}"
-        return f"{base}/{filename}"
+            return f"{parts.scheme}://{parts.netloc}/{filename}{query}"
+        return f"{base}/{filename}{query}"
 
     async def _get(
         self,

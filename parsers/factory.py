@@ -19,13 +19,19 @@ from v2.parsers.custom.formula_dom import FormulaDomParser
 from v2.parsers.custom.formula_next_issue_ocr import (
     FormulaNextIssueOcrParser,
 )
+from v2.parsers.custom.dazhiruoyu import DazhiruoyuParser
+from v2.parsers.custom.fajiazhifu import FajiazhifuParser
+from v2.parsers.custom.fenglingge import FenglinggeParser
 from v2.parsers.custom.header_direct_nine import HeaderDirectNineParser
+from v2.parsers.custom.laogongkanma import LaogongkanmaParser
+from v2.parsers.custom.leitingdanu import LeitingdanuParser
 from v2.parsers.custom.liuiuqu import LiuiuquParser
 from v2.parsers.custom.named_section import NamedSectionParser
 from v2.parsers.custom.profile_history import ProfileHistoryParser
 from v2.parsers.custom.single_season_complement import (
     SingleSeasonComplementParser,
 )
+from v2.parsers.custom.taipingshengshi import TaipingshengshiParser
 from v2.parsers.custom.topic_cyclic import (
     TopicCyclicGroupedParser,
     TopicCyclicParser,
@@ -71,6 +77,12 @@ def build_parser_registry() -> ParserRegistry:
     )
     registry.register("white_tiger", WhiteTigerParser())
     registry.register("yueying", YueyingParser())
+    registry.register("dazhiruoyu", DazhiruoyuParser())
+    registry.register("leitingdanu", LeitingdanuParser())
+    registry.register("laogongkanma", LaogongkanmaParser())
+    registry.register("fenglingge", FenglinggeParser())
+    registry.register("fajiazhifu", FajiazhifuParser())
+    registry.register("taipingshengshi", TaipingshengshiParser())
     registry.register("color_info_grouped", ColorInfoGroupedParser())
     registry.register("named_section", NamedSectionParser())
     registry.register("profile_history", ProfileHistoryParser())

@@ -1803,25 +1803,6 @@
       "source_policy": []
     },
     {
-      "name": "青栀无梦",
-      "url": "https://sheuzjss.tgpcj-9w0vl-mwyhly.work:29422/article/admin/6a10c2c1d5071f9d0b8b3bcd?url=zfw",
-      "position": "bottom",
-      "section_marker": "",
-      "fetcher": "dynamic_article",
-      "parser": "dynamic_article_grouped",
-      "api_url": "",
-      "group_map": {
-        "琴": "兔蛇鸡",
-        "棋": "鼠牛狗",
-        "书": "虎龙马",
-        "画": "羊猴猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "琴棋书画",
-      "source_policy": []
-    },
-    {
       "name": "刀光剑影",
       "url": "https://pgyzulb.iwnn7-gyyip-pnpfqv.work:29477/article/admin/6a1540838be59b17287c6d12?url=bflc",
       "position": "bottom",
@@ -1838,20 +1819,6 @@
       "detail_link_keyword": "",
       "aliases": [],
       "data_marker": "风雨雷电",
-      "source_policy": []
-    },
-    {
-      "name": "奔向富豪",
-      "url": "https://pgyzulb.iwnn7-gyyip-pnpfqv.work:29477/article/admin/6a153e5ad9d9fc2cea524191?url=bflc",
-      "position": "bottom",
-      "section_marker": "",
-      "fetcher": "dynamic_article",
-      "parser": "split_line",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "",
       "source_policy": []
     },
     {
@@ -2066,21 +2033,6 @@
       "aliases": [],
       "data_marker": "",
       "source_policy": []
-    },
-    {
-      "name": "否极泰来",
-      "url": "https://jtmjfqq.ewlkg-dp3xr-hebqil.xyz:16677/topic/459584.html",
-      "position": "top",
-      "section_marker": "",
-      "fetcher": "browser_page",
-      "parser": "direct_nine",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "",
-      "source_policy": [],
-      "allow_invalid_certificate": true
     },
     {
       "name": "事事如意",
@@ -2365,7 +2317,7 @@
     {
       "name": "哥哥帆帆",
       "url": "https://cdsgyr.6xzb4-onz45-zlnoys.xyz:16677/topic/382423.html",
-      "position": "bottom",
+      "position": "top",
       "section_marker": "",
       "fetcher": "browser_page",
       "parser": "topic_cyclic_nine",
@@ -2640,25 +2592,6 @@
       "source_policy": []
     },
     {
-      "name": "神圣好料",
-      "url": "https://rwraojf.l54vq-9httr-cmdnip.work:29477/article/admin/6a04185c4ea5c20141013db8?url=xdr",
-      "position": "bottom",
-      "section_marker": "",
-      "fetcher": "dynamic_article",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "春": "虎兔龙",
-        "夏": "蛇马羊",
-        "秋": "猴鸡狗",
-        "冬": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "春夏秋冬",
-      "source_policy": []
-    },
-    {
       "name": "叹为观止",
       "url": "https://pgyzulb.iwnn7-gyyip-pnpfqv.work:29477/article/admin/6a153c988be59b17287c6ced?url=bflc",
       "position": "bottom",
@@ -2703,20 +2636,6 @@
       "detail_link_keyword": "",
       "aliases": [],
       "data_marker": "",
-      "source_policy": []
-    },
-    {
-      "name": "红红火火",
-      "url": "https://cahgjib.5blx9-z8506-ekiwxc.work:29488/article/admin/6a144553597e16d57eacb65b?url=lqz",
-      "position": "bottom",
-      "section_marker": "",
-      "fetcher": "dynamic_article",
-      "parser": "complement_three",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "绝杀三肖",
       "source_policy": []
     },
     {
@@ -4110,25 +4029,6 @@
       "source_policy": []
     },
     {
-      "name": "财富满天",
-      "url": "https://drxgkjt.uu1oc-eyjpt-uxyccu.xyz:29400/article/manager/6a33e7e1dfa16552b923d34d?url=jyb",
-      "position": "bottom",
-      "section_marker": "财富满天",
-      "fetcher": "dynamic_article",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "春": "虎兔龙",
-        "夏": "蛇马羊",
-        "秋": "猴鸡狗",
-        "冬": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "春夏秋冬",
-      "source_policy": []
-    },
-    {
       "name": "丰富内容",
       "url": "https://knfoaep.ivqs8-1depw-yoirtw.xyz:29444/article/manager/6a095735291caff3edcb8a77?url=lf",
       "position": "bottom",
@@ -4282,25 +4182,6 @@
       "detail_link_keyword": "",
       "aliases": [],
       "data_marker": "风雨雷电",
-      "source_policy": []
-    },
-    {
-      "name": "古今中外",
-      "url": "https://hl.www73261a.com/read.php?tid=578",
-      "position": "bottom",
-      "section_marker": "古今中外",
-      "fetcher": "browser_page",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "春": "虎兔龙",
-        "夏": "蛇马羊",
-        "秋": "猴鸡狗",
-        "冬": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "春夏秋冬",
       "source_policy": []
     },
     {
@@ -5622,16 +5503,17 @@
     {
       "name": "密密麻麻",
       "url": "https://dh81162.0gln642de8.cyou/TwldclGzSC.html",
-      "position": "top",
+      "position": "bottom",
       "section_marker": "风雷电雨",
       "fetcher": "chunked_spa",
       "parser": "chunked_grouped",
       "api_url": "https://api.kxusu.com",
       "group_map": {
         "风": "虎兔龙",
-        "雨": "蛇羊马",
-        "雷": "猴狗鸡",
-        "电": "鼠牛猪"
+        "雷": "蛇马羊",
+        "雨": "鼠牛猪",
+        "电": "猴鸡狗",
+        "云": "猴鸡狗"
       },
       "detail_link_keyword": "",
       "aliases": [],
@@ -5692,36 +5574,6 @@
       "source_policy": [
         "browser_dom"
       ]
-    },
-    {
-      "name": "温柔三刀",
-      "url": "http://38.177.253.132:31882/read.php?tid=1898",
-      "position": "bottom",
-      "section_marker": "温柔三刀",
-      "fetcher": "browser_page",
-      "parser": "header_direct_nine",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "最早公开网",
-      "source_policy": [
-        "browser_dom"
-      ]
-    },
-    {
-      "name": "出言不逊",
-      "url": "https://6yrtfjghvnb-0978dtuxfyh.xyz/read.php?tid=53440",
-      "position": "bottom",
-      "section_marker": "出言不逊",
-      "fetcher": "browser_page",
-      "parser": "topic_cyclic_nine",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "",
-      "source_policy": []
     },
     {
       "name": "王者攻略",
@@ -5805,44 +5657,6 @@
       ]
     },
     {
-      "name": "CC琴棋",
-      "url": "https://www.502066.com/index/index/tiezi?type=chess",
-      "position": "top",
-      "section_marker": "琴棋书画",
-      "fetcher": "browser_page",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "琴": "兔蛇鸡",
-        "棋": "鼠牛狗",
-        "书": "虎龙马",
-        "画": "羊猴猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "琴棋书画",
-      "source_policy": []
-    },
-    {
-      "name": "CC春秋",
-      "url": "https://www.502066.com/index/index/tiezi?type=four_seasons",
-      "position": "top",
-      "section_marker": "四季生肖",
-      "fetcher": "browser_page",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "春": "虎兔龙",
-        "夏": "蛇马羊",
-        "秋": "猴鸡狗",
-        "冬": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "春夏秋冬",
-      "source_policy": []
-    },
-    {
       "name": "洗心革面",
       "url": "https://zq.907588.com/gszl/1.html",
       "position": "bottom",
@@ -5876,25 +5690,6 @@
       "detail_link_keyword": "",
       "aliases": [],
       "data_marker": "琴棋书画",
-      "source_policy": []
-    },
-    {
-      "name": "跷足抗首",
-      "url": "https://yioznkua.snfqn-48psf-vctwsw.xyz:16677/topic/236854.html",
-      "position": "top",
-      "section_marker": "跷足抗首",
-      "fetcher": "browser_page",
-      "parser": "topic_cyclic_grouped",
-      "api_url": "",
-      "group_map": {
-        "春": "虎兔龙",
-        "夏": "蛇马羊",
-        "秋": "猴鸡狗",
-        "冬": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "春夏秋冬",
       "source_policy": []
     },
     {
@@ -7033,6 +6828,359 @@
       "detail_link_keyword": "",
       "aliases": [],
       "data_marker": "九肖",
+      "source_policy": []
+    },
+    {
+      "name": "诗情画意",
+      "url": "https://hczifkwk.lpjm7-6pzex-mjqezb.work:17477/topic/766658.html",
+      "position": "top",
+      "section_marker": "诗情画意",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
+    },
+    {
+      "name": "只争朝夕",
+      "url": "https://gvfkhn.8lr70-smj6w-heynqx.work:17466/topic/324804.html",
+      "position": "top",
+      "section_marker": "只争朝夕",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": []
+    },
+    {
+      "name": "同舟共济",
+      "url": "https://npidtkm.q3tp6-0te2h-sfvcbc.work:17477/topic/677737.html",
+      "position": "top",
+      "section_marker": "同舟共济",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "爆准九肖",
+      "source_policy": []
+    },
+    {
+      "name": "甘棠之惠",
+      "url": "https://avfzesda.v3g7d-e00td-idgbab.xyz:16677/topic/382441.html",
+      "position": "bottom",
+      "section_marker": "甘棠之惠",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "宝宝九肖",
+      "source_policy": []
+    },
+    {
+      "name": "燃烧翅膀",
+      "url": "https://pketcuks.tzt63-ixk2r-ywkgmf.work:17477/topic/267710.html",
+      "position": "bottom",
+      "section_marker": "燃烧翅膀",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "无错九肖",
+      "source_policy": []
+    },
+    {
+      "name": "大智若愚",
+      "url": "https://pketcuks.tzt63-ixk2r-ywkgmf.work:17477/topic/481117.html",
+      "position": "bottom",
+      "section_marker": "大智若愚",
+      "fetcher": "browser_page",
+      "parser": "dazhiruoyu",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": []
+    },
+    {
+      "name": "不惜血本",
+      "url": "https://odwcybpm.hmqxd-uw8z4-tfqmhq.work:17466/topic/447923.html",
+      "position": "bottom",
+      "section_marker": "不惜血本",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": []
+    },
+    {
+      "name": "否极泰来",
+      "url": "https://scremw.wofa2-mdgc0-rqkfzt.work:17466/topic/459584.html",
+      "position": "top",
+      "section_marker": "",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": [],
+      "allow_invalid_certificate": true
+    },
+    {
+      "name": "无可挑剔",
+      "url": "https://lzjzik.bl4l4-d3xhx-kxhryn.work:17455/topic/247327.html",
+      "position": "top",
+      "section_marker": "无可挑剔",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": []
+    },
+    {
+      "name": "神神叨叨",
+      "url": "https://ilrywf.b7i5h-rg286-gfkjpf.work:17466/topic/336774.html",
+      "position": "top",
+      "section_marker": "神神叨叨",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": []
+    },
+    {
+      "name": "雷霆大怒",
+      "url": "https://lzjzik.bl4l4-d3xhx-kxhryn.work:17455/topic/462501.html",
+      "position": "top",
+      "section_marker": "雷霆大怒",
+      "fetcher": "browser_page",
+      "parser": "leitingdanu",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": []
+    },
+    {
+      "name": "天下无敌",
+      "url": "https://wrhrep.s0bdr-btmh6-jxnwau.work:17466/topic/677706.html",
+      "position": "top",
+      "section_marker": "天下无敌",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": []
+    },
+    {
+      "name": "说长道短",
+      "url": "https://wrhrep.s0bdr-btmh6-jxnwau.work:17466/topic/677938.html",
+      "position": "top",
+      "section_marker": "说长道短",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": []
+    },
+    {
+      "name": "世纪汇艾",
+      "url": "https://yckhpg.y81vh-3qsd7-qiigce.cyou:17466/topic/476474.html",
+      "position": "top",
+      "section_marker": "世纪汇艾",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": []
+    },
+    {
+      "name": "发家致富",
+      "url": "https://kyrsgg.j3th6-yprjr-gqnzeo.work:17488/topic/794290.html",
+      "position": "top",
+      "section_marker": "发家致富",
+      "fetcher": "browser_page",
+      "parser": "fajiazhifu",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": []
+    },
+    {
+      "name": "枪林弹雨",
+      "url": "https://tivxkhqp.7u491-b5lgx-myqumf.work:17455/topic/759899.html",
+      "position": "top",
+      "section_marker": "枪林弹雨",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "期期九肖",
+      "source_policy": []
+    },
+    {
+      "name": "废寝忘食",
+      "url": "https://nedmannv.ueihu-xk88p-uvbyxa.xyz:16677/topic/461761.html",
+      "position": "top",
+      "section_marker": "废寝忘食",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": []
+    },
+    {
+      "name": "笑眼迷人",
+      "url": "https://kbodyz.25te9-wonn8-jshzsj.work:17488/topic/254743.html",
+      "position": "top",
+      "section_marker": "笑眼迷人",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "连准九肖",
+      "source_policy": []
+    },
+    {
+      "name": "七口八嘴",
+      "url": "https://amfjpm.9uzxv-oa8qg-hhintg.work/topic/222658.html",
+      "position": "top",
+      "section_marker": "七口八嘴",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": []
+    },
+    {
+      "name": "老恭看马",
+      "url": "https://wwlhc.com/thread-102495-1-1.html",
+      "position": "bottom",
+      "section_marker": "老恭看马",
+      "fetcher": "browser_page",
+      "parser": "laogongkanma",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": [],
+      "requires_login": true
+    },
+    {
+      "name": "千人一面",
+      "url": "https://kppjuipk.2nszl-9fsfj-soyiwy.work:17477/topic/311002.html",
+      "position": "top",
+      "section_marker": "千人一面",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": []
+    },
+    {
+      "name": "云涌风飞",
+      "url": "https://srnngc.of7as-vyogc-uvmlna.work:17455/topic/459469.html",
+      "position": "top",
+      "section_marker": "云涌风飞",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": []
+    },
+    {
+      "name": "九肖美妞",
+      "url": "https://ybowefwl.99xhg-228d5-syyqpo.work:17466/topic/455080.html",
+      "position": "top",
+      "section_marker": "九肖美妞",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖中特",
+      "source_policy": []
+    },
+    {
+      "name": "风铃歌",
+      "url": "https://wwlhc.com/thread-99865-1-1.html",
+      "position": "bottom",
+      "section_marker": "风铃歌",
+      "fetcher": "browser_page",
+      "parser": "fenglingge",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "九肖",
+      "source_policy": [],
+      "requires_login": true
+    },
+    {
+      "name": "路叟之忧",
+      "url": "https://fyzxhjpo.b4t3z-aukfj-nqkmvv.work:17455/topic/464091.html",
+      "position": "top",
+      "section_marker": "路叟之忧",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
       "source_policy": []
     }
   ]

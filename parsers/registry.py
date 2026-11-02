@@ -23,6 +23,23 @@ ISSUE_PATTERN = re.compile(r"(?<!\d)(?P<issue>(?!000)\d{3})\s*期")
 BRACKET_PATTERN = re.compile(
     r"[【《〖『「（(\[<〈{┣]([^】》〗』」）)\]>〉}┫]+)[】》〗』」）)\]>〉}┫]"
 )
+BRACKET_PAIRS = {
+    "【": "】",
+    "《": "》",
+    "〖": "〗",
+    "『": "』",
+    "「": "」",
+    "（": "）",
+    "(": ")",
+    "[": "]",
+    "<": ">",
+    "〈": "〉",
+    "{": "}",
+    "┣": "┫",
+}
+OPENING_BRACKET_PATTERN = re.compile(
+    "[" + "".join(re.escape(key) for key in BRACKET_PAIRS) + "]"
+)
 LOCKED_MARKERS = ("购买后可查看", "锁定内容", "隐藏内容", "付费可见")
 GROUP_CATEGORIES = {
     "琴棋书画": {
@@ -78,6 +95,26 @@ DOMAIN_INTERSTITIAL_PATTERN = re.compile(
     r"(?:\s+[\u4e00-\u9fff]{1,12})?\s*$",
     re.IGNORECASE,
 )
+# 分组图例行：`春:虎兔龙 夏:蛇马羊 秋:猴狗鸡 冬:鼠牛猪`。
+# 站点常把它插在历史中间（第一段与续段之间），它不是数据行、也不是区块结束信号，
+# 必须跳过继续读后面的历史，否则最新期会被整段切掉。
+GROUP_LEGEND_ENTRY = re.compile(
+    r"([\u4e00-\u9fff])\s*[:：]\s*([\u4e00-\u9fff]{2,6})"
+)
+
+
+def is_group_legend(line: str) -> bool:
+    """判断是否为「分组字:生肖串」图例行（至少 2 组才算）。"""
+    if line_issue(line) is not None:
+        return False
+    entries = GROUP_LEGEND_ENTRY.findall(line)
+    if len(entries) < 2:
+        return False
+    # 图例行里除分组字与生肖外不应有其它汉字（避免把数据行误判）
+    remainder = GROUP_LEGEND_ENTRY.sub("", line)
+    return not any(
+        "\u4e00" <= character <= "\u9fff" for character in remainder
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -314,6 +351,9 @@ def anchored_history_blocks(
                     and issue > previous_issue
                     and source.parser == "direct_nine"
                 ):
+                    # 001/365 循环断点：断点之前是当前轮（页面把最新一轮排在前面），
+                    # 断点之后是上一轮历史。必须在此停止收集，否则指定期若在上一轮
+                    # 也出现（同号不同值），就会把旧轮值当成本期结果（跨期借值）。
                     end = index
                     break
                 previous_issue = issue
@@ -356,6 +396,9 @@ def anchored_history_blocks(
             ):
                 continue
             if not line or HISTORY_SEPARATOR_PATTERN.fullmatch(line):
+                continue
+            if is_group_legend(line):
+                # 分组图例不是区块结束：跳过并继续读后续历史（可能是续段）
                 continue
             if _looks_like_history_candidate(line):
                 continue
@@ -574,18 +617,39 @@ def complement_candidate(line: str) -> str:
     return ""
 
 
+def _bracket_zodiac_values(bracket_text: str) -> tuple[str, ...]:
+    if any(
+        "\u4e00" <= character <= "\u9fff"
+        and character not in ZODIACS
+        for character in bracket_text
+    ):
+        return ()
+    return tuple(char for char in bracket_text if char in ZODIACS)
+
+
+def _unterminated_bracket_text(line: str) -> str:
+    """返回第一个没有闭合括号的开括号之后的原文。
+
+    站点手工录入最新一期时可能漏掉收尾括号（如 ``【猴.虎.龙.马.蛇.鼠.兔.羊.猪``），
+    此时括号内容仍然是真实原文。只有确实找不到闭合括号时才返回其后文本，
+    保证格式完整的行不会产生新的候选。
+    """
+    text = str(line)
+    for match in OPENING_BRACKET_PATTERN.finditer(text):
+        if BRACKET_PAIRS[match.group()] not in text[match.end():]:
+            return text[match.end():]
+    return ""
+
+
 def zodiac_candidates(line: str) -> tuple[tuple[str, ...], ...]:
     candidates: list[tuple[str, ...]] = []
     for bracket_text in BRACKET_PATTERN.findall(line):
-        if any(
-            "\u4e00" <= character <= "\u9fff"
-            and character not in ZODIACS
-            for character in bracket_text
-        ):
-            continue
-        values = tuple(char for char in bracket_text if char in ZODIACS)
+        values = _bracket_zodiac_values(bracket_text)
         if values and values not in candidates:
             candidates.append(values)
+    tail_values = _bracket_zodiac_values(_unterminated_bracket_text(line))
+    if tail_values and tail_values not in candidates:
+        candidates.append(tail_values)
     before_open = re.split(r"开|開", line, maxsplit=1)[0]
     for match in re.finditer(
         rf"(?<![{CANONICAL_ZODIACS}])([{CANONICAL_ZODIACS}]{{9}})(?![{CANONICAL_ZODIACS}])",

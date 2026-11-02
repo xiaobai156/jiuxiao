@@ -184,7 +184,13 @@ def test_retired_sources_are_archived_and_absent_from_cache() -> None:
             "6a3a0ec4018539c611cb9d94?url=sgnn"
         ),
         # 287/288/289 连续三期站方 TLS 证书不可用（游客不可访问），2026-10-17 用户点名封存。
-        "诗情画意": "https://mhpayza.30mg9-m9j7l-obwrmb.xyz/topic/766658.html",
+        # 2026-10-20 用户点名「诗情画意 更换地址 解封」，已换址回活跃库，故不再列入退役名单。
+        # 306 期站方删文（manager-articles 接口 404 AdminArticle 不存在，文章页落地占位页），
+        # 2026-11-02 用户点名封存。
+        "奔向富豪": (
+            "https://pgyzulb.iwnn7-gyyip-pnpfqv.work:29477/article/admin/"
+            "6a153e5ad9d9fc2cea524191?url=bflc"
+        ),
     }
     sources = SourceRepository(
         PROJECT_ROOT / "config" / "sources.json",

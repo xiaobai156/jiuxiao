@@ -57,6 +57,19 @@ def project_root() -> Path:
     return package
 
 
+def _browser_profile_dir() -> Path:
+    """本项目专用的持久化浏览器 profile（保存登录态）。
+
+    由 `audit\\login_profile.py` 一次性人工登录生成；只有配置里
+    `requires_login=true` 的站点会用到它。可用环境变量
+    `LINGJIU_BROWSER_PROFILE` 覆盖（便于测试或换目录）。
+    """
+    configured = os.environ.get("LINGJIU_BROWSER_PROFILE")
+    if configured:
+        return Path(configured)
+    return _v2_root(Path(__file__).resolve().parent) / "browser-profile"
+
+
 def _playwright_temp_dir() -> Path:
     local_appdata = os.environ.get("LOCALAPPDATA")
     base = (
@@ -163,8 +176,29 @@ async def _browser_clients() -> AsyncIterator[
     try:
         async with async_playwright() as playwright:
             browser = await playwright.chromium.launch(headless=True)
+            login_context = None
             try:
                 context = await browser.new_context(ignore_https_errors=False)
+
+                async def _login_context() -> object:
+                    """按需惰性创建持久化登录上下文（仅 requires_login 站点使用）。
+
+                    站点把内容设为「回复可见」时，游客抓不到正文；这类站点需要
+                    复用本项目自己的 browser-profile 目录里的登录态。该目录由
+                    audit\\login_profile.py 一次性人工登录后生成，不与其它项目共享，
+                    避免并发争抢同一个 profile 锁。
+                    """
+                    nonlocal login_context
+                    if login_context is None:
+                        login_context = (
+                            await playwright.chromium.launch_persistent_context(
+                                str(_browser_profile_dir()),
+                                headless=True,
+                                ignore_https_errors=False,
+                            )
+                        )
+                    return login_context
+
                 try:
                     yield context, PlaywrightBrowserClient(
                         context,
@@ -172,10 +206,13 @@ async def _browser_clients() -> AsyncIterator[
                         insecure_context_factory=lambda: browser.new_context(
                             ignore_https_errors=True
                         ),
+                        login_context_factory=_login_context,
                     )
                 finally:
                     await context.close()
             finally:
+                if login_context is not None:
+                    await login_context.close()
                 await browser.close()
     finally:
         if previous_temp is None:

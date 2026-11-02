@@ -137,7 +137,7 @@ def test_shell_chunk_id_and_url_are_detected() -> None:
     assert len(chunks) == 1
     chunk_id, path = chunks[0]
     assert chunk_id == "10691"
-    assert path == "/js-153-10691"
+    assert path == "/js-153-10691?v=09184"
 
 
 def test_inflate_blobs_skips_undecodable_noise() -> None:
@@ -222,10 +222,21 @@ async def _fetch(source: Source):
     http = _FakeHttp(
         {
             source.url: SHELL,
-            "https://api.kxusu.com/js-153-10691": payload,
+            "https://api.kxusu.com/js-153-10691?v=09184": payload,
         }
     )
     return await ChunkedSpaFetcher(http).fetch(source, FetchRequest((261,)))
+
+
+def test_chunk_url_keeps_site_version_param() -> None:
+    """分块地址的 v 参数是站点内容版本号；丢掉会命中 CDN 旧缓存（曾导致期数缺失）。"""
+    import asyncio
+
+    source = _source()
+    payload = build_payload()
+    http = _FakeHttp({source.url: SHELL, "https://api.kxusu.com/js-153-10691?v=09184": payload})
+    asyncio.run(ChunkedSpaFetcher(http).fetch(source, FetchRequest((261,))))
+    assert http.calls[1] == "https://api.kxusu.com/js-153-10691?v=09184"
 
 
 def test_fetcher_returns_chunked_document() -> None:

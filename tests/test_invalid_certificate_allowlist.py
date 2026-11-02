@@ -161,13 +161,17 @@ def test_formal_config_flags_only_the_authorised_stations() -> None:
     config = json.loads(
         (PROJECT_ROOT / "config" / "sources.json").read_text(encoding="utf-8")
     )
+    # 2026-10-23 否极泰来因域名整机失效（TLS 握手超时）被封存；
+    # 同日用户点名「更换地址」解封，新地址 scremw.wofa2-mdgc0-rqkfzt.work:17466
+    # 沿用原条目字段（含 allow_invalid_certificate=true），故恢复该白名单断言。
     authorised = ["否极泰来", "橘色日落"]
     flagged = [
         item["name"]
         for item in config["sources"]
         if item.get("allow_invalid_certificate")
     ]
-    assert flagged == authorised, flagged
+    # 解封换址会把条目追加到配置尾部，故按集合比较，不约束站点在文件中的顺序。
+    assert sorted(flagged) == sorted(authorised), flagged
     # 只有这两站多出这一个字段，其余站点保持原样
     extra = [
         item["name"]
