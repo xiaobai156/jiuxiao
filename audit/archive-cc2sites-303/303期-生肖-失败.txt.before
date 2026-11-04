@@ -1,0 +1,5 @@
+失败 CC琴棋 https://www.502066.com/index/index/tiezi?type=chess 方向: top 期数: 303 阶段: 网络抓取 原因: CROSS_DOMAIN
+
+失败 CC春秋 https://www.502066.com/index/index/tiezi?type=four_seasons 方向: top 期数: 303 阶段: 网络抓取 原因: CROSS_DOMAIN
+
+失败 云涌风飞 https://srnngc.of7fas-vyogc-uvmlna.work:17455/topic/459469.html 方向: top 期数: 303 阶段: 站点任务隔离 原因: Error: Page.goto: net::ERR_CONNECTION_CLOSED at https://srnngc.of7fas-vyogc-uvmlna.work:17455/topic/459469.html Call log: - navigating to "https://srnngc.of7fas-vyogc-uvmlna.work:17455/topic/459469.html", waiting until "domcontentloaded"

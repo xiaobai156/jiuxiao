@@ -1,0 +1,71 @@
+........................................................................ [ 33%]
+.........................F.F............................................ [ 66%]
+........................F............................................... [ 99%]
+.                                                                        [100%]
+================================== FAILURES ===================================
+_______________ test_suiyueran_cache_preserves_verified_history _______________
+
+    def test_suiyueran_cache_preserves_verified_history() -> None:
+        cached = CacheRepository(
+            PROJECT_ROOT / "cache" / "recent_10_cache.json"
+        ).load()
+        target = next(item for item in cached.sources if item.source.name == "随遇而安")
+    
+        assert target.source.section_marker == "随遇而安㊣㊣九肖"
+        assert target.source.detail_link_keyword == "随遇而安㊣㊣九肖"
+        verified_records = {
+            237: "鸡猴兔羊猪马虎牛狗",
+            236: "鸡鼠猴虎猪兔龙牛马",
+            235: "羊鼠兔猪蛇牛龙鸡虎",
+            234: "牛猪虎龙羊蛇鼠鸡兔",
+            233: "鼠狗龙猪虎牛马鸡羊",
+            232: "虎鼠兔龙牛蛇羊鸡狗",
+            231: "猪狗牛羊猴龙虎鸡马",
+        }
+        verified_errors = {
+            230: ErrorCode.ISSUE_MISSING,
+            229: ErrorCode.ISSUE_MISSING,
+            228: ErrorCode.ISSUE_MISSING,
+            227: ErrorCode.ISSUE_MISSING,
+        }
+        records = dict(target.records)
+        errors = dict(target.errors)
+        retained_records = records.keys() & verified_records.keys()
+        retained_errors = errors.keys() & verified_errors.keys()
+    
+>       assert retained_records
+E       assert set()
+
+tests\test_full_audit_regressions.py:1285: AssertionError
+_______________ test_4_48kk49_sources_use_static_http_transport _______________
+
+    def test_4_48kk49_sources_use_static_http_transport() -> None:
+        target = _target_sources()
+    
+>       assert len(target) == 36
+E       AssertionError: assert 39 == 36
+E        +  where 39 = len([{'name': '无敌杀手', 'url': 'https://4.48kk49.com:1888/Article/ar_content/id/1138/tid/77.html', 'position': 'top', 'secti...4.48kk49.com:1888/Article/ar_content/id/430/tid/29.html', 'position': 'top', 'section_marker': '彩坛至尊◤必中9肖◥', ...}, ...])
+
+tests\test_http_transport_4_48kk49.py:25: AssertionError
+___________ test_formal_config_binds_only_the_two_repaired_sources ____________
+
+    def test_formal_config_binds_only_the_two_repaired_sources() -> None:
+        active = SourceRepository(
+            PROJECT_ROOT / "config" / "sources.json",
+            PROJECT_ROOT / "config" / "archived_sources.json",
+        ).load_active()
+        formula = next(source for source in active if source.name == "嫦娥公式")
+        baozhuang = next(source for source in active if source.name == "爆庄内幕")
+    
+>       assert formula.parser == "formula_article_ocr_alias"
+E       AssertionError: assert 'formula_next_issue_ocr' == 'formula_article_ocr_alias'
+E         
+E         - formula_article_ocr_alias
+E         + formula_next_issue_ocr
+
+tests\test_repairs_231.py:179: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_full_audit_regressions.py::test_suiyueran_cache_preserves_verified_history
+FAILED tests/test_http_transport_4_48kk49.py::test_4_48kk49_sources_use_static_http_transport
+FAILED tests/test_repairs_231.py::test_formal_config_binds_only_the_two_repaired_sources
+3 failed, 214 passed in 45.45s
