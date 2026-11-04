@@ -1757,6 +1757,29 @@
       },
       "archived_at": "2026-11-02T18:56:50+08:00",
       "reason": "用户点名封存，不再抓取；306期抓取失败：站方已删除该篇文章。证据：dynamic_article 文章 ID 6a153e5ad9d9fc2cea524191 的 /api/proxy/manager-articles/ 返回 HTTP 404 {\"message\":\"AdminArticle 不存在\"}；浏览器打开原 URL 落地 /article/manager/ 占位页（无站名与期号）；同渠道「八方来财」(siteId 6a0beea17b101f8e6120bb90) landing-page-data 在列 83 篇文章中已无该作者、未找到迁移新址；同宿主 4 站（草莓印记、刀光剑影、心灵手巧、叹为观止）接口 HTTP 200 正常 ⇒ 非整站故障，是本站文章被站方删除，无合法修复路径。"
+    },
+    {
+      "source": {
+        "name": "刀光剑影",
+        "url": "https://pgyzulb.iwnn7-gyyip-pnpfqv.work:29477/article/admin/6a1540838be59b17287c6d12?url=bflc",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "风": "虎兔龙",
+          "雨": "蛇羊马",
+          "雷": "猴狗鸡",
+          "电": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "风雨雷电",
+        "source_policy": []
+      },
+      "archived_at": "2026-11-04T18:47:31+08:00",
+      "reason": "用户点名封存，不再抓取；308期抓取失败：站方已删除该篇文章。证据：dynamic_article 文章 ID 6a1540838be59b17287c6d12 的 /api/proxy/manager-articles/ 返回 HTTP 404 {\"message\":\"AdminArticle 不存在\"}；浏览器打开原 URL 落地 /article/manager/ 占位页（正文 10 行，无站名与期号）；同渠道「八方来财」(siteId 6a0beea17b101f8e6120bb90) landing-page-data 在列 83 篇文章、81 个作者中已无「刀光剑影」、未找到迁移新址；同渠道其他站点正常 ⇒ 非整站故障，是本站文章被站方删除，无合法修复路径。"
     }
   ]
 }

@@ -1803,25 +1803,6 @@
       "source_policy": []
     },
     {
-      "name": "刀光剑影",
-      "url": "https://pgyzulb.iwnn7-gyyip-pnpfqv.work:29477/article/admin/6a1540838be59b17287c6d12?url=bflc",
-      "position": "bottom",
-      "section_marker": "",
-      "fetcher": "dynamic_article",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "风": "虎兔龙",
-        "雨": "蛇羊马",
-        "雷": "猴狗鸡",
-        "电": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "风雨雷电",
-      "source_policy": []
-    },
-    {
       "name": "攻城略地",
       "url": "https://czcvzk.4n5g7-o871g-hqmkwz.work:29422/article/admin/6a095f3d291caff3edcb8acb?url=tsp",
       "position": "bottom",
@@ -7174,6 +7155,20 @@
       "url": "https://fyzxhjpo.b4t3z-aukfj-nqkmvv.work:17455/topic/464091.html",
       "position": "top",
       "section_marker": "路叟之忧",
+      "fetcher": "browser_page",
+      "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
+    },
+    {
+      "name": "翔凤山水",
+      "url": "https://spjpffl.99xhg-228d5-syyqpo.work:17466/topic/670575.html",
+      "position": "top",
+      "section_marker": "翔凤山水",
       "fetcher": "browser_page",
       "parser": "direct_nine",
       "api_url": "",

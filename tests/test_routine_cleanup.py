@@ -191,6 +191,12 @@ def test_retired_sources_are_archived_and_absent_from_cache() -> None:
             "https://pgyzulb.iwnn7-gyyip-pnpfqv.work:29477/article/admin/"
             "6a153e5ad9d9fc2cea524191?url=bflc"
         ),
+        # 308 期站方删文（manager-articles 接口 404 AdminArticle 不存在，文章页落地占位页，
+        # 同渠道 83 篇文章已无该作者），2026-11-04 用户点名封存。
+        "刀光剑影": (
+            "https://pgyzulb.iwnn7-gyyip-pnpfqv.work:29477/article/admin/"
+            "6a1540838be59b17287c6d12?url=bflc"
+        ),
     }
     sources = SourceRepository(
         PROJECT_ROOT / "config" / "sources.json",
