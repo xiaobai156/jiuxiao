@@ -1,0 +1,12 @@
+{
+  "active_count": 455,
+  "archived_count": 81,
+  "cache_source_count": 455,
+  "failure_entries": 2,
+  "failure_txt": "C:\\Users\\Administrator\\Desktop\\每天工具\\爬虫合集\\七类数据统一归纳失败\\298期-生肖-失败.txt",
+  "hashes_after": {
+    "sources.json": "649f0aa3179f1203dc65f08d304b1e6d4528ce10fe65ca4d1332f645821ef419",
+    "archived_sources.json": "2e1bf6df11edaa7cefef3a959a329c24b33e43d177efa8c996e060684f5b3e5c",
+    "recent_10_cache.json": "28b12d1d2199ba94cc0fcfc0132fe6fc429c9faaa0948fa66070a0166d1e5db6"
+  }
+}

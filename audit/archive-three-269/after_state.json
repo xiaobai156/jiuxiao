@@ -1,0 +1,12 @@
+{
+  "active_count": 378,
+  "archived_count": 62,
+  "cache_source_count": 412,
+  "failure_entries": 0,
+  "hashes_after": {
+    "sources.json": "43e1887cc6c654ce337b90e3c0726baf58edb611c0d119a1f36c4f1e3b48cd85",
+    "archived_sources.json": "8e1d3acb93baaad0d13bcd00c7d65e6d25b1db981b4da200f105a1030b0ca163",
+    "recent_10_cache.json": "856e22ac8e3513549bcafdc6d05827c3b05f8fbda62479b474c1d6b4e0e64905",
+    "269期-生肖-失败.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

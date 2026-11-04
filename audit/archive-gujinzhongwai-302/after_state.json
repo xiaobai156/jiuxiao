@@ -1,0 +1,12 @@
+{
+  "active_count": 455,
+  "archived_count": 83,
+  "cache_source_count": 455,
+  "failure_entries": 1,
+  "failure_txt": "C:\\Users\\Administrator\\Desktop\\每天工具\\爬虫合集\\七类数据统一归纳失败\\302期-生肖-失败.txt",
+  "hashes_after": {
+    "sources.json": "461f58ab0467a3ed954b6bbb44098523dabbc54283840ef5545f4b5e5dacd50f",
+    "archived_sources.json": "03e8cd446e5033463a9ca66c780efcd0b5226fe56d5035b3b3cbeab0fc6dc2a0",
+    "recent_10_cache.json": "83e65a07d6f2081af13d4c22610714862d278e51f5f09bd860c95d7dd6f8b9fd"
+  }
+}

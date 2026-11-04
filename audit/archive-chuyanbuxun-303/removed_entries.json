@@ -1,0 +1,24 @@
+{
+  "archived_at": "2026-10-30T18:55:15+08:00",
+  "reasons": {
+    "出言不逊": "用户点名封存，不再抓取；303期抓取失败：站方把当期正文设为金币售卖，未公开九肖原文。证据：页面第 176 行为 `303期:〔出言不逊〕💲九肖中特💲`，该行只到期号与栏目名，九肖方括号内无内容；紧随其后为「此帖售价 10 金币,已有 6 人购买」与购买人名单（小姐姐/曙光恋爱/无空赏庭间/我你惹不起/清风小鹿/迷糊情人结）。对照 300/301/302 期同一页面均含完整`［…九肖…］` 正文并带开奖结果，仅 303 期被售价拦截；本项目只抓游客可见原文，不得用付费/锁定页充当成功，故无合法修复路径。"
+  },
+  "entries": [
+    {
+      "source": {
+        "name": "出言不逊",
+        "url": "https://6yrtfjghvnb-0978dtuxfyh.xyz/read.php?tid=53440",
+        "position": "bottom",
+        "section_marker": "出言不逊",
+        "fetcher": "browser_page",
+        "parser": "topic_cyclic_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      }
+    }
+  ]
+}

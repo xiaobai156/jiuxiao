@@ -1,0 +1,24 @@
+{
+  "archived_at": "2026-10-20T19:40:16+08:00",
+  "reasons": {
+    "红红火火": "用户点名封存，不再抓取；293期抓取失败：站方文章已删除，接口与页面均无正文。证据：dynamic_article 同文章 ID 6a144553597e16d57eacb65b 的三种接口 /api/proxy/admin-articles/、/api/proxy/manager-articles/、/api/proxy/lottery-articles/ 全部 HTTP 404；浏览器打开原 URL 仅落地 manager 空壳 45 字符，页面不含站名与期号；同宿主另一站「屈指可数」（6a143782bf0a6cb1dd38fb39）接口 HTTP 200、161839 字节正常 ⇒ 非整站故障，是本站该篇文章被站方删除，无合法修复路径。"
+  },
+  "entries": [
+    {
+      "source": {
+        "name": "红红火火",
+        "url": "https://cahgjib.5blx9-z8506-ekiwxc.work:29488/article/admin/6a144553597e16d57eacb65b?url=lqz",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "complement_three",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "绝杀三肖",
+        "source_policy": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "active_count": 455,
+  "archived_count": 84,
+  "cache_source_count": 455,
+  "failure_entries": 2,
+  "failure_txt": "C:\\Users\\Administrator\\Desktop\\每天工具\\爬虫合集\\七类数据统一归纳失败\\303期-生肖-失败.txt",
+  "hashes_after": {
+    "sources.json": "b54b5d3f5b9741ea37f95ec38b018f63182fcb59efc1583f410914b99397bf07",
+    "archived_sources.json": "7bbdc7f913e04e6a33dec72e2045858e3c98518bf2007aeb73a4d8a796915fd4",
+    "recent_10_cache.json": "537dcb3e28f281e38713ed22f919974a7ab1c6c171c007be3617bb8fccccf562"
+  }
+}

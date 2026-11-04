@@ -1,0 +1,12 @@
+{
+  "active_count": 437,
+  "archived_count": 67,
+  "cache_source_count": 437,
+  "failure_entries": 1,
+  "hashes_after": {
+    "sources.json": "7bf5cd620318bf53fb49a0fd159aa76e26cb735137f411e223847bb474398cd3",
+    "archived_sources.json": "ce82455f31f1c36cbaf7986a761a1b9c5f0abb81e610ed539863b26f87a66967",
+    "recent_10_cache.json": "17dfcf9d0b2bad96b270cd7f349eecd217da74c5e14144d144d0fe3c4af6b30d",
+    "278期-生肖-失败.txt": "cc55bbe3fdea4da1d3b1c27b4fe6a0bccd2274f4f9ad6d28b7e4e96cb3aa9828"
+  }
+}

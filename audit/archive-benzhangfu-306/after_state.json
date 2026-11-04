@@ -1,0 +1,12 @@
+{
+  "active_count": 455,
+  "archived_count": 87,
+  "cache_source_count": 455,
+  "failure_entries": 0,
+  "failure_txt": "absent",
+  "hashes_after": {
+    "sources.json": "2a7f84fd22be380faa2d7086bd201a07b18253dcd9afbd301d0883e7790b037e",
+    "archived_sources.json": "2f4ae4726afe6e9947e75844a4962a88623127e58fbdaa57549524ea79f92418",
+    "recent_10_cache.json": "f1aa99e4c15e76876d646c063831382986ae7a09c4b9f7d6eeb88dd66400f23f"
+  }
+}

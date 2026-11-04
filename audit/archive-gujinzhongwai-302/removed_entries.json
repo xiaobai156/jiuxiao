@@ -1,0 +1,29 @@
+{
+  "archived_at": "2026-10-29T19:36:54+08:00",
+  "reasons": {
+    "古今中外": "用户点名封存，不再抓取；302期抓取失败：站方把全站帖子改为会员可见，游客无法读取正文。证据：首页 https://hl.www73261a.com/ 游客可访问（HTTP 200、74066 字节、202 个 read.php 链接），但 read.php?tid=578 与tid=577 均返回「您没有登录或者没有权限访问此页面」，HTML 内 groupid='guest'；移动版 tid=578&mobile=2、simple/?tid=578、www.www73261a.com 三种入口结果相同；浏览器渲染同样只有 152 字符的提示页。本站配置 requires_login=false，此前不需登录，属站方权限变更；项目内无该站账号，无合法修复路径。"
+  },
+  "entries": [
+    {
+      "source": {
+        "name": "古今中外",
+        "url": "https://hl.www73261a.com/read.php?tid=578",
+        "position": "bottom",
+        "section_marker": "古今中外",
+        "fetcher": "browser_page",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "春": "虎兔龙",
+          "夏": "蛇马羊",
+          "秋": "猴鸡狗",
+          "冬": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "春夏秋冬",
+        "source_policy": []
+      }
+    }
+  ]
+}

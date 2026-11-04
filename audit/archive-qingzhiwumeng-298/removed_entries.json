@@ -1,0 +1,29 @@
+{
+  "archived_at": "2026-10-25T19:22:56+08:00",
+  "reasons": {
+    "青栀无梦": "用户点名封存，不再抓取；298期抓取失败：站方删除该篇文章，接口与页面均无正文。证据：dynamic_article 同文章 ID 6a10c2c1d5071f9d0b8b3bcd 的接口 /api/proxy/admin-articles/ 与 /api/proxy/manager-articles/ 均 HTTP 404；浏览器打开原 URL 只落地 article/manager/... 空壳 45 字符，页面不含站名与期号，故报 CROSS_DOMAIN/FETCH_FAILED。缓存 current_issue 停留在 297 ⇒ 非整站故障，是本站该篇文章被站方删除，无合法修复路径。"
+  },
+  "entries": [
+    {
+      "source": {
+        "name": "青栀无梦",
+        "url": "https://sheuzjss.tgpcj-9w0vl-mwyhly.work:29422/article/admin/6a10c2c1d5071f9d0b8b3bcd?url=zfw",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "dynamic_article_grouped",
+        "api_url": "",
+        "group_map": {
+          "琴": "兔蛇鸡",
+          "棋": "鼠牛狗",
+          "书": "虎龙马",
+          "画": "羊猴猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "琴棋书画",
+        "source_policy": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "active_count": 336,
+  "archived_count": 57,
+  "cache_source_count": 370,
+  "failure_entries": 1,
+  "hashes_before": {
+    "sources.json": "5fc186ce139a1879961df606ff32375d143654e996473fa12ea47450cc03576a",
+    "archived_sources.json": "69fa7da5209bf121f74bf9e7b188f5b961e1edeed2e2755ad5ecad2ba6588994",
+    "recent_10_cache.json": "51d88f12143cf289e55043d588105b5f0813c9483db2d85e7110a6651aebaac1",
+    "260期-生肖-失败.txt": "4c6ddafc024b907ad87cd501f54c89d20b013795b054c6bd381c6fe03f9d4783"
+  },
+  "hashes_after": {
+    "sources.json": "8b61cc2043416fcc3a3c854f37a51a021465a3dde3f38ff905eae20eaed4d6c5",
+    "archived_sources.json": "a02cbc78b8e6993b78f2fcdd2e2c23f6b94a1851b1f8e0525597a1ed8bb81184",
+    "recent_10_cache.json": "a572796d0e4065245ee7bd0d3bc9ad09c45d892307a8773e5d0a746f02fb54e2",
+    "260期-生肖-失败.txt": "6f9791ca242c610ec98d00a5c66a0d57f4c73bfb1b0538afeda36511de7abd3c"
+  }
+}

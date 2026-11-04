@@ -1,0 +1,12 @@
+{
+  "active_count": 437,
+  "archived_count": 69,
+  "cache_source_count": 437,
+  "failure_entries": 1,
+  "hashes_after": {
+    "sources.json": "998e63cad23f42bc346b9c4f1f888fc23d0523eaf900982fdbd64c45465812d6",
+    "archived_sources.json": "088eb86af0024ec08e42cdd469cfb06491c324e085efe27da771080648cb4174",
+    "recent_10_cache.json": "6841242393988e55d8b20aa90cba59936d3ef06c5027e0324686811dbbd4dc3e",
+    "281期-生肖-失败.txt": "416b339f8aad17e0f2ee133bf6eea5194daac8373a0dae7fd06a53f40ff842c6"
+  }
+}

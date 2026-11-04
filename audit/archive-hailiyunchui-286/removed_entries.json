@@ -1,0 +1,24 @@
+{
+  "archived_at": "2026-10-13T19:00:33+08:00",
+  "reasons": {
+    "海立云垂": "用户明确封存，不再抓取；286期抓取失败：站方数据接口异常，页面为 Next.js SPA 纯壳。证据：原始文档 HTTP 200 / 49349 B，全文「九肖」「生肖」「286」命中均为 0（仅构建脚本与样式）；浏览器渲染后正文仅 45–88 B，为「Failed to fetch」报错页 + 「搜索 登陆 注册 / 首页 规则 充值 客服」导航；同文档配置为 dynamic_article + split_line，锚点「海立云垂」不可达（ANCHOR_MISSING）。站点存活但该文章数据不可得。"
+  },
+  "entries": [
+    {
+      "source": {
+        "name": "海立云垂",
+        "url": "https://czcvzk.4n5g7-o871g-hqmkwz.work:29422/article/admin/6a0969ec291caff3edcb8b75?url=tsp",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "split_line",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      }
+    }
+  ]
+}

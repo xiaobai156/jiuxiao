@@ -1,0 +1,88 @@
+{
+  "archived_at": "2026-10-23T20:28:09+08:00",
+  "reasons": {
+    "否极泰来": "用户点名封存，不再抓取；295/296 连续两期抓取失败：站方整机不可用。证据：Page.goto https://jtmjfqq.ewlkg-dp3xr-hebqil.xyz:16677/topic/459584.html → net::ERR_CONNECTION_CLOSED / net::ERR_TIMED_OUT；直连与走本机代理（127.0.0.1:7897）均 30 秒超时，首页同样打不开；TCP 端口可连但 TLS 握手超时（SSLEOFError / handshake timed out）。同批 88 个 :16677 站点抽样 10 个全部TLSv1.3 正常 ⇒ 排除本地网络与代理问题，是本站域名侧整机失效。",
+    "跷足抗首": "用户点名封存，不再抓取；295/296 连续两期抓取失败：站方整机不可用。证据：Page.goto https://yioznkua.snfqn-48psf-vctwsw.xyz:16677/topic/236854.html → net::ERR_CONNECTION_CLOSED / net::ERR_TIMED_OUT；直连与走本机代理（127.0.0.1:7897）均超时，首页同样打不开；TCP 端口可连但 TLS 握手超时。该域名在用户书签（网站综合.html，187 条）中无任何记录、无备用镜像 ⇒ 无换址路径，判为站方整机下线。",
+    "财富满天": "用户点名封存，不再抓取；296期数据不可用：站方栏目改为「三季中特」且本期值重复。证据：dynamic_article 原文 `296期: 『财富满天』 三季中特 【冬冬春】开: 00 准`，三个季节槽位为 冬/冬/春，冬季重复，按 group_map（冬=鼠牛猪、春=虎兔龙）只能得到 6 个互异生肖（鼠牛猪虎兔龙），不足九肖要求的 9 个；上期 295 为 `【冬 夏 春】` 可得 9 肖正常，故属站方本期占位/错值，不得猜值补足。",
+    "温柔三刀": "用户点名封存，不再抓取；293~296 连续多期站方未发布。证据：页面标题始终为「主题 : 【292期】满堂红→【九肖中特】←已更新」，正文最新一行仍为 `292期：【温柔三刀】九肖中特【鸡猴虎龙兔猪蛇马牛】开：？准`，293/294/295/296 期全部 0 命中；缓存 current_issue 停留在 292 ⇒ 站方停更，非我方抓取或解析问题。"
+  },
+  "entries": [
+    {
+      "source": {
+        "name": "否极泰来",
+        "url": "https://jtmjfqq.ewlkg-dp3xr-hebqil.xyz:16677/topic/459584.html",
+        "position": "top",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": [],
+        "allow_invalid_certificate": true
+      }
+    },
+    {
+      "source": {
+        "name": "跷足抗首",
+        "url": "https://yioznkua.snfqn-48psf-vctwsw.xyz:16677/topic/236854.html",
+        "position": "top",
+        "section_marker": "跷足抗首",
+        "fetcher": "browser_page",
+        "parser": "topic_cyclic_grouped",
+        "api_url": "",
+        "group_map": {
+          "春": "虎兔龙",
+          "夏": "蛇马羊",
+          "秋": "猴鸡狗",
+          "冬": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "春夏秋冬",
+        "source_policy": []
+      }
+    },
+    {
+      "source": {
+        "name": "财富满天",
+        "url": "https://drxgkjt.uu1oc-eyjpt-uxyccu.xyz:29400/article/manager/6a33e7e1dfa16552b923d34d?url=jyb",
+        "position": "bottom",
+        "section_marker": "财富满天",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "春": "虎兔龙",
+          "夏": "蛇马羊",
+          "秋": "猴鸡狗",
+          "冬": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "春夏秋冬",
+        "source_policy": []
+      }
+    },
+    {
+      "source": {
+        "name": "温柔三刀",
+        "url": "http://38.177.253.132:31882/read.php?tid=1898",
+        "position": "bottom",
+        "section_marker": "温柔三刀",
+        "fetcher": "browser_page",
+        "parser": "header_direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "最早公开网",
+        "source_policy": [
+          "browser_dom"
+        ]
+      }
+    }
+  ]
+}

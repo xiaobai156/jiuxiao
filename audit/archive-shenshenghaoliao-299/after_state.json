@@ -1,0 +1,12 @@
+{
+  "active_count": 455,
+  "archived_count": 82,
+  "cache_source_count": 455,
+  "failure_entries": 1,
+  "failure_txt": "C:\\Users\\Administrator\\Desktop\\每天工具\\爬虫合集\\七类数据统一归纳失败\\299期-生肖-失败.txt",
+  "hashes_after": {
+    "sources.json": "3ef398a8c0cc26c473a321b5748ba556c2337f117ade37ebf2806ee1dd888d9e",
+    "archived_sources.json": "02833fa99caaaa08637a0a84e4ddf617a61455d9da0a250991ee410b03f1990d",
+    "recent_10_cache.json": "87102c19c15a6ad18fd51aa17ec1f5a6faebbc1c81d38d39f00720a14cf22c53"
+  }
+}

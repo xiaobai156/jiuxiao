@@ -1,0 +1,29 @@
+{
+  "archived_at": "2026-10-26T19:25:52+08:00",
+  "reasons": {
+    "神圣好料": "用户点名封存，不再抓取；299期抓取失败：站方删除该篇文章，接口与页面均无正文。证据：dynamic_article 同文章 ID 6a04185c4ea5c20141013db8 的 admin 接口页面落地到 article/manager/... 空壳仅 45 字符，页面不含站名与期号，故报 CROSS_DOMAIN/FETCH_FAILED。缓存 current_issue 停留在 298 ⇒ 非整站故障，是本站该篇文章被站方删除，无合法修复路径。"
+  },
+  "entries": [
+    {
+      "source": {
+        "name": "神圣好料",
+        "url": "https://rwraojf.l54vq-9httr-cmdnip.work:29477/article/admin/6a04185c4ea5c20141013db8?url=xdr",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "春": "虎兔龙",
+          "夏": "蛇马羊",
+          "秋": "猴鸡狗",
+          "冬": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "春夏秋冬",
+        "source_policy": []
+      }
+    }
+  ]
+}

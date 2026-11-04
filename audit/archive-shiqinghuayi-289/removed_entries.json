@@ -1,0 +1,24 @@
+{
+  "archived_at": "2026-10-17T11:57:38+08:00",
+  "reasons": {
+    "诗情画意": "用户点名封存，不再抓取；289期抓取失败：站方 TLS 证书不可用，游客无法访问。证据：浏览器 Page.goto https://mhpayza.30mg9-m9j7l-obwrmb.xyz/topic/766658.html → net::ERR_CERT_COMMON_NAME_INVALID；curl.exe -s -o NUL -w \"http=%{http_code} size=%{size_download}\" → http=000 size=0，287/288/289 连续三期同一错误；缓存 current_issue 停留在 286 ⇒ 站点整体证书异常，非单篇问题。"
+  },
+  "entries": [
+    {
+      "source": {
+        "name": "诗情画意",
+        "url": "https://mhpayza.30mg9-m9j7l-obwrmb.xyz/topic/766658.html",
+        "position": "top",
+        "section_marker": "诗情画意",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "active_count": 345,
+  "archived_count": 59,
+  "cache_source_count": 379,
+  "failure_entries": 2,
+  "hashes_after": {
+    "sources.json": "229116991c3700dcccf2e3087dde441789b27e0374f91590699b9e7dd37da2f5",
+    "archived_sources.json": "9afb098edc901801a68f2ab406a552dd465a8726124341785f2ae520d04d61c4",
+    "recent_10_cache.json": "c0db521aa3cf676bba36e6e1506a3dd7dc396f2c49323dc0edb03b0d76906297",
+    "266期-生肖-失败.txt": "77385e8357bc0ff5d8361859bc849c09cf9e86558e93ad030f571d03dd08f4d5"
+  }
+}

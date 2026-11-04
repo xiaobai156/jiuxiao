@@ -1,0 +1,12 @@
+{
+  "active_count": 381,
+  "archived_count": 64,
+  "cache_source_count": 415,
+  "failure_entries": 1,
+  "hashes_after": {
+    "sources.json": "ea491a8e6217dabbc6b43fad07d18359728de87915f4c8dbba9b99fcecc10f9e",
+    "archived_sources.json": "096cdee7fa1bde3ca2c9cfbe8f95225859abe837c9a1c4b978a69e8e59f19639",
+    "recent_10_cache.json": "6b4a4e3b9b7535772c015f7b50443d777285350a1499b021d562df0f78af67a2",
+    "271期-生肖-失败.txt": "c96e35c6fb4d080ebce6188c0234d6f8964de888cf3d4cbd18b69b35f9b3b251"
+  }
+}

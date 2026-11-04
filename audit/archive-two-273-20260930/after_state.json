@@ -1,0 +1,13 @@
+{
+  "active_count": 401,
+  "archived_count": 66,
+  "cache_source_count": 435,
+  "failure_entries": 0,
+  "failure_file_deleted": true,
+  "hashes_after": {
+    "sources.json": "3b925d20f7c02b677d90059c502cd875e5264829cdf8799f0c064f902304e8c3",
+    "archived_sources.json": "420f902a70d1b4686f3e8cc798148804efd6b6804376c64d960b1a0e2804d742",
+    "recent_10_cache.json": "abd4fa35a34db879b5c47e18e67d15606cef5617a4ebe333e54b66e0695bd755",
+    "273期-生肖-失败.txt": "deleted"
+  }
+}

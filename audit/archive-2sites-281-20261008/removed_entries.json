@@ -1,0 +1,44 @@
+{
+  "archived_at": "2026-10-08T22:19:59+08:00",
+  "reasons": {
+    "风神九肖": "用户明确封存，不再抓取；与活跃站「嫦娥奔月」在缓存窗口 272..281 期逐期记录完全一致（同源镜像），按用户点名保留其一并封存本站（2026-10-08 用户点名封存）",
+    "炉火纯青": "用户明确封存，不再抓取；与活跃站「朴斲之材」在缓存窗口 272..281 期逐期记录完全一致（同源镜像），按用户点名保留其一并封存本站（2026-10-08 用户点名封存）"
+  },
+  "entries": [
+    {
+      "source": {
+        "name": "风神九肖",
+        "url": "https://bemgrnty.o1uab-4e5oe-yyddxc.xyz:16677/topic/433514.html",
+        "position": "bottom",
+        "section_marker": "风神九肖",
+        "fetcher": "browser_page",
+        "parser": "formula_article_ocr_alias",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "九肖",
+        "source_policy": [
+          "browser_dom",
+          "image_ocr"
+        ]
+      }
+    },
+    {
+      "source": {
+        "name": "炉火纯青",
+        "url": "https://bgwvlo.0uc91-3j90x-qmdyev.work:17477/topic/615902.html",
+        "position": "top",
+        "section_marker": "炉火纯青",
+        "fetcher": "browser_page",
+        "parser": "direct_nine",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "",
+        "source_policy": []
+      }
+    }
+  ]
+}

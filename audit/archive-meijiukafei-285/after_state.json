@@ -1,0 +1,12 @@
+{
+  "active_count": 437,
+  "archived_count": 74,
+  "cache_source_count": 437,
+  "failure_entries": 1,
+  "hashes_after": {
+    "sources.json": "d10aeb2b17f0a0b4767e814089e87d82608502030be7e70b98d646c1864fe7d6",
+    "archived_sources.json": "25d1dfc584ca77be3dbc913e1483d4ba245d4aa5855b4371899a54d0994fa5bc",
+    "recent_10_cache.json": "2e95ef378730d666add16d461618f2cb6767aa9ebb666e1159bc31df9fb48d24",
+    "285期-生肖-失败.txt": "ec36eb450c69500e722df8d578a0d23582d26d6dba1fc522941abe83fb9739cf"
+  }
+}

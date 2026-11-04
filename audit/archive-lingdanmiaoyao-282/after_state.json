@@ -1,0 +1,12 @@
+{
+  "active_count": 437,
+  "archived_count": 72,
+  "cache_source_count": 437,
+  "failure_entries": 1,
+  "hashes_after": {
+    "sources.json": "682f8e30f926a5ccfd3cafb9b8a8e23f6f06174b207f01d64003f95a8ae71133",
+    "archived_sources.json": "1fae54ef3a32a7f1e36527a0ce705d79e71753a4295115da2f33d85365acd8e7",
+    "recent_10_cache.json": "6bf87c06113ebc484bff97c1ca878c287abcfac0661f7aed5ce4e7db3ca2d221",
+    "282期-生肖-失败.txt": "038a998730982b808b3a39e0cabfc3681545bcb84dbe1eb7203f651f663af511"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "active_count": 437,
+  "archived_count": 68,
+  "cache_source_count": 437,
+  "failure_entries": 1,
+  "hashes_after": {
+    "sources.json": "f35aa339d10ad41d63ae2f9af8edea11451911c4e298b463190278fe467e589f",
+    "archived_sources.json": "311d038027558c44a6b1f7e5061d615abb04a5d16a2330ceea895f86a62c84af",
+    "recent_10_cache.json": "6bbb5f65d262de2e60f66140aa268f5baf0cabfaac852c88d66e8c7d8cb5b8dc",
+    "279期-生肖-失败.txt": "759714bf0aa2a0e296739131370c505d4f46e38d8e920f317e073101b91ee601"
+  }
+}

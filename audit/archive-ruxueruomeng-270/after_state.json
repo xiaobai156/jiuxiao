@@ -1,0 +1,12 @@
+{
+  "active_count": 380,
+  "archived_count": 63,
+  "cache_source_count": 414,
+  "failure_entries": 0,
+  "hashes_after": {
+    "sources.json": "6230a62c81b6fadd83a4554f837b2006d65be2b74eaf4b5e76b8cef3e242893b",
+    "archived_sources.json": "5ee615a630becce9888d4e940fb9a1ee61efa5db7b568547c0f88dcfa66c23cc",
+    "recent_10_cache.json": "2f486524620f514f3cd0cba742c36da9ab62dc388420cbe6b912b93915e4ad61",
+    "270期-生肖-失败.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
