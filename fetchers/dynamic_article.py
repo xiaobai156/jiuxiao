@@ -29,10 +29,68 @@ ARTICLE_ID_KEYS = (
     "recordId",
     "record_id",
 )
+# 正文里“明确指向某一篇文章”的键。裸 ``id`` 只用来做正向证明（页面菜单/组件
+# 也会带 id），不参与“正文指向别篇”的判定，避免把正常页面判成别篇。
+STRICT_ARTICLE_ID_KEYS = (
+    "articleId",
+    "article_id",
+    "recordId",
+    "record_id",
+)
+ARTICLE_ID_VALUE_PATTERN = r"[A-Za-z0-9_-]{4,}"
 ARTICLE_PATTERN = re.compile(
     r"/article/(?P<kind>admin|manager|lottery)/(?P<record_id>[^/?#]+)",
     re.IGNORECASE,
 )
+
+
+def _article_ids_in_text(text: str, keys: tuple[str, ...]) -> tuple[str, ...]:
+    """从正文里取出 ``"articleId": "…"`` 这类 JSON/LD/属性形式的文章 ID。"""
+    values: list[str] = []
+    for key in keys:
+        pattern = re.compile(
+            rf"""["']?{re.escape(key)}["']?\s*[:=]\s*["']?"""
+            rf"(?P<value>{ARTICLE_ID_VALUE_PATTERN})[\"']?",
+            re.IGNORECASE,
+        )
+        for match in pattern.finditer(str(text)):
+            value = match.group("value")
+            if value not in values:
+                values.append(value)
+    return tuple(values)
+
+
+def document_article_identity(
+    document: Document,
+    expected_record_id: str,
+) -> tuple[str, str]:
+    """判断 document 能否证明自己是目标文章。
+
+    返回 ``(证据, 冲突ID)``：证据非空＝已证明（metadata → 正文 → 页面 URL）；
+    冲突ID 非空＝正文明确指向另一篇文章，即便 URL 对得上也不许放行。
+    """
+    metadata_ids = tuple(
+        value
+        for key, value in document.metadata
+        if key in ARTICLE_ID_KEYS and str(value).strip()
+    )
+    body_ids = _article_ids_in_text(document.text, ARTICLE_ID_KEYS)
+    if expected_record_id in metadata_ids:
+        return "metadata", ""
+    if expected_record_id in body_ids:
+        return "body", ""
+    conflict_ids = metadata_ids + _article_ids_in_text(
+        document.text,
+        STRICT_ARTICLE_ID_KEYS,
+    )
+    if conflict_ids:
+        return "", conflict_ids[0]
+    if article_record_identity(document.url)[1] == expected_record_id:
+        return "url", ""
+    parent_url = dict(document.metadata).get("parent_url", "")
+    if parent_url and article_record_identity(parent_url)[1] == expected_record_id:
+        return "parent_url", ""
+    return "", ""
 
 
 def article_record_identity(url: str) -> tuple[str, str]:
@@ -291,16 +349,29 @@ class DynamicArticleFetcher:
             source,
             request,
         )
-        if not any(
-            document.method is DocumentMethod.BROWSER_DOM
-            and article_record_identity(document.url)[1] == expected_record_id
-            for document in documents
-        ):
+        proven: list[Document] = []
+        conflict = ""
+        for document in documents:
+            evidence, document_conflict = document_article_identity(
+                document,
+                expected_record_id,
+            )
+            if evidence:
+                proven.append(document)
+            elif document_conflict and not conflict:
+                conflict = document_conflict
+        if not proven:
             raise FetchError(
                 Failure(
                     ErrorCode.API_RECORD_MISMATCH,
-                    detail="browser url is not bound to article id",
+                    detail=(
+                        f"browser body points at another article id: {conflict}"
+                        if conflict
+                        else "browser document is not bound to article id"
+                    ),
                     context=(("article_id", expected_record_id),),
                 )
             )
-        return documents
+        # 只交能证明是目标文章的文档：同页别篇（含图片附带的别的页面）一律不交，
+        # 避免把别篇的期号当本期值。
+        return tuple(proven)

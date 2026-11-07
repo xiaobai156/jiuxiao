@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from v2.domain.identity import source_identity
+from v2.domain.identity import normalize_url, source_identity
 from v2.domain.models import Result, Source
 from v2.storage.cache import CacheRepository, CacheSnapshot, CacheSource
 
@@ -20,6 +20,51 @@ class CacheSyncService:
             raise ValueError("history_limit must be greater than zero")
         self._repository = repository
         self._history_limit = history_limit
+
+    @staticmethod
+    def _stable_key(source: Source) -> tuple[str, str, str]:
+        """配置指纹之外的「站槽」身份：站名 + 规范化 URL + 方向。
+
+        改 ``section_marker`` / ``data_marker`` / ``parser`` / ``aliases`` 都会让
+        ``source_identity`` 的指纹变化，但站点本身没变。用这个身份把上一轮的
+        缓存历史接续过来，否则一改锚点，该站近 10 期历史会被静默清零。
+        """
+        return (
+            source.name.strip(),
+            normalize_url(source.url),
+            source.position.value,
+        )
+
+    @staticmethod
+    def _same_engine(previous: Source, current: Source) -> bool:
+        """解析/抓取引擎是否未变。
+
+        换 ``parser`` 或 ``fetcher`` 意味着取值来源本身换了（旧值可能是错引擎
+        产出的），历史必须重置；只换锚点/数据词/别名则站点与引擎都没变，
+        历史必须接续。
+        """
+        return (
+            previous.parser == current.parser
+            and previous.fetcher == current.fetcher
+        )
+
+    @classmethod
+    def _stable_entries(
+        cls,
+        entries: tuple[CacheSource, ...],
+    ) -> dict[tuple[str, str, str], CacheSource]:
+        """按稳定身份索引旧缓存；同一身份出现多次时整组不迁移，避免张冠李戴。"""
+        unique: dict[tuple[str, str, str], CacheSource] = {}
+        duplicated: set[tuple[str, str, str]] = set()
+        for entry in entries:
+            key = cls._stable_key(entry.source)
+            if key in unique:
+                duplicated.add(key)
+            else:
+                unique[key] = entry
+        for key in duplicated:
+            unique.pop(key, None)
+        return unique
 
     def sync_single(
         self,
@@ -51,6 +96,9 @@ class CacheSyncService:
             source_identity(item.source).key: item
             for item in (() if cycle_changed else previous.sources)
         }
+        old_by_stable = self._stable_entries(
+            () if cycle_changed else previous.sources
+        )
         result_by_identity: dict[str, Result] = {}
         for result in results:
             key = source_identity(result.source).key
@@ -68,7 +116,18 @@ class CacheSyncService:
         snapshots: list[CacheSource] = []
         for source in sources:
             key = source_identity(source).key
-            old = old_by_identity.get(key, CacheSource(source))
+            old = old_by_identity.get(key)
+            if old is None:
+                # 配置指纹变了但站点与引擎没变：接续它自己的历史，且只允许领用一次。
+                stable = self._stable_key(source)
+                candidate = old_by_stable.get(stable)
+                if candidate is not None and self._same_engine(
+                    candidate.source, source
+                ):
+                    old = candidate
+                    del old_by_stable[stable]
+            if old is None:
+                old = CacheSource(source)
             result = result_by_identity.get(key)
             if result is None:
                 raise AssertionError("validated result is missing")
@@ -145,10 +204,17 @@ class CacheSyncService:
                 replacement = selected_by_name.get(cached.source.name)
                 if replacement is not None:
                     replacement_key = source_identity(replacement).key
+                    keep = (
+                        cached
+                        if self._stable_key(replacement)
+                        == self._stable_key(cached.source)
+                        and self._same_engine(cached.source, replacement)
+                        else CacheSource(replacement)
+                    )
                     snapshots.append(
                         self._updated_cache_source(
                             replacement,
-                            CacheSource(replacement),
+                            keep,
                             result_by_identity[replacement_key],
                             issue,
                             retained_issues,

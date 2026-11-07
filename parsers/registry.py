@@ -11,6 +11,7 @@ from v2.domain.models import (
     Document,
     DocumentMethod,
     Evidence,
+    Position,
     RecordSet,
     Source,
     SourceRole,
@@ -89,6 +90,13 @@ HISTORY_INTERSTITIAL_MARKERS = (
     "欢迎转发+关注",
     "所有记录真实永不作假",
 )
+# 循环断点只允许真实的 001↔365 跨轮。页面把最新一轮排在前面（降序）时会从 001
+# 跳回 365，升序页则从 365 跳到 001；除此之外的“期号变大/变小”都是页面自身排序或
+# 历史缺口，不能当作区块结束，否则升序页（264→265→266）会被截成只剩第一段。
+CYCLE_SEAMS = ((1, 365), (365, 1))
+# 栏目标题词：区块内出现含这些词的括号标签，就可能是同页另一个栏目的标题
+# （如「288期 云中白鹤【精华九肖】」）。
+COLUMN_TITLE_TOKENS = ("九肖", "中特", "特肖", "主肖", "精华", "必中")
 DOMAIN_INTERSTITIAL_PATTERN = re.compile(
     r"^\s*(?:www\.)?[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
     r"(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+"
@@ -165,7 +173,7 @@ def split_cyclic_history_lines(
     for previous, current in zip(candidate_positions, candidate_positions[1:]):
         previous_position, previous_issue = previous
         current_position, current_issue = current
-        if (previous_issue, current_issue) in ((1, 365), (365, 1)):
+        if (previous_issue, current_issue) in CYCLE_SEAMS:
             boundaries.append(current_position)
     if not boundaries:
         return (block.lines,)
@@ -285,6 +293,115 @@ def effective_source_policy(source: Source) -> tuple[str, ...]:
     return (DocumentMethod.BROWSER_DOM.value,)
 
 
+def column_title_labels(line: str) -> tuple[str, ...]:
+    """返回一行里像“栏目标题”的括号内容，纯生肖/分组数据括号不算。"""
+    labels: list[str] = []
+    for content in BRACKET_PATTERN.findall(line):
+        text = content.strip()
+        if not text or not any(token in text for token in COLUMN_TITLE_TOKENS):
+            continue
+        if text not in labels:
+            labels.append(text)
+    return tuple(labels)
+
+
+def foreign_author_token(line: str, source: Source) -> str:
+    """期号与首个括号之间出现的“他站作者名”，如 ``288期 云中白鹤【精华九肖】``。
+
+    本栏自己换了标题写法时，这一段是空的；换栏时通常带着新栏目/新作者的
+    名字。名字不是身份证，只用于「标题也不同」时的二次确认。
+    """
+    match = ISSUE_PATTERN.search(line)
+    if match is None:
+        return ""
+    rest = line[match.end():]
+    bracket = BRACKET_PATTERN.search(rest)
+    prefix = rest[: bracket.start()] if bracket is not None else rest
+    prefix = re.sub(r"[0-9０-９]+", " ", prefix)
+    prefix = re.sub(r"[^\u4e00-\u9fff]+", " ", prefix)
+    identity = (
+        source.name,
+        *source.aliases,
+        source.section_marker,
+        source.data_marker,
+    )
+    for token in prefix.split():
+        if len(token) < 2 or len(token) > 6:
+            continue
+        if all(character in ZODIACS for character in token):
+            continue
+        if any(term and term in token for term in identity):
+            continue
+        if any(marker in token for marker in COLUMN_TITLE_TOKENS):
+            continue
+        return token
+    return ""
+
+
+def history_descends(observed_issues: tuple[int, ...], source: Source) -> bool:
+    """本块期号是降序吗：先看块内已知顺序，看不出时按站点方向。"""
+    for newer, older in zip(observed_issues, observed_issues[1:]):
+        if newer != older:
+            return newer > older
+    return source.position is Position.TOP
+
+
+def continues_history_direction(
+    line: str,
+    source: Source,
+    observed_issues: tuple[int, ...],
+) -> bool:
+    issue = line_issue(line)
+    if issue is None or not observed_issues:
+        return True
+    previous = observed_issues[-1]
+    if issue == previous:
+        # 页头「311期: 标题」与紧随的数据行「311期 数据」常常同号，
+        # 这是同一期的标题/数据配对，不是“另一栏开头”。
+        return True
+    if history_descends(observed_issues, source):
+        return issue < previous
+    return issue > previous
+
+
+def foreign_column_label(
+    line: str,
+    source: Source,
+    own_labels: frozenset[str],
+    observed_issues: tuple[int, ...],
+) -> str:
+    """区块内出现属于别栏的期号行时，返回它带的其它栏目标题。
+
+    标题不同只是线索，不是证据：同一栏位换标题写法（旧记录用【精华九肖】、
+    新记录用【九肖中特】）是常见形态，光凭标题会误杀本栏历史。真正的
+    切断条件是「标题不同」+ 下面任一条：
+
+    - 该行带着他站作者名（``288期 云中白鹤【精华九肖】``）；
+    - 该期号逆着本块历史方向（降序块里冒出更新的期号＝另一轮/另一栏开头）。
+
+    命中即结束当前区块：指定期在本块取不到会失败，不会取到他栏九肖。
+    """
+    if line_issue(line) is None:
+        return ""
+    if line_has_anchor(line, source):
+        return ""
+    labels = tuple(
+        label
+        for label in column_title_labels(line)
+        if label not in own_labels
+        and not (
+            source.data_marker and has_data_marker(source.data_marker, label)
+        )
+    )
+    if not labels:
+        return ""
+    if foreign_author_token(line, source):
+        return labels[0]
+    if not continues_history_direction(line, source, observed_issues):
+        return labels[0]
+    return ""
+
+
 def document_authority(
     source: Source,
     document: Document,
@@ -341,14 +458,34 @@ def anchored_history_blocks(
         found_candidate = False
         end = natural_end
         previous_issue: int | None = None
+        # 锚点行里带的期号只是栏目头，不算“已接受的数据行”：紧随其后的第一条
+        # 数据行仍是本块的格式样本，不能被反判成他栏（如锚点「暴殄九肖」+
+        # 数据行「九肖中特」）。
+        data_line_accepted = False
+        own_labels = frozenset(column_title_labels(anchor_line))
         for index in range(anchor_index, natural_end):
             line = lines[index]
+            if (
+                index != anchor_index
+                and previous_issue is not None
+                and data_line_accepted
+            ):
+                # 本块已经接受过至少一条期号行，才有“别栏”可言：区块的第一条
+                # 数据行本身就是本块的格式样本，不能反过来把它判成他栏。
+                foreign = foreign_column_label(
+                    line, source, own_labels, tuple(observed)
+                )
+                if foreign:
+                    # 邻栏的「NNN期 + 它栏标题」不能并入本块：在这里结束，
+                    # 让指定期在本块取不到（失败），而不是取到他栏九肖。
+                    end = index
+                    break
             issue = line_issue(line)
             if issue is not None:
                 if (
                     found_candidate
                     and previous_issue is not None
-                    and issue > previous_issue
+                    and (previous_issue, issue) in CYCLE_SEAMS
                     and source.parser == "direct_nine"
                 ):
                     # 001/365 循环断点：断点之前是当前轮（页面把最新一轮排在前面），
@@ -356,6 +493,15 @@ def anchored_history_blocks(
                     # 也出现（同号不同值），就会把旧轮值当成本期结果（跨期借值）。
                     end = index
                     break
+                if not data_line_accepted:
+                    # 第一条被接受的数据行无条件并入本栏标签：锚点行和它的
+                    # 数据行常用不同标题（【出言不逊九肖】vs【九肖中特】），
+                    # 只学锚点行会把本栏第二条起的正常数据判成他栏。
+                    own_labels = own_labels | frozenset(
+                        column_title_labels(line)
+                    )
+                if index != anchor_index:
+                    data_line_accepted = True
                 previous_issue = issue
                 observed.append(issue)
                 selected.append(
