@@ -290,6 +290,8 @@ def effective_source_policy(source: Source) -> tuple[str, ...]:
         return (DocumentMethod.CHUNKED_DATA.value,)
     if source.fetcher == "liuiuqu":
         return (DocumentMethod.DYNAMIC_API.value,)
+    if source.fetcher == "user_forums_api":
+        return (DocumentMethod.DYNAMIC_API.value,)
     return (DocumentMethod.BROWSER_DOM.value,)
 
 

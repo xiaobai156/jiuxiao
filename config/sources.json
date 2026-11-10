@@ -1724,30 +1724,30 @@
       "name": "丰利骨头",
       "url": "https://zcphjs.ce83x-ms2rz-orwude.work:12277/#/users/21928",
       "position": "bottom",
-      "section_marker": "九肖中特",
-      "fetcher": "browser_page",
-      "parser": "profile_history",
+      "section_marker": "九肖",
+      "fetcher": "user_forums_api",
+      "parser": "direct_nine",
       "api_url": "",
       "group_map": {},
       "detail_link_keyword": "",
       "aliases": [
         "丰丽骨头"
       ],
-      "data_marker": "",
+      "data_marker": "九肖",
       "source_policy": []
     },
     {
       "name": "盐卤香灯",
       "url": "https://zcphjs.ce83x-ms2rz-orwude.work:12277/#/users/27764",
       "position": "bottom",
-      "section_marker": "盐卤香灯",
-      "fetcher": "browser_page",
-      "parser": "profile_history",
+      "section_marker": "九肖",
+      "fetcher": "user_forums_api",
+      "parser": "direct_nine",
       "api_url": "",
       "group_map": {},
       "detail_link_keyword": "",
       "aliases": [],
-      "data_marker": "",
+      "data_marker": "九肖",
       "source_policy": []
     },
     {

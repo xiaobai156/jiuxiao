@@ -29,6 +29,7 @@ from v2.fetchers.liuiuqu import LiuiuquFetcher
 from v2.fetchers.narrow_image_browser import NarrowImagePlaywrightBrowserClient
 from v2.fetchers.registry import FetcherRegistry
 from v2.fetchers.static_page import StaticPageFetcher
+from v2.fetchers.user_forums import UserForumsApiFetcher
 from v2.parsers.factory import build_parser_registry
 from v2.services.cache_sync import CacheSyncService
 from v2.services.crawl import CrawlService, ProgressCallback
@@ -137,6 +138,7 @@ def _fetchers(context, browser: PlaywrightBrowserClient) -> FetcherRegistry:
     registry.register("list_detail_current", ListDetailCurrentFetcher(browser))
     registry.register("liuiuqu", LiuiuquFetcher(http))
     registry.register("chunked_spa", ChunkedSpaFetcher(http))
+    registry.register("user_forums_api", UserForumsApiFetcher(http))
     return registry
 
 

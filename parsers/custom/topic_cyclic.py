@@ -34,6 +34,7 @@ class TopicCyclicParser:
         issues: tuple[int, ...],
     ) -> RecordSet:
         selected_documents: list[Document] = []
+        appended_documents: set[tuple[str, str, str]] = set()
         primary_documents = tuple(
             document
             for document in documents
@@ -63,7 +64,18 @@ class TopicCyclicParser:
                     continue
                 segments = split_cyclic_history_lines(block)
                 if len(segments) == 1:
-                    selected_documents.append(document)
+                    # 同一文档里的多个板块各自只有一轮时，整篇文档只收一次，
+                    # 否则同一文档被反复送入解析器，会产出重复的区块身份。
+                    document_key = (
+                        document.label,
+                        document.method.value
+                        if hasattr(document.method, "value")
+                        else str(document.method),
+                        document.url,
+                    )
+                    if document_key not in appended_documents:
+                        appended_documents.add(document_key)
+                        selected_documents.append(document)
                     continue
                 segment_documents = tuple(
                     self._segment_document(document, block, segment, index)
