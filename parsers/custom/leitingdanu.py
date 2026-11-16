@@ -21,7 +21,7 @@ from v2.parsers.safety import with_complete_observed_issues
 # 锚点「雷霆大怒」只出现在页首标题行（`296期雷霆大怒【枯木逢春九肖】准`），
 # 通用解析的锚点/跨行拼接拿不到稳定区块，故用显式成对正则逐期截取。
 ISSUE_LINE = re.compile(r"(?<!\d)(\d{3})期\s*[：:]\s*\S*九肖")
-ZODIAC_LINE = re.compile(r"[【《]([鼠牛虎兔龙蛇马羊猴鸡狗猪]{9})[】》]")
+ZODIAC_LINE = re.compile(r"[【《]\s*([鼠牛虎兔龙蛇马羊猴鸡狗猪]{9})\s*[】》]")
 ZODIACS = frozenset("鼠牛虎兔龙蛇马羊猴鸡狗猪")
 
 

@@ -92,6 +92,15 @@ def test_pairs_issue_line_with_next_zodiac_line() -> None:
         assert len(set(text)) == 9
 
 
+def test_leading_padding_inside_bracket_is_tolerated() -> None:
+    """站方偶尔在左括号后塞一个空格或 &nbsp;，归一化后是普通空格，仍须识别为九肖。"""
+    document = page(("296期：枯木逢春九肖", "【\u00a0牛猪马虎鸡鼠猴狗羊】开？00准"))
+    result = parse(document, (296,))
+
+    record = next(r for r in result.records if r.issue == 296)
+    assert record.zodiac_text == "牛猪马虎鸡鼠猴狗羊"
+
+
 def test_draw_result_zodiac_is_not_merged() -> None:
     """九肖行尾部的开奖结果生肖（本例「马」）不得并入。"""
     document = page(("295期：枯木逢春九肖", "【牛猴鸡兔鼠虎狗猪龙】开马25错"))

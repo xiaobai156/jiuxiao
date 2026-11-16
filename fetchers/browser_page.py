@@ -50,6 +50,22 @@ TRANSIENT_NAVIGATION_MARKERS = (
 NAVIGATION_ATTEMPTS = 3
 NAVIGATION_RETRY_DELAY_MS = 1_500
 
+# 部分站点的正文容器带 `content-visibility: auto`，浏览器会跳过屏幕外的渲染，
+# innerText 只返回已渲染部分（实测门户页 1270 行，真实 3392 行，锚点全被跳过）。
+# 一旦在首屏文本里找不到锚点，就把这些容器强制展开再读一次。
+REVEAL_LAZY_CONTENT_SCRIPT = """() => {
+    let changed = 0;
+    for (const element of document.querySelectorAll('*')) {
+        const style = getComputedStyle(element);
+        if (style.contentVisibility === 'auto') {
+            element.style.contentVisibility = 'visible';
+            changed += 1;
+        }
+    }
+    return changed;
+}"""
+REVEAL_LAZY_SETTLE_MS = 1_200
+
 
 _PADDLE_OCR_READER = PaddleOcrReader()
 
@@ -286,6 +302,10 @@ class PlaywrightBrowserClient:
                 await page.wait_for_timeout(settle_ms)
             documents: list[Document] = []
             body = await self._body_text(page)
+            if anchor_terms and not any(term and term in body for term in anchor_terms):
+                revealed = await self._reveal_lazy_content(page)
+                if revealed:
+                    body = await self._body_text(page)
             self._append_document(
                 documents,
                 "browser-dom",
@@ -401,6 +421,21 @@ class PlaywrightBrowserClient:
             )
         except Exception:
             return ""
+
+    @staticmethod
+    async def _reveal_lazy_content(page) -> int:
+        """展开 `content-visibility: auto` 容器，返回改动的元素数。
+
+        只读 DOM 样式、不改内容；不支持的页面返回 0，行为与原来一致。
+        """
+        try:
+            changed = await page.evaluate(REVEAL_LAZY_CONTENT_SCRIPT)
+        except Exception:
+            return 0
+        if isinstance(changed, int) and changed > 0:
+            await page.wait_for_timeout(REVEAL_LAZY_SETTLE_MS)
+            return changed
+        return 0
 
     @staticmethod
     def _append_document(
