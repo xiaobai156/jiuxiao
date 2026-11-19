@@ -197,6 +197,15 @@ def test_retired_sources_are_archived_and_absent_from_cache() -> None:
             "https://pgyzulb.iwnn7-gyyip-pnpfqv.work:29477/article/admin/"
             "6a1540838be59b17287c6d12?url=bflc"
         ),
+        # 321 期站方删文（manager-articles 接口 404，文章页只剩 Failed to fetch 空壳，
+        # 同渠道 86 个站点码 4147 篇文章均已无该 id 与该作者），2026-11-17 用户点名封存。
+        "天机码彩": (
+            "https://sheuzjss.tgpcj-9w0vl-mwyhly.work:29422/article/admin/"
+            "6a04575c4ea5c20141013eaf?url=zfw"
+        ),
+        # 322 期帖被站方删除/隐藏（tid=762 返回「没有权限访问」，同站其它帖子正常，
+        # 本站首页 68 帖与作者列表均无「顺哥」「绝杀三肖」），2026-11-18 用户点名封存。
+        "澳门顺哥": "https://hl.90216a.com/read.php?tid=762",
     }
     sources = SourceRepository(
         PROJECT_ROOT / "config" / "sources.json",

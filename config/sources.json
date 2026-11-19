@@ -3095,20 +3095,6 @@
       "source_policy": []
     },
     {
-      "name": "天机码彩",
-      "url": "https://sheuzjss.tgpcj-9w0vl-mwyhly.work:29422/article/admin/6a04575c4ea5c20141013eaf?url=zfw",
-      "position": "bottom",
-      "section_marker": "天机码彩",
-      "fetcher": "dynamic_article",
-      "parser": "complement_three",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "绝杀三肖",
-      "source_policy": []
-    },
-    {
       "name": "可怕项链",
       "url": "https://qvuuqqs.8imf7-hteuh-ylwuqv.xyz/#/users/3307",
       "position": "top",
@@ -3963,20 +3949,6 @@
       "source_policy": []
     },
     {
-      "name": "澳门顺哥",
-      "url": "https://hl.90216a.com/read.php?tid=762",
-      "position": "bottom",
-      "section_marker": "澳门顺哥",
-      "fetcher": "browser_page",
-      "parser": "complement_three",
-      "api_url": "",
-      "group_map": {},
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "绝杀三肖",
-      "source_policy": []
-    },
-    {
       "name": "致富快巴",
       "url": "https://rmpsmal.hi84f-zpj90-mvqksp.xyz:29477/article/manager/6a48ef6057dc857ae1bf7721?url=jfh",
       "position": "bottom",
@@ -4647,7 +4619,7 @@
     {
       "name": "百思不解",
       "url": "https://ssytmks.kcyub-abvtn-uvalbe.xyz:16677/topic/732213.html",
-      "position": "bottom",
+      "position": "top",
       "section_marker": "百思不解",
       "fetcher": "browser_page",
       "parser": "topic_cyclic_nine",
@@ -7171,6 +7143,34 @@
       "section_marker": "翔凤山水",
       "fetcher": "browser_page",
       "parser": "direct_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
+    },
+    {
+      "name": "问罪之师",
+      "url": "https://tbualb.sbrg9-x5fwa-gwrfft.work:17477/topic/382427.html",
+      "position": "top",
+      "section_marker": "问罪之师",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
+    },
+    {
+      "name": "甚嚣尘上",
+      "url": "https://tbualb.sbrg9-x5fwa-gwrfft.work:17477/topic/622229.html",
+      "position": "top",
+      "section_marker": "甚嚣尘上",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
       "api_url": "",
       "group_map": {},
       "detail_link_keyword": "",

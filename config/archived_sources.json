@@ -1780,6 +1780,42 @@
       },
       "archived_at": "2026-11-04T18:47:31+08:00",
       "reason": "用户点名封存，不再抓取；308期抓取失败：站方已删除该篇文章。证据：dynamic_article 文章 ID 6a1540838be59b17287c6d12 的 /api/proxy/manager-articles/ 返回 HTTP 404 {\"message\":\"AdminArticle 不存在\"}；浏览器打开原 URL 落地 /article/manager/ 占位页（正文 10 行，无站名与期号）；同渠道「八方来财」(siteId 6a0beea17b101f8e6120bb90) landing-page-data 在列 83 篇文章、81 个作者中已无「刀光剑影」、未找到迁移新址；同渠道其他站点正常 ⇒ 非整站故障，是本站文章被站方删除，无合法修复路径。"
+    },
+    {
+      "source": {
+        "name": "天机码彩",
+        "url": "https://sheuzjss.tgpcj-9w0vl-mwyhly.work:29422/article/admin/6a04575c4ea5c20141013eaf?url=zfw",
+        "position": "bottom",
+        "section_marker": "天机码彩",
+        "fetcher": "dynamic_article",
+        "parser": "complement_three",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "绝杀三肖",
+        "source_policy": []
+      },
+      "archived_at": "2026-11-17T20:15:00+08:00",
+      "reason": "用户点名封存，不再抓取；321期抓取失败：站方已删除该篇文章。证据：dynamic_article 文章 ID 6a04575c4ea5c20141013eaf 的 /api/proxy/manager-articles/ 返回 HTTP 404；文章页落地占位壳（正文仅 Failed to fetch）；该渠道 86 个站点码的全部栏目共 4147 篇文章中已无该 id、也无作者「天机码彩」；同宿主的血战澳彩（6a045a204ea5c20141013ebe）当期正常 ⇒ 非整站故障，是本站文章被站方删除。"
+    },
+    {
+      "source": {
+        "name": "澳门顺哥",
+        "url": "https://hl.90216a.com/read.php?tid=762",
+        "position": "bottom",
+        "section_marker": "澳门顺哥",
+        "fetcher": "browser_page",
+        "parser": "complement_three",
+        "api_url": "",
+        "group_map": {},
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "绝杀三肖",
+        "source_policy": []
+      },
+      "archived_at": "2026-11-18T19:45:00+08:00",
+      "reason": "用户点名封存，不再抓取；322期抓取失败：站方已删除/隐藏该帖。证据：https://hl.90216a.com/read.php?tid=762 返回「提示信息：您没有登录或者没有权限访问此页面」；同站其它帖子（tid=751/520/754/774 等）正常返回 322 期正文 ⇒ 非整站故障；本站首页 68 个帖子里既无「顺哥」也无「绝杀三肖」栏目，作者列表（txs.php?authorid=）同样无该作者 ⇒ 该帖已被站方删除或移入收费可见区。"
     }
   ]
 }
