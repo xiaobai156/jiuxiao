@@ -1860,25 +1860,6 @@
       "source_policy": []
     },
     {
-      "name": "血战澳彩",
-      "url": "https://sheuzjss.tgpcj-9w0vl-mwyhly.work:29422/article/admin/6a045a204ea5c20141013ebe?url=zfw",
-      "position": "bottom",
-      "section_marker": "",
-      "fetcher": "dynamic_article",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "风": "虎兔龙",
-        "雨": "蛇羊马",
-        "雷": "猴狗鸡",
-        "电": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "风雨雷电",
-      "source_policy": []
-    },
-    {
       "name": "心灵手巧",
       "url": "https://pgyzulb.iwnn7-gyyip-pnpfqv.work:29477/article/admin/6a153aa7d9d9fc2cea52417e?url=bflc",
       "position": "bottom",
@@ -2925,25 +2906,6 @@
       "source_policy": []
     },
     {
-      "name": "英雄财经",
-      "url": "https://18118.73829.com/read.php?tid=815",
-      "position": "bottom",
-      "section_marker": "",
-      "fetcher": "browser_page",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "琴": "兔蛇鸡",
-        "棋": "鼠牛狗",
-        "书": "虎龙马",
-        "画": "羊猴猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "琴棋书画",
-      "source_policy": []
-    },
-    {
       "name": "刻舟求剑",
       "url": "https://zqrtppa.9swju-6haxn-dlkint.work:29455/article/admin/6a33a432dfa16552b923cafa?url=yjs",
       "position": "bottom",
@@ -3963,25 +3925,6 @@
       "source_policy": []
     },
     {
-      "name": "深圳福将",
-      "url": "https://drxgkjt.uu1oc-eyjpt-uxyccu.xyz:29400/article/manager/6a33e823dfa16552b923d352?url=jyb",
-      "position": "bottom",
-      "section_marker": "深圳福将",
-      "fetcher": "dynamic_article",
-      "parser": "grouped",
-      "api_url": "",
-      "group_map": {
-        "春": "虎兔龙",
-        "夏": "蛇马羊",
-        "秋": "猴鸡狗",
-        "冬": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "春夏秋冬",
-      "source_policy": []
-    },
-    {
       "name": "丰富内容",
       "url": "https://knfoaep.ivqs8-1depw-yoirtw.xyz:29444/article/manager/6a095735291caff3edcb8a77?url=lf",
       "position": "bottom",
@@ -4097,25 +4040,6 @@
       "detail_link_keyword": "",
       "aliases": [],
       "data_marker": "琴棋书画",
-      "source_policy": []
-    },
-    {
-      "name": "浪子回头",
-      "url": "https://knfoaep.ivqs8-1depw-yoirtw.xyz:29444/article/manager/6a0f137e87aa9eef297e33f7?url=lf",
-      "position": "bottom",
-      "section_marker": "浪子回头",
-      "fetcher": "dynamic_article",
-      "parser": "grouped",
-      "api_url": "/api/proxy/manager-articles/6a0f137e87aa9eef297e33f7",
-      "group_map": {
-        "春": "虎兔龙",
-        "夏": "蛇马羊",
-        "秋": "猴鸡狗",
-        "冬": "鼠牛猪"
-      },
-      "detail_link_keyword": "",
-      "aliases": [],
-      "data_marker": "春夏秋冬",
       "source_policy": []
     },
     {
@@ -7169,6 +7093,34 @@
       "url": "https://tbualb.sbrg9-x5fwa-gwrfft.work:17477/topic/622229.html",
       "position": "top",
       "section_marker": "甚嚣尘上",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
+    },
+    {
+      "name": "一意孤行",
+      "url": "https://tbualb.sbrg9-x5fwa-gwrfft.work:17477/topic/622220.html",
+      "position": "bottom",
+      "section_marker": "一意孤行",
+      "fetcher": "browser_page",
+      "parser": "topic_cyclic_nine",
+      "api_url": "",
+      "group_map": {},
+      "detail_link_keyword": "",
+      "aliases": [],
+      "data_marker": "",
+      "source_policy": []
+    },
+    {
+      "name": "红颜白发",
+      "url": "https://bldpexbm.lh9jk-mkbuw-qaazwr.work:17455/topic/322716.html",
+      "position": "top",
+      "section_marker": "红颜白发",
       "fetcher": "browser_page",
       "parser": "topic_cyclic_nine",
       "api_url": "",

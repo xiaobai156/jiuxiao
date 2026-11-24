@@ -206,6 +206,29 @@ def test_retired_sources_are_archived_and_absent_from_cache() -> None:
         # 322 期帖被站方删除/隐藏（tid=762 返回「没有权限访问」，同站其它帖子正常，
         # 本站首页 68 帖与作者列表均无「顺哥」「绝杀三肖」），2026-11-18 用户点名封存。
         "澳门顺哥": "https://hl.90216a.com/read.php?tid=762",
+        # 325 期站方删文（manager-articles 接口 404，文章页只剩 Failed to fetch 空壳，
+        # 同渠道 86 个站点码 4104 篇文章均已无该 id 与该作者），2026-11-21 用户点名封存。
+        "血战澳彩": (
+            "https://sheuzjss.tgpcj-9w0vl-mwyhly.work:29422/article/admin/"
+            "6a045a204ea5c20141013ebe?url=zfw"
+        ),
+        # 326 期站方删文（manager-articles 接口 404，文章页只剩 Failed to fetch 空壳，
+        # jyb 站点 24 个栏目 47 篇文章均已无该 id 与该作者），2026-11-22 用户点名封存。
+        "深圳福将": (
+            "https://drxgkjt.uu1oc-eyjpt-uxyccu.xyz:29400/article/manager/"
+            "6a33e823dfa16552b923d352?url=jyb"
+        ),
+        # 327 期站方数据写错（数据行【冬夏冬】里「冬」重复两次，按 group_map 只能映射
+        # 出 6 肖；全文档 208 条选组行仅该期有重复季节字），不替站方挑数据，
+        # 2026-11-23 用户点名封存。
+        "浪子回头": (
+            "https://knfoaep.ivqs8-1depw-yoirtw.xyz:29444/article/manager/"
+            "6a0f137e87aa9eef297e33f7?url=lf"
+        ),
+        # 328 期站方删帖（tid=815 返回「您没有登录或者没有权限访问此页面」提示页；
+        # 首页 64 个帖子链接均无该 tid、无作者「英雄财经」、无栏目「琴棋书画」），
+        # 2026-11-24 用户点名封存。
+        "英雄财经": "https://18118.73829.com/read.php?tid=815",
     }
     sources = SourceRepository(
         PROJECT_ROOT / "config" / "sources.json",

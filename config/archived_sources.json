@@ -1816,6 +1816,98 @@
       },
       "archived_at": "2026-11-18T19:45:00+08:00",
       "reason": "用户点名封存，不再抓取；322期抓取失败：站方已删除/隐藏该帖。证据：https://hl.90216a.com/read.php?tid=762 返回「提示信息：您没有登录或者没有权限访问此页面」；同站其它帖子（tid=751/520/754/774 等）正常返回 322 期正文 ⇒ 非整站故障；本站首页 68 个帖子里既无「顺哥」也无「绝杀三肖」栏目，作者列表（txs.php?authorid=）同样无该作者 ⇒ 该帖已被站方删除或移入收费可见区。"
+    },
+    {
+      "source": {
+        "name": "血战澳彩",
+        "url": "https://sheuzjss.tgpcj-9w0vl-mwyhly.work:29422/article/admin/6a045a204ea5c20141013ebe?url=zfw",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "风": "虎兔龙",
+          "雨": "蛇羊马",
+          "雷": "猴狗鸡",
+          "电": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "风雨雷电",
+        "source_policy": []
+      },
+      "archived_at": "2026-11-21T20:40:31+08:00",
+      "reason": "用户点名封存。325 期抓取失败，站方已删该文：文章页 /article/admin/6a045a204ea5c20141013ebe 渲染只剩 Failed to fetch 空壳，详情接口 /api/proxy/manager-articles/6a045a204ea5c20141013ebe 返回 HTTP 404；抽样其它 4 篇文章同接口均 200 且有正文，排除整站 API 故障；全平台 86 个站点码 / 1962 个栏目 / 4104 篇文章里既无该 article id 也无作者「血战澳彩」；zfw（澳门致富网）当前 23 篇文章无此作者。"
+    },
+    {
+      "source": {
+        "name": "深圳福将",
+        "url": "https://drxgkjt.uu1oc-eyjpt-uxyccu.xyz:29400/article/manager/6a33e823dfa16552b923d352?url=jyb",
+        "position": "bottom",
+        "section_marker": "深圳福将",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "春": "虎兔龙",
+          "夏": "蛇马羊",
+          "秋": "猴鸡狗",
+          "冬": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "春夏秋冬",
+        "source_policy": []
+      },
+      "archived_at": "2026-11-22T18:51:23+08:00",
+      "reason": "用户点名封存。326 期抓取失败，站方已删该文：文章页 /article/manager/6a33e823dfa16552b923d352 渲染只剩 Failed to fetch 空壳（10 行、0 处期号），详情接口 /api/proxy/manager-articles/6a33e823dfa16552b923d352 返回 HTTP 404；文章页 HTML 里仍残留该 article id，说明是站方下架而非地址写错；jyb（澳门金元宝）当前 24 个栏目共 47 篇文章，既无该 article id 也无作者「深圳福将」。"
+    },
+    {
+      "source": {
+        "name": "浪子回头",
+        "url": "https://knfoaep.ivqs8-1depw-yoirtw.xyz:29444/article/manager/6a0f137e87aa9eef297e33f7?url=lf",
+        "position": "bottom",
+        "section_marker": "浪子回头",
+        "fetcher": "dynamic_article",
+        "parser": "grouped",
+        "api_url": "/api/proxy/manager-articles/6a0f137e87aa9eef297e33f7",
+        "group_map": {
+          "春": "虎兔龙",
+          "夏": "蛇马羊",
+          "秋": "猴鸡狗",
+          "冬": "鼠牛猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "春夏秋冬",
+        "source_policy": []
+      },
+      "archived_at": "2026-11-23T19:39:10+08:00",
+      "reason": "用户点名封存。327 期抓取失败（SOURCE_UNTRUSTED target data marker is missing）：站方数据行 327期:【浪子回头】③季中特【冬夏冬】开:0000准 里「冬」重复出现两次，按 group_map（春=虎兔龙 夏=蛇马羊 秋=猴鸡狗 冬=鼠牛猪）只能映射出 6 个生肖，凑不出 9 肖；全文档 208 条选组行中仅 327 这一期有重复季节字（326 冬秋夏、325 秋夏春、324 春冬夏…均正常），属站方笔误。按规则不得替站方挑数据，保留失败后由用户决定封存。"
+    },
+    {
+      "source": {
+        "name": "英雄财经",
+        "url": "https://18118.73829.com/read.php?tid=815",
+        "position": "bottom",
+        "section_marker": "",
+        "fetcher": "browser_page",
+        "parser": "grouped",
+        "api_url": "",
+        "group_map": {
+          "琴": "兔蛇鸡",
+          "棋": "鼠牛狗",
+          "书": "虎龙马",
+          "画": "羊猴猪"
+        },
+        "detail_link_keyword": "",
+        "aliases": [],
+        "data_marker": "琴棋书画",
+        "source_policy": []
+      },
+      "archived_at": "2026-11-24T18:49:39+08:00",
+      "reason": "用户点名封存。328 期抓取失败（CROSS_DOMAIN）：read.php?tid=815 返回论坛提示页「您没有登录或者没有权限访问此页面 —— ①读取数据错误，链接无效或数据已被删除；②您还不是论坛会员」，判定站方删帖而非需登录，证据：首页 64 个帖子链接中既无 tid=815 也无作者「英雄财经」也无栏目「琴棋书画」；把首页 64 帖全部抓取扫描，全站无任何一篇提到「英雄财经」或「琴棋书画」；同宿主 tid=504（取长补短）、tid=846（赌王之战）均已打不开且此前已封存。"
     }
   ]
 }

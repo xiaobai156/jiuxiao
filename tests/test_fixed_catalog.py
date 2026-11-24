@@ -118,7 +118,13 @@ def test_dynamic_catalog_definitions_are_migrated_to_formal_config() -> None:
     # 2026-11-17 接入「问罪之师」（321 期，判重 clear，含近 10 期缓存）后为 456。
     # 2026-11-18 接入「甚嚣尘上」（322 期，判重 clear，含近 10 期缓存）后为 457。
     # 2026-11-18 封存「澳门顺哥」（322 期站方删帖，tid=762 返回无权限）后为 456。
-    assert len(config["sources"]) == 456
+    # 2026-11-21 接入「一意孤行」（325 期，判重 clear，含近 10 期缓存）后为 457。
+    # 2026-11-21 封存「血战澳彩」（325 期站方删文，manager-articles 接口 404）后为 456。
+    # 2026-11-22 封存「深圳福将」（326 期站方删文，manager-articles 接口 404）后为 455。
+    # 2026-11-22 接入「红颜白发」（326 期，判重 clear，含近 10 期缓存）后为 456。
+    # 2026-11-23 封存「浪子回头」（327 期站方选组字重复，映射不出 9 肖）后为 455。
+    # 2026-11-24 封存「英雄财经」（328 期站方删帖，tid=815 返回无权限提示）后为 454。
+    assert len(config["sources"]) == 454
     assert [configured[item["url"]]["name"] for item in dynamic] == [
         item["name"] for item in dynamic
     ]
